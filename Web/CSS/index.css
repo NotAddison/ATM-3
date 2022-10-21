@@ -1,0 +1,9 @@
+/* Imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+/* Variables */
+body{
+    background-color: #191919;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+}
