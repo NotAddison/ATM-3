@@ -25,6 +25,6 @@ Portfolio Development (2022) - **OCBC ATM 3.0**
 4. **Extra Validations** - 
    - Integrate w/ ML to detect outliers > Prompt/Notify users
    - (esp for Senior Citizen) & Scams
-5. **Message Alert** (Webhook) - 
-6. **Database Leak Checker** (HaveIBeenPwned API) - 
+5. **Database Leak Checker** (HaveIBeenPwned API) - 
+6. **Message Alert** (Webhook) - 
 7. **NFC/EVC Chip Biometrics Embedding** - [ If have time ]
