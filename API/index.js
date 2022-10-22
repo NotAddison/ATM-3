@@ -11,6 +11,7 @@ var dPins = {
 };
 var gUser = "";
 var gPin = "";
+var gIsOutlier = false;
 
 // Middleware
 app.use(express.json());
@@ -27,7 +28,7 @@ app.listen(PORT, () => {
     console.log(`>> http://localhost:${PORT}`);
 });
 
-// Pin Authentication (1)
+// -------- [ Pin Authentication (1) ] --------
 app.post('/auth/1/:pin', (req, res) => {
     var { pin } = req.params;
     pin = parseInt(pin);
@@ -54,7 +55,7 @@ app.get('/auth/1/',(req, res) => {
     });
 });
 
-// CV Authentication API (2)
+// -------- [ CV Authentication API (2) ] --------
 app.post('/auth/2/:user',(req, res) => {
     var { user } = req.params;
     // Missing Params
@@ -86,5 +87,31 @@ app.post('/auth/2/:user',(req, res) => {
 app.get('/auth/2/',(req, res) => {
     res.status(200).send({
         user: gUser,
+    });
+});
+
+// -------- [ Outlier Analysis ] --------
+app.post('/outlier/:bool', (req, res) => {
+    var { bool } = req.params;
+    isOutlier = bool.toLocaleLowerCase() === 'true'
+    
+    if (!bool){
+        res.status(418).send({
+            status : "success", 
+            user: "Boolean Value Missing!" 
+        });
+    }
+    res.status(200).json({ 
+        status : "success",
+        valid : isOutlier
+    });
+
+    gIsOutlier = isOutlier; // Set global pin variable
+});
+
+app.get('/outlier/',(req, res) => {
+    res.status(200).send({
+        status : "success",
+        IsOutlier : gIsOutlier
     });
 });
