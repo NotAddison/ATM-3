@@ -13,3 +13,13 @@
    - Parameters (POST): {url}/auth/2/{user}
    - Parameters (GET): {url}/auth/2/
    - Description: Checks if name (based on OpenCV recognition) is valid.
+
+
+## Generic Requests
+> Types of generic requests:
+
+1. Outlier Analysis:
+   - Method : POST / GET
+   - Parameters (POST): {url}/outlier/{boolean}
+   - Parameters (GET): {url}/outlier/
+   - Description: Used for communication between Python & HTML Web ; Sets boolean value for "gIsOutlier".
