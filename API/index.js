@@ -75,7 +75,7 @@ app.post('/auth/2/:user',(req, res) => {
     }
 });
 
-app.get('/auth/2',(req, res) => {
+app.get('/auth/2/',(req, res) => {
     res.status(200).send({
         user: gUser,
     });
