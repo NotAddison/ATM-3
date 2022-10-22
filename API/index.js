@@ -17,9 +17,7 @@ app.use(express.json());
 
 // Functions
 function CheckValueExists(value) {
-    for (var key in dPins) {
-        if (dPins[key] == value) return true;
-    }
+    for (var key in dPins) if (dPins[key] == value) return true;
     return false;
 }
 
