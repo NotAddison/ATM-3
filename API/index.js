@@ -5,11 +5,12 @@ const PORT  = process.env.PORT || 3000;
 
 // Variables (for testing, should use database)
 var dPins = {
-    1234 : "John Doe",
-    5678 : "Jane Doe",
-    91011: "Addison"
+    123456 : "John Doe",
+    891011 : "Jane Doe",
+    121314 : "Addison"
 };
 var gUser = "";
+var gPin = "";
 
 // Middleware
 app.use(express.json());
@@ -38,11 +39,20 @@ app.post('/auth/1/:pin', (req, res) => {
             user : dPins[pin],
             valid : true
         });
+        gPin = pin; // Set global pin variable
     } 
     else res.status(400).json({ 
         status : "success",
         user : "unknown",
         valid : false 
+    });
+});
+
+app.get('/auth/1/',(req, res) => {
+    res.status(200).send({
+        status : "success",
+        pin : gPin,
+        valid : (gPin in dPins)
     });
 });
 
@@ -64,7 +74,7 @@ app.post('/auth/2/:user',(req, res) => {
             user: `${user}`,
             valid : true
         })
-        gUser = user // Set global user
+        gUser = user // Set global user variable
     }
     else{
         res.send({
