@@ -3,7 +3,10 @@
 
 /* Variables */
 body{
-    background-color: #191919;
+    background-color: red;
     color: #ffffff;
     font-family: 'Inter', sans-serif;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
 }
