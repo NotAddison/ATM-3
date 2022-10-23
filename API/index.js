@@ -12,6 +12,7 @@ var dPins = {
 var gUser = "";
 var gPin = "";
 var gIsOutlier = false;
+var isHostage = false;
 
 // Middleware
 app.use(express.json());
@@ -55,7 +56,7 @@ app.get('/auth/1/',(req, res) => {
     });
 });
 
-// -------- [ CV Authentication API (2) ] --------
+// -------- [ CV (Recognition) Authentication API (2) ] --------
 app.post('/auth/2/:user',(req, res) => {
     var { user } = req.params;
     // Missing Params
@@ -87,6 +88,23 @@ app.post('/auth/2/:user',(req, res) => {
 app.get('/auth/2/',(req, res) => {
     res.status(200).send({
         user: gUser,
+    });
+});
+
+// -------- [ CV (Object) Authentication API (2) ] --------
+app.post('/auth/3/:hostage',(req, res) => {
+    var { hostage } = req.params;
+    isHostage = hostage.toLocaleLowerCase() === 'true'
+
+    res.status(200).send({
+        status : "success",
+        isHostage: isHostage
+    });
+});
+
+app.get('/auth/3/',(req, res) => {
+    res.status(200).send({
+        isHostage: isHostage
     });
 });
 
