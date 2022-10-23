@@ -1,3 +1,4 @@
+from pickle import TRUE
 import cv2
 from time import time
 import numpy as np
@@ -66,9 +67,9 @@ while True:
         cv2.putText(frame, label, (x,y-10), font, font_scale, text_colour, thickness)
 
         if classes[classid] in danger_item:
-            print("DANGEROUS OBJECT DETECTED!")
-            if not isSent:
-                # TODO: Send Request to API
+            if not isSent: # Check if request is already sent.
+                print("DANGEROUS OBJECT DETECTED!")
+                r = requests.post(f'http://localhost:3000/auth/3/{True}')
                 isSent = True
 
     # FPS Calculation & output
