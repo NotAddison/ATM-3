@@ -9,7 +9,7 @@ print("\n"*100)
 from deepface import DeepFace
 
 # --- ⚙ Settings ⚙ ---
-target = ["worried", "nervous", "fearful", "fear"]
+emotion = ["worried", "nervous", "fearful", "fear"]
 isSent = False
 
 # --- ⚙ OpenCV Settings ⚙ ---
@@ -28,10 +28,8 @@ debug_Colour = (77, 40, 225)    # Colour of debugging text
 cascadeDir = "C:\Python310\Lib\site-packages\cv2\data\haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadeDir)
 
-# print(">> Loaded Haar Cascade Classifier... | " + str(faceCascade.empty()))
-
 if not faceCascade.empty():
-    print(">> Loaded Haar Cascade Classifier... | " + str(faceCascade.empty()))
+    print(f">> Loaded Haar Cascade Classifier... | isEmpty = {faceCascade.empty()}")
     video = cv2.VideoCapture(0)
     if not video.isOpened():
         raise IOError("Cannot open webcam")
@@ -43,8 +41,8 @@ if not faceCascade.empty():
         if toMirror:
             frame = cv2.flip(frame, 1)
 
-        result = DeepFace.analyze(frame, actions = ['emotion'], enforce_detection=False)
-        print(result['dominant_emotion'])
+        result = DeepFace.analyze(frame, actions = ['emotion'], enforce_detection=False, prog_bar=False)
+        # print(result['dominant_emotion'])
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = faceCascade.detectMultiScale(gray, 1.1, 4)
@@ -61,6 +59,17 @@ if not faceCascade.empty():
         cv2.putText(frame, f'FPS: {fps}', (20,100), font, font_scale, debug_Colour, 1, cv2.LINE_AA)  # Display FPS Count
 
         cv2.imshow("Emotion Detection", frame)
+
+        if result['dominant_emotion'] in emotion:
+            if not isSent: # Check if request is already sent.
+                print("[!] Negative Emotion Detected!")
+                try:
+                    r = requests.post(f'http://localhost:3000/auth/3/{True}')
+                    print(f"Object.py: {r.status_code}")
+                    isSent = True
+                except:
+                    print("Emotion.py: Failed to send request.")
+                    pass
         
         # Exit on 'ESC' Key
         if cv2.waitKey(1) == 27: 
