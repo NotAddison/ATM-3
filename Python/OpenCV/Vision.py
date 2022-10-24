@@ -17,10 +17,10 @@ toMirror = True         # Mirrors the projected frames (Use True if you're using
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 font_scale = 0.6
-thickness = 2
+thickness = 1
 bbox_color = (255,169,0)
-text_colour = (0,255,0)
 debug_Colour = (77, 40, 225)    # Colour of debugging text
+text_colour = debug_Colour
 
 # Webcam Resolution Settings
 width = 1920
@@ -31,6 +31,7 @@ danger_item = ["scissors", "knife"]
 emotion = ["worried", "nervous", "fearful", "fear"]
 isLight = False
 
+useGPU = True
 isSent = False
 
 # --- ⚙ Load Models ⚙ ---
@@ -45,8 +46,9 @@ else:
 classes = r"Python\OpenCV\Assets\Object\classes.txt"
 
 net = cv2.dnn.readNet(weights, config)
-net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+if useGPU:
+    net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+    net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
 model = cv2.dnn_DetectionModel(net)
 model.setInputParams(size=(512, 512), scale=1/255)
@@ -73,8 +75,6 @@ def ObjectDetection(frame):
             cv2.rectangle(frame, (x,y), (x+w,y+h), bbox_color, thickness)
             cv2.putText(frame, label, (x,y-10), font, font_scale, text_colour, thickness)
             return classes[classid] in danger_item
-
-    
 
 def EmotionRecognition(frame):
     result = DeepFace.analyze(frame, actions = ['emotion'], enforce_detection=False, prog_bar=False)
@@ -115,15 +115,17 @@ while True:
     # FPS Calculation & output
     fps = (1/(time() - loop_time))
     loop_time = time()
-    cv2.putText(frame, f'FPS: {fps}', (20,700), font, font_scale, debug_Colour, 1, cv2.LINE_AA)  # Display FPS Count
+    cv2.putText(frame, f'FPS: {fps}', (20,height-20), font, font_scale, debug_Colour, 1, cv2.LINE_AA)  # Display FPS Count
 
-    print("\n"*100)
     cv2.putText(frame, f"HasWeapon: {hasWeapon}", (20, 50), font, font_scale, text_colour, thickness)
-    print(f"[Vision.py] >> HasWeapon: {hasWeapon} | NegativeEmotions: {hasWeapon} | isSent: {isSent}")
+    cv2.putText(frame, f"isHostage: {(hasWeapon and hasNegativeEmotion) == True}", (20, 70), font, font_scale, text_colour, thickness)
+    cv2.putText(frame, f"API Request Sent: {isSent}", (20, height-40), font, font_scale, text_colour, thickness)
+    print(f"[Vision.py] >> HasWeapon: {hasWeapon} | NegativeEmotions: {hasNegativeEmotion} | isSent: {isSent}")
 
     # Display Output
     cv2.imshow("Object & Emotion Detection", frame)
     
+    # Check if user is being held hostage (Weapon found & Negative Emotion)
     if hasWeapon and hasNegativeEmotion:
         print("[Alert!] >> Weapon and Negative Emotion Detected!")
         # Send Alert to Server
