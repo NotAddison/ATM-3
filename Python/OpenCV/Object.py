@@ -4,6 +4,8 @@ from time import time
 import numpy as np
 import requests
 
+print("\n"*100)
+
 # --- ⚙ Settings ⚙ ---
 danger_item = ["scissors", "knife"]
 isSent = False
@@ -69,8 +71,12 @@ while True:
         if classes[classid] in danger_item:
             if not isSent: # Check if request is already sent.
                 print("DANGEROUS OBJECT DETECTED!")
-                r = requests.post(f'http://localhost:3000/auth/3/{True}')
-                isSent = True
+                try:
+                    r = requests.post(f'http://localhost:3000/auth/3/{True}')
+                    print(f"Object.py: {r.status_code}")
+                    isSent = True
+                except:
+                    pass
 
     # FPS Calculation & output
     fps = (1/(time() - loop_time))
