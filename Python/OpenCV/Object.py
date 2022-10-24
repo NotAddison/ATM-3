@@ -1,7 +1,6 @@
 from pickle import TRUE
 import cv2
 from time import time
-import numpy as np
 import requests
 
 print("\n"*100)
@@ -9,11 +8,12 @@ print("\n"*100)
 # --- ⚙ Settings ⚙ ---
 danger_item = ["scissors", "knife"]
 isSent = False
+isLight = False         # Toggle for YoloV4 Model type (light = smaller, less accurate | normal = bigger, more accurate)
 
 # --- ⚙ OpenCV Settings ⚙ ---
 threshold = 0.55        # Main threshold for obj detection [aka, sensitivity]
 toMirror = True         # Mirrors the projected frames (Use True if you're using a webcam & Left and right are mirrored)
-isLight = False         # Toggle for YoloV4 Model type (light = smaller, less accurate | normal = bigger, more accurate)
+
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 font_scale = 0.6
@@ -70,12 +70,13 @@ while True:
 
         if classes[classid] in danger_item:
             if not isSent: # Check if request is already sent.
-                print("DANGEROUS OBJECT DETECTED!")
+                print("[!] DANGEROUS OBJECT DETECTED!")
                 try:
                     r = requests.post(f'http://localhost:3000/auth/3/{True}')
                     print(f"Object.py: {r.status_code}")
                     isSent = True
                 except:
+                    print("Object.py: Failed to send request.")
                     pass
 
     # FPS Calculation & output
