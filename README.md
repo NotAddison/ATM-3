@@ -13,9 +13,9 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 > Possible security risks that ATMs faces
 1. PIN Thermal Imaging [❌ - #2]
 2. Shoulder Surfing [❌ - #2]
-3. Database Leaks [❌ - #5]
-4. Scams [❌ - #3 & #4]
-5. Card Skimming [❌ - #7]
+3. Database Leaks [❌ - #6]
+4. Scams [❌ - #4 & #5]
+5. Card Skimming [❌ - #8]
 6. ~~Network Attack~~ [❌ - Implemented alr (ATM Firewall)]
 7. ~~Lebanese Loop~~ [ Hard to Detect ]
 8. ~~Cash Trapping~~ [ Hard to Detect ]
