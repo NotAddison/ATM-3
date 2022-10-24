@@ -3,6 +3,8 @@ from cv2 import cuda
 import requests
 from time import time
 
+print("\n"*100)
+
 # --- ⚙ Load Models ⚙ ---
 from deepface import DeepFace
 
@@ -23,46 +25,47 @@ text_colour = (0,255,0)
 debug_Colour = (77, 40, 225)    # Colour of debugging text
 
 # --- ⚙ Main ⚙ ---
-faceCascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
-print(">> Loaded Haar Cascade Classifier... | " + str(faceCascade.empty()))
+cascadeDir = "C:\Python310\Lib\site-packages\cv2\data\haarcascade_frontalface_default.xml"
+faceCascade = cv2.CascadeClassifier(cascadeDir)
 
-video = cv2.VideoCapture(0)
-if not video.isOpened():
-    raise IOError("Cannot open webcam")
+# print(">> Loaded Haar Cascade Classifier... | " + str(faceCascade.empty()))
 
-loop_time = time() # Time Bookmark
+if not faceCascade.empty():
+    print(">> Loaded Haar Cascade Classifier... | " + str(faceCascade.empty()))
+    video = cv2.VideoCapture(0)
+    if not video.isOpened():
+        raise IOError("Cannot open webcam")
 
-while True:
-    ret, frame = video.read()
-    if toMirror:
-        frame = cv2.flip(frame, 1)
+    loop_time = time() # Time Bookmark
 
-    result = DeepFace.analyze(frame, actions = ['emotion'], enforce_detection=False)
-    print(result['dominant_emotion'])
+    while True:
+        ret, frame = video.read()
+        if toMirror:
+            frame = cv2.flip(frame, 1)
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = faceCascade.detectMultiScale(gray, 1.1, 4)
-    
-    # Bounding Boxes (Detected Faces)
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), bbox_color, thickness)
+        result = DeepFace.analyze(frame, actions = ['emotion'], enforce_detection=False)
+        print(result['dominant_emotion'])
+
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = faceCascade.detectMultiScale(gray, 1.1, 4)
         
-    cv2.putText(frame, f"Emotion: {result['dominant_emotion']}", (10, 30), font, font_scale, text_colour, thickness)
-    cv2.putText(frame, f"Confidence: {result['dominant_emotion']}", (10, 60), font, font_scale, text_colour, thickness)
+        # Bounding Boxes (Detected Faces)
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), bbox_color, thickness)
+            
+        cv2.putText(frame, f"Emotion: {result['dominant_emotion']}", (10, 30), font, font_scale, text_colour, thickness)
 
-    # FPS Calculation & output
-    fps = (1/(time() - loop_time))
-    loop_time = time()
-    cv2.putText(frame, f'FPS: {fps}', (20,100), font, font_scale, debug_Colour, 1, cv2.LINE_AA)  # Display FPS Count
+        # FPS Calculation & output
+        fps = (1/(time() - loop_time))
+        loop_time = time()
+        cv2.putText(frame, f'FPS: {fps}', (20,100), font, font_scale, debug_Colour, 1, cv2.LINE_AA)  # Display FPS Count
 
-    cv2.imshow("Emotion Detection", frame)
-    
-    # Exit on 'ESC' Key
-    if cv2.waitKey(1) == 27: 
-        break 
-video.release()
-cv2.destroyAllWindows()
-
-
-
-
+        cv2.imshow("Emotion Detection", frame)
+        
+        # Exit on 'ESC' Key
+        if cv2.waitKey(1) == 27: 
+            break 
+    video.release()
+    cv2.destroyAllWindows()
+else:
+    print(">> Error: Haar Cascade Classifier failed to load...")
