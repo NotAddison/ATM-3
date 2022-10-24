@@ -2,7 +2,12 @@
 Portfolio Development (2022) - **OCBC ATM 3.0**
 > Notion Link: https://not-addison.notion.site/PFD-Plan-b576caeb2021486b8e30266434d8c97d
 
-> APP/API Flow: -soon-
+<details>
+<summary><b>API Flow</b></summary>
+API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.md <br>
+<img src="Assets\README\APIFlow.jpg" width="800">
+<br><br>
+</details>
 
 ## Security Risks
 > Possible security risks that ATMs faces
@@ -21,20 +26,25 @@ Portfolio Development (2022) - **OCBC ATM 3.0**
    - Facial / Emotion Recognition
    - Hostile Object Recognition (E.g; Knife, Gun)
 2. **Digital Numberpad** - Addison
-3. **Outlier Analysis** (ML) - Paul
-4. **Extra Validations** - 
-   - Integrate w/ ML to detect outliers > Prompt/Notify users
-   - (esp for Senior Citizen) & Scams
-5. **Database Leak Checker** (HaveIBeenPwned API) - 
-6. **Message Alert** (Webhook) - 
-7. **NFC/EVC Chip Biometrics Embedding** - [ If have time ]
+   - Scrambled "numberpad" to prevent thermal imaging & shoulder surfing.
+3. **Covered Camera Check** - Addison
+4. **Outlier Analysis** (ML) - Paul
+   - Check for outlier when withdrawing cash.
+5. **Extra Validations** - Fredor
+   - Integrate w/ ML to detect outliers > Prompt/Notify users.
+   - (esp for Senior Citizen) & Scams.
+6. **Database Leak Checker** (HaveIBeenPwned API) - Jia Hau
+   - Check if user's data has been leaked, send a pop-up notification on the ATM **ONCE**.
+7. **Message Alert** (Webhook) - Haziq
+   - Integrate w/ Database Leak Checker & Authentications (OpenCV & Pin failure).
+8. **NFC/EVC Chip Biometrics Embedding** - [ If have time ]
 
 ## Misc
 > Naming Conventions, Git, References & Credits
 
 <details>
 <summary><b>Naming Conventions</b></summary>
-- <b>Commits</b> : Buff a unit by 1 Attack and 1 Defense (HP) <br>
+- <b>Commits</b> : https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/ <br>
 - <b>Functions</b> : PascalCase, Function names start with a capital letter. (E.g: ParseJson()) <br>
 - <b>Variables</b>: camelCase or Hungarian Notation. (E.g: isValid or **b**IsValid)<br>
 - <b>Constants</b>: All uppercase. (E.g: const int MAX_SIZE = 100;)<br>
@@ -43,12 +53,10 @@ Portfolio Development (2022) - **OCBC ATM 3.0**
 - <b>Script Files</b>: PascalCase or snake_case, File names start with a lowercase letter. (E.g: my_script.py or MyScript.py)<br>
 
 - **References**: 
-- > Commit: https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/
 - > Coding Practices: https://curc.readthedocs.io/en/latest/programming/coding-best-practices.html
 </details>
 
 <details>
 <summary><b>References / Credits</b></summary>
 - UX of digital randomized Numberpad : https://uxpajournal.org/usability-evaluation-of-randomized-keypad/<br>
-
 </details>
