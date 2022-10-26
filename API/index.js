@@ -139,7 +139,7 @@ app.get('/outlier/',(req, res) => {
 });
 
 // -------- [ Suspicious Accounts Account ] --------
-app.post('/sus/add/:sus',(req, res) => {
+app.post('/blacklist/add/:sus',(req, res) => {
     var { sus } = req.params;
     sus = parseInt(sus);
     aBlacklist.push(sus);
@@ -149,7 +149,7 @@ app.post('/sus/add/:sus',(req, res) => {
     });
 });
 
-app.post('/sus/remove/:sus',(req, res) => {
+app.post('/blacklist/remove/:sus',(req, res) => {
     var { sus } = req.params;
     sus = parseInt(sus);
     aBlacklist.pop(sus);
@@ -159,7 +159,7 @@ app.post('/sus/remove/:sus',(req, res) => {
     });  
 });
 
-app.get('/sus/',(req, res) => {
+app.get('/blacklist/',(req, res) => {
     res.status(200).send({
         status : "success",
         sus : aBlacklist
