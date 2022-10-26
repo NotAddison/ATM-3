@@ -23,3 +23,9 @@
    - Parameters (POST): {url}/outlier/{boolean}
    - Parameters (GET): {url}/outlier/
    - Description: Used for communication between Python & HTML Web ; Sets boolean value for "gIsOutlier".
+
+2. Account Blacklist:
+   - Method : POST / GET
+   - Parameters (POST): {url}/blacklist/add/{address} | {url}/blacklist/remove/{address}
+   - Parameters (GET): {url}/blacklist/
+   - Description: Used to get a list of the blacklisted account addresses.
