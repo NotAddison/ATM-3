@@ -32,6 +32,8 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 4. **Outlier Analysis** (ML) - Paul
    - Check for outlier when withdrawing cash.
    - If an account receives a large amount of money within a short period, mark account as "Suspicious".
+   - If an account withdraws a large amount of money within a short period, mark account as "Suspicious".
+   - If an account receives many transactions from multiple accounts within a short period, mark account as "Suspicious".
 5. **Extra Validations** - Fredor
    - Withdrawal : Fingerprint + Age Check (if elderly / large amount :: show warning prompt of scam possibility)
    - Transfer of Funds : Check if address of transfer is "Blacklisted" or "Suspicious"
