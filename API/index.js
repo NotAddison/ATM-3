@@ -9,10 +9,14 @@ var dPins = {
     891011 : "Jane Doe",
     121314 : "Addison"
 };
+
+var aBlacklist = []
+
 var gUser = "";
 var gPin = "";
 var gIsOutlier = false;
 var isHostage = false;
+
 
 // Middleware
 app.use(express.json());
@@ -131,5 +135,33 @@ app.get('/outlier/',(req, res) => {
     res.status(200).send({
         status : "success",
         IsOutlier : gIsOutlier
+    });
+});
+
+// -------- [ Suspicious Accounts Account ] --------
+app.post('/blacklist/add/:sus',(req, res) => {
+    var { sus } = req.params;
+    sus = parseInt(sus);
+    aBlacklist.push(sus);
+    res.status(200).send({
+        status : "success, added to suspicious account blacklist",
+        sus : aBlacklist
+    });
+});
+
+app.post('/blacklist/remove/:sus',(req, res) => {
+    var { sus } = req.params;
+    sus = parseInt(sus);
+    aBlacklist.pop(sus);
+    res.status(200).send({
+        status : `success, Removed [${sus}] from blacklist`,
+        sus : aBlacklist
+    });  
+});
+
+app.get('/blacklist/',(req, res) => {
+    res.status(200).send({
+        status : "success",
+        sus : aBlacklist
     });
 });

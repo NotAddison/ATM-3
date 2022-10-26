@@ -25,19 +25,31 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 1. **Computer Vision** (OpenCV) - Addison
    - Facial / Emotion Recognition
    - Hostile Object Recognition (E.g; Knife, Gun)
-2. **Digital Numberpad** - Addison
-   - Scrambled "numberpad" to prevent thermal imaging & shoulder surfing.
-3. **Covered Camera Check** - Addison
+2. **Covered Camera Check** - Addison
+   - Checks if camera of ATM is covered / broken.
+3. **Mobile App** - Addison
+   - To utilize Biometrics (fingerprint / face recognition)
 4. **Outlier Analysis** (ML) - Paul
    - Check for outlier when withdrawing cash.
+   - If an account receives a large amount of money within a short period, mark account as "Suspicious".
+   - If an account withdraws a large amount of money within a short period, mark account as "Suspicious".
+   - If an account receives many transactions from multiple accounts within a short period, mark account as "Suspicious".
 5. **Extra Validations** - Fredor
+   - Withdrawal : Fingerprint + Age Check (if elderly / large amount :: show warning prompt of scam possibility)
+   - Transfer of Funds : Check if address of transfer is "Blacklisted" or "Suspicious"
    - Integrate w/ ML to detect outliers > Prompt/Notify users.
    - (esp for Senior Citizen) & Scams.
 6. **Database Leak Checker** (HaveIBeenPwned API) - Jia Hau
    - Check if user's data has been leaked, send a pop-up notification on the ATM **ONCE**.
 7. **Message Alert** (Webhook) - Haziq
    - Integrate w/ Database Leak Checker & Authentications (OpenCV & Pin failure).
-8. **NFC/EVC Chip Biometrics Embedding** - [ If have time ]
+   - Send a message to the user's phone when the ATM detects a suspicious activity (ML - #4).
+   - Send alert when user is withdrawing a large amount of money (#5).
+   - Send alert if user is transferring money to a suspicious (blacklisted) account (#5).
+   - Send an alert if user is in a hostage situation (#1).
+8.  **NFC/EVC Chip Biometrics Embedding** - [ If have time ]
+9.  ~~**Digital Numberpad**~~ 
+    ~~- Scrambled "numberpad" to prevent thermal imaging & shoulder surfing.~~
 
 ## Misc
 > Naming Conventions, Git, References & Credits
