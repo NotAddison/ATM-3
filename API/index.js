@@ -5,9 +5,9 @@ const PORT  = process.env.PORT || 3000;
 
 // Variables (for testing, should use database)
 var dPins = {
-    123456 : "John Doe",
-    891011 : "Jane Doe",
-    121314 : "Addison"
+    123456 : ["John Doe","lol@gmail.com"],
+    891011 : ["Jane Doe","abc@gmail.com"],
+    121314 : ["Addison","monkey@gmail.com"]
 };
 
 var aBlacklist = []
@@ -40,7 +40,7 @@ app.post('/auth/1/:pin', (req, res) => {
     if (pin in dPins) {
         res.status(200).json({ 
             status : "success",
-            user : dPins[pin],
+            user : dPins[pin][0],
             valid : true
         });
         gPin = pin; // Set global pin variable
@@ -53,11 +53,23 @@ app.post('/auth/1/:pin', (req, res) => {
 });
 
 app.get('/auth/1/',(req, res) => {
-    res.status(200).send({
-        status : "success",
-        pin : gPin,
-        valid : (gPin in dPins)
-    });
+    if (gPin in dPins) {
+        res.status(200).send({
+            status : "success",
+            pin : gPin,
+            email: dPins[gPin][1],
+            valid : (gPin in dPins)
+        });
+    }
+    else{
+        res.status(400).send({
+            status : "success",
+            pin : gPin,
+            email: "unknown",
+            valid : (gPin in dPins)
+        });
+    }
+    
 });
 
 // -------- [ CV (Recognition) Authentication API (2) ] --------
