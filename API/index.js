@@ -10,8 +10,7 @@ var dPins = {
     121314 : ["Addison","monkey@gmail.com"]
 };
 
-var aBlacklist = []
-
+var aBlacklist = [];
 var gUser = "";
 var gPin = "";
 var gIsOutlier = false;
@@ -56,6 +55,7 @@ app.get('/auth/1/',(req, res) => {
     if (gPin in dPins) {
         res.status(200).send({
             status : "success",
+            name : dPins[gPin][0],
             pin : gPin,
             email: dPins[gPin][1],
             valid : (gPin in dPins)
@@ -64,6 +64,7 @@ app.get('/auth/1/',(req, res) => {
     else{
         res.status(400).send({
             status : "success",
+            name : "unknown",
             pin : gPin,
             email: "unknown",
             valid : (gPin in dPins)
