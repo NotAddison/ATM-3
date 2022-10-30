@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
+}
+
+// Functions:
+void SendAPI() async {
+  print("Send API");
+  var biohash =
+      "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"; // [TODO] Get from device
+
+  // Send POST Request
+  var url = 'http://localhost:3000/auth/2/:hash';
+  url = url.replaceAll(":hash", biohash);
+  print("URL:" + url);
+  final response = await http.post(Uri.parse(url));
+  print(response.body);
 }
 
 class MyApp extends StatelessWidget {
@@ -171,7 +186,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: MaterialButton(
                             onPressed: () {
                               debugPrint("Button pressed");
-                              // Send Fingerprint data to API
+                              // [TODO]: While true loop, wait for fingerprint : Send API
+                              SendAPI();
                             },
                             color: Color(0xff3388bd),
                             elevation: 0,
