@@ -47,8 +47,8 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
    - Send alert when user is withdrawing a large amount of money (#5).
    - Send alert if user is transferring money to a suspicious (blacklisted) account (#5).
    - Send an alert if user is in a hostage situation (#1).
-8.  **NFC/EVC Chip Biometrics**
-   - Read Card Number > Query backend > Get biometric "fingerprint"/hash > Compare with user's biometrics - Fredor
+8.  **NFC/EVC Chip Biometrics** - Fredor & Addison
+       - Read Card Number > Query backend > Get biometric "fingerprint"/hash > Compare with user's biometrics
 9.  ~~**Digital Numberpad**~~ 
     ~~- Scrambled "numberpad" to prevent thermal imaging & shoulder surfing.~~
 
