@@ -17,13 +17,19 @@ def GetName():
 # Send GENERIC Discord Webhook
 def SendHostageHook(test = True):
     embed = DiscordEmbed(title='⚠ HOSTAGE Situation Detected ⚠', description='Potential hostage situation!', color=242424)
-    # embed.set_footer(text='Hostage Taken')
     embed.set_timestamp()
     embed.add_embed_field(name='Name', value=GetName())
     if test:   
         embed.add_embed_field(name='IP', value=g.ip)
         embed.add_embed_field(name='Lat', value= f"{g.lat}")
         embed.add_embed_field(name='Long', value=f"{g.lng}")
+    else:
+        embed.add_embed_field(name='IP', value= "-NA-")
+        embed.add_embed_field(name='Lat', value= "-NA-")
+        embed.add_embed_field(name='Long', value= "-NA-")
+
     webhook.add_embed(embed)
     response = webhook.execute()
     print(f"isHostage Webhook: {response}")
+
+SendHostageHook(False)
