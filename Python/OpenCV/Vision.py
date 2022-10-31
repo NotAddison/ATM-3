@@ -100,8 +100,17 @@ def CoverCheck(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     lap = cv2.Laplacian(img, cv2.CV_16S)
     mean, stddev = cv2.meanStdDev(lap)
+
+    # Calibrate camera sharpness
+    global isCalibrated
+    if not isCalibrated:
+        global default_sharpness
+        default_sharpness = stddev[0,0]
+        isCalibrated = True
+        print(f">> Calibrated  : Sharpness = {default_sharpness}")
+
     # Check if camera is covered
-    if stddev[0,0] < 5: return True
+    if stddev[0,0] + 5 < default_sharpness: return True
     else: return False
 
 # --- ⚙ Main ⚙ ---
@@ -134,8 +143,9 @@ while True:
 
     cv2.putText(frame, f"HasWeapon: {hasWeapon}", (20, 50), font, font_scale, text_colour, thickness)
     cv2.putText(frame, f"isHostage: {(hasWeapon and hasNegativeEmotion) == True}", (20, 70), font, font_scale, text_colour, thickness)
-    cv2.putText(frame, f"isCovered: {isSentCovered}", (20, 90), font, font_scale, text_colour, thickness)
-    cv2.putText(frame, f"API Request Sent: {isSentCovered | isSentHostage}", (20, height-40), font, font_scale, text_colour, thickness)
+    cv2.putText(frame, f"isCovered: {isCovered}", (20, 90), font, font_scale, text_colour, thickness)
+    cv2.putText(frame, f"API (covered) Request Sent: {isSentCovered}", (20, height-60), font, font_scale, text_colour, thickness)
+    cv2.putText(frame, f"API (hostage) Request Sent: {isSentHostage}", (20, height-40), font, font_scale, text_colour, thickness)
     print(f"[Vision.py] >> HasWeapon: {hasWeapon} | NegativeEmotions: {hasNegativeEmotion} | isSentHostage: {isSentHostage} | isSentCovered: {isSentCovered}")
 
     # Display Output
@@ -164,9 +174,9 @@ while True:
             isSentCovered = True
             try:
                 r = requests.post(f'http://localhost:3000/covered/{True}')
-                print(f"Cover.py: {r.status_code}")
+                print(f"Vision.py: {r.status_code}")
             except:
-                print("Cover.py: Failed to send request.")
+                print("Vision.py: Failed to send request.")
                 pass
 
     # Exit on 'ESC' Key
