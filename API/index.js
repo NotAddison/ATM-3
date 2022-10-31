@@ -185,12 +185,6 @@ app.get('/blacklist/',(req, res) => {
 app.post('/covered/:bool', (req, res) => {
     var { bool } = req.params;
     bool = bool.toLocaleLowerCase() === 'true'
-    
-    if (!bool){
-        res.status(418).send({
-            user: "Boolean Value Missing!" 
-        });
-    }
     res.status(200).json({ 
         valid : bool
     });
