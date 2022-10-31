@@ -107,11 +107,21 @@ app.post('/auth/2/:hash',(req, res) => {
 });
 
 app.get('/auth/2/',(req, res) => {
-    res.status(200).send({
-        user : dBiometric[gHash][0],
-        email : dBiometric[gHash][1],
-        valid : true
-    });
+    if (gHash != ""){
+        res.status(200).send({
+            user : dBiometric[gHash][0],
+            email : dBiometric[gHash][1],
+            valid : true
+        });
+    }
+    else{
+        res.status(400).send({
+            user : "unknown",
+            email : "unknown",
+            valid : false
+        });
+    }
+    
 });
 
 // -------- [ CV (Object) Authentication API (2) ] --------

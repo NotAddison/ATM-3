@@ -1,7 +1,69 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
+import 'package:http/http.dart' as http;
+import 'package:local_auth/local_auth.dart';
+import 'package:pfd_ocbc/local_auth_api.dart';
+
+var hasFaceID;
+var hasTouchID;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // CHECK OPERATING SYSTEM
+  String os = Platform.operatingSystem; //in your code
+  print("Operating System: " + os);
+
+  print("TouchID: ${hasTouchID}");
   runApp(const MyApp());
+}
+
+// Functions:
+void SendAPI() async {
+  print("Send API");
+
+  // FOR DEMO : Hard coded value, Should get & read from device
+  var biohash = "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8";
+
+  // Send POST Request
+  var url = 'http://localhost:3000/auth/2/:hash';
+  if (Platform.isAndroid) {
+    url = 'http://10.0.2.2:3000/auth/2/:hash';
+  }
+  url = url.replaceAll(":hash", biohash);
+  print("URL:" + url);
+  final response = await http.post(Uri.parse(url));
+  print(response.body);
+}
+
+void FailedVerification() async {
+  print("Failed Verification");
+
+  // Send discord webhook
+  var url =
+      'https://discord.com/api/webhooks/1036102961996247150/3keTw9J2paixnUpe39wytQEzo0hKP3RnoYWu6TZbhpctne6BKHRMOIntAoEDtECSftZH';
+  final uri = Uri.parse(url);
+  final header = {'Content-Type': 'application/json'};
+  Map<String, dynamic> body = {
+    "embeds": [
+      {
+        "color": 1014235,
+        "title": "❌  Biometric Verification Failed",
+        "description": "Platform: ${Platform.operatingSystem}",
+        "timestamp": DateTime.now().toIso8601String()
+      }
+    ]
+  };
+  String jsonBody = jsonEncode(body);
+  final response = await http.post(
+    uri,
+    headers: header,
+    body: jsonBody,
+  );
+
+  print(">> Webhook: ${response.statusCode}");
 }
 
 class MyApp extends StatelessWidget {
@@ -13,15 +75,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -31,85 +84,229 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
+  void CheckBiometrics() async {
+    final x1 = await LocalAuthAPI.hasFace();
+    final x2 = await LocalAuthAPI.hasFingerprint();
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      hasFaceID = x1.toString();
+      hasTouchID = x2.toString();
+      print("HasTouch: ${hasTouchID}");
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      backgroundColor: Color(0xffffffff),
+      body: Padding(
+        padding: EdgeInsets.all(20),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              margin: EdgeInsets.all(0),
+              padding: EdgeInsets.all(0),
+              width: 200,
+              height: 250,
+              decoration: BoxDecoration(
+                color: Color(0xfff4f4f4),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: const [
+                        Text(
+                          "Biometric Data",
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.clip,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14,
+                            color: Color(0xff000000),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                    child: Text(
+                                      "Fingerprint:",
+                                      textAlign: TextAlign.start,
+                                      overflow: TextOverflow.clip,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 14,
+                                        color: Color(0xff000000),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    hasTouchID.toString(),
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.clip,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 14,
+                                      color: Color(0xff000000),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                    child: Text(
+                                      "FaceID:",
+                                      textAlign: TextAlign.start,
+                                      overflow: TextOverflow.clip,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 14,
+                                        color: Color(0xff000000),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    hasFaceID.toString(),
+                                    textAlign: TextAlign.start,
+                                    overflow: TextOverflow.clip,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 14,
+                                      color: Color(0xff000000),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: MaterialButton(
+                            onPressed: () async {
+                              debugPrint("Button pressed");
+                              final isAuthenicated =
+                                  await LocalAuthAPI.authenticate();
+                              if (isAuthenicated) {
+                                SendAPI();
+                              } else {
+                                FailedVerification();
+                              }
+                            },
+                            color: Color(0xff3388bd),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: EdgeInsets.all(16),
+                            textColor: Color(0xffffffff),
+                            height: 40,
+                            minWidth: 140,
+                            child: const Text(
+                              "Send Request ☁",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: MaterialButton(
+                            onPressed: () async {
+                              CheckBiometrics();
+                            },
+                            color: Color(0xff3388bd),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: EdgeInsets.all(16),
+                            textColor: Color(0xffffffff),
+                            height: 40,
+                            minWidth: 140,
+                            child: const Text(
+                              "Biometric Check",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
