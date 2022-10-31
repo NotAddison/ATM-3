@@ -32,7 +32,11 @@ emotion = ["worried", "nervous", "fearful", "fear"]
 isLight = False
 
 useGPU = True
-isSent = False
+isSentHostage = False
+isSentCovered = False
+isCovered = False
+isCalibrated = False
+default_sharpness = 0
 
 # --- ⚙ Load Models ⚙ ---
 # > Object Detection <
@@ -91,6 +95,14 @@ def EmotionRecognition(frame):
 
     return result['dominant_emotion'] in emotion
 
+def CoverCheck(img):
+    # Parse frame into grayscale
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    lap = cv2.Laplacian(img, cv2.CV_16S)
+    mean, stddev = cv2.meanStdDev(lap)
+    # Check if camera is covered
+    if stddev[0,0] < 5: return True
+    else: return False
 
 # --- ⚙ Main ⚙ ---
 # > Camera Setup [0 = Default Camera | 1 = External Camera | addr = Path to Video File]
@@ -108,6 +120,9 @@ while True:
     if not ret: break
     if toMirror: frame = cv2.flip(frame, 1)
 
+    # Check if camera is covered
+    isCovered = CoverCheck(frame)
+
     # Detections
     hasWeapon = ObjectDetection(frame)
     hasNegativeEmotion = EmotionRecognition(frame)
@@ -119,8 +134,9 @@ while True:
 
     cv2.putText(frame, f"HasWeapon: {hasWeapon}", (20, 50), font, font_scale, text_colour, thickness)
     cv2.putText(frame, f"isHostage: {(hasWeapon and hasNegativeEmotion) == True}", (20, 70), font, font_scale, text_colour, thickness)
-    cv2.putText(frame, f"API Request Sent: {isSent}", (20, height-60), font, font_scale, text_colour, thickness)
-    print(f"[Vision.py] >> HasWeapon: {hasWeapon} | NegativeEmotions: {hasNegativeEmotion} | isSent: {isSent}")
+    cv2.putText(frame, f"isCovered: {isSentCovered}", (20, 90), font, font_scale, text_colour, thickness)
+    cv2.putText(frame, f"API Request Sent: {isSentCovered | isSentHostage}", (20, height-40), font, font_scale, text_colour, thickness)
+    print(f"[Vision.py] >> HasWeapon: {hasWeapon} | NegativeEmotions: {hasNegativeEmotion} | isSentHostage: {isSentHostage} | isSentCovered: {isSentCovered}")
 
     # Display Output
     cv2.imshow("Object & Emotion Detection", frame)
@@ -129,14 +145,28 @@ while True:
     if hasWeapon and hasNegativeEmotion:
         print("[Alert!] >> Weapon and Negative Emotion Detected!")
         # Send Alert to Server
-        if not isSent: # Check if request is already sent.
+        if not isSentHostage: # Check if request is already sent.
             print("[!] DANGEROUS OBJECT DETECTED!")
-            isSent = True
+            isSentHostage = True
             try:
                 r = requests.post(f'http://localhost:3000/auth/3/{True}')
                 print(f"Object.py: {r.status_code}")
             except:
                 print("Object.py: Failed to send request.")
+                pass
+
+    # Check if user is covered
+    if isCovered:
+        print("[Alert!] >> User is covered!")
+        # Send Alert to Server
+        if not isSentCovered: # Check if request is already sent.
+            print("[!] User is covered!")
+            isSentCovered = True
+            try:
+                r = requests.post(f'http://localhost:3000/covered/{True}')
+                print(f"Cover.py: {r.status_code}")
+            except:
+                print("Cover.py: Failed to send request.")
                 pass
 
     # Exit on 'ESC' Key
