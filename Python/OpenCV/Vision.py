@@ -119,7 +119,7 @@ while True:
 
     cv2.putText(frame, f"HasWeapon: {hasWeapon}", (20, 50), font, font_scale, text_colour, thickness)
     cv2.putText(frame, f"isHostage: {(hasWeapon and hasNegativeEmotion) == True}", (20, 70), font, font_scale, text_colour, thickness)
-    cv2.putText(frame, f"API Request Sent: {isSent}", (20, height-40), font, font_scale, text_colour, thickness)
+    cv2.putText(frame, f"API Request Sent: {isSent}", (20, height-60), font, font_scale, text_colour, thickness)
     print(f"[Vision.py] >> HasWeapon: {hasWeapon} | NegativeEmotions: {hasNegativeEmotion} | isSent: {isSent}")
 
     # Display Output
