@@ -21,6 +21,7 @@ var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
 var isHostage = false;
+var isCovered = false;
 
 
 // Middleware
@@ -177,5 +178,21 @@ app.get('/blacklist/',(req, res) => {
     res.status(200).send({
         status : "success",
         sus : aBlacklist
+    });
+});
+
+// -------- [ Covered Camera ] --------
+app.post('/covered/:bool', (req, res) => {
+    var { bool } = req.params;
+    bool = bool.toLocaleLowerCase() === 'true'
+    res.status(200).json({ 
+        valid : bool
+    });
+    isCovered = bool; // Set global pin variable
+});
+
+app.get('/covered/',(req, res) => {
+    res.status(200).send({
+        valid : isCovered
     });
 });
