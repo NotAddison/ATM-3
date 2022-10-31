@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
@@ -34,6 +36,34 @@ void SendAPI() async {
   print("URL:" + url);
   final response = await http.post(Uri.parse(url));
   print(response.body);
+}
+
+void FailedVerification() async {
+  print("Failed Verification");
+
+  // Send discord webhook
+  var url =
+      'https://discord.com/api/webhooks/1036102961996247150/3keTw9J2paixnUpe39wytQEzo0hKP3RnoYWu6TZbhpctne6BKHRMOIntAoEDtECSftZH';
+  final uri = Uri.parse(url);
+  final header = {'Content-Type': 'application/json'};
+  Map<String, dynamic> body = {
+    "embeds": [
+      {
+        "color": 1014235,
+        "title": "❌  Biometric Verification Failed",
+        "description": "Platform: ${Platform.operatingSystem}",
+        "timestamp": DateTime.now().toIso8601String()
+      }
+    ]
+  };
+  String jsonBody = jsonEncode(body);
+  final response = await http.post(
+    uri,
+    headers: header,
+    body: jsonBody,
+  );
+
+  print(">> Webhook: ${response.statusCode}");
 }
 
 class MyApp extends StatelessWidget {
@@ -217,6 +247,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   await LocalAuthAPI.authenticate();
                               if (isAuthenicated) {
                                 SendAPI();
+                              } else {
+                                FailedVerification();
                               }
                             },
                             color: Color(0xff3388bd),
