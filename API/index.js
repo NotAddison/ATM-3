@@ -1,4 +1,5 @@
 const e = require('express');
+const cors = require('cors')
 const express = require('express');
 const app = express();
 const PORT  = process.env.PORT || 3000;
@@ -18,12 +19,17 @@ var aBlacklist = []
 
 var gUser = "";
 var gPin = "";
+var gHash = "";
 var gIsOutlier = false;
 var isHostage = false;
+var isCovered = false;
 
 
 // Middleware
 app.use(express.json());
+
+// CORS Policy  
+app.use(cors());
 
 // Functions
 function CheckValueExists(value) {
@@ -88,6 +94,7 @@ app.post('/auth/2/:hash',(req, res) => {
             email : dBiometric[hash][1],
             valid : true
         });
+        gHash = hash; // Set global hash variable
         gUser = dBiometric[hash][0]; // Set global user variable
     }
     else{
@@ -99,26 +106,12 @@ app.post('/auth/2/:hash',(req, res) => {
     }
 });
 
-app.get('/auth/2/:hash',(req, res) => {
-    var { hash } = req.params;
-    // Missing Params
-    if (!hash) return res.status(400).send({ status : "error", message : "Missing Params" });
-    // Check if user exists
-    if (hash in dBiometric) {
-        res.status(200).send({
-            user : dBiometric[hash][0],
-            email : dBiometric[hash][1],
-            valid : true
-        });
-        gUser = dBiometric[hash][0]; // Set global user variable
-    }
-    else{
-        res.status(400).send({
-            user : "unknown",
-            email : "unknown",
-            valid : false
-        });
-    }
+app.get('/auth/2/',(req, res) => {
+    res.status(200).send({
+        user : dBiometric[gHash][0],
+        email : dBiometric[gHash][1],
+        valid : true
+    });
 });
 
 // -------- [ CV (Object) Authentication API (2) ] --------
@@ -189,5 +182,21 @@ app.get('/blacklist/',(req, res) => {
     res.status(200).send({
         status : "success",
         sus : aBlacklist
+    });
+});
+
+// -------- [ Covered Camera ] --------
+app.post('/covered/:bool', (req, res) => {
+    var { bool } = req.params;
+    bool = bool.toLocaleLowerCase() === 'true'
+    res.status(200).json({ 
+        valid : bool
+    });
+    isCovered = bool; // Set global pin variable
+});
+
+app.get('/covered/',(req, res) => {
+    res.status(200).send({
+        valid : isCovered
     });
 });
