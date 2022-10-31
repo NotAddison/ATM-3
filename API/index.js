@@ -1,4 +1,5 @@
 const e = require('express');
+const cors = require('cors')
 const express = require('express');
 const app = express();
 const PORT  = process.env.PORT || 3000;
@@ -26,6 +27,9 @@ var isCovered = false;
 
 // Middleware
 app.use(express.json());
+
+// CORS Policy  
+app.use(cors());
 
 // Functions
 function CheckValueExists(value) {

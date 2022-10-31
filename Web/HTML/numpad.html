@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../CSS/default.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../JS/numpad.js" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+    <script src="../JS/vision.js" async defer></script>
 </head>
 <body>
     <div class="flex flex-wrap min-h-screen w-full content-center justify-center bg-white py-10 rounded-lg">
@@ -17,7 +19,7 @@
           <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md" style="width: 28rem; height: 32rem;">
             <div class="w-80">
             <!-- Header Text -->
-            <input type="text" id="result" class="block m-auto bg-gray-200 text-black text-5xl text-center w-40" readonly>
+            <input type="text" id="result" class="block m-auto bg-gray-200 text-black text-5xl text-center w-48" readonly>
             <hr class="border-t-4 border-black mt-2">
             <!-- 1st Row of Elements -->
             <div class="grid grid-cols-4 gap-x-2">
