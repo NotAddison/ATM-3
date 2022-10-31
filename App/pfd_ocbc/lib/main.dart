@@ -1,22 +1,48 @@
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
+import 'package:local_auth/local_auth.dart';
+import 'package:pfd_ocbc/local_auth_api.dart';
+
+var hasFaceID;
+var hasTouchID;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // CHECK OPERATING SYSTEM
+  String os = Platform.operatingSystem; //in your code
+  print("Operating System: " + os);
+
+  // CHECK FOR BIOMETRICS
+  CheckBiometrics();
+
+  print("TouchID: ${hasTouchID}");
+
   runApp(const MyApp());
 }
 
 // Functions:
 void SendAPI() async {
   print("Send API");
-  var biohash =
-      "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"; // [TODO] Get from device
+
+  // FOR DEMO : Hard coded value, Should get & read from device
+  var biohash = "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8";
 
   // Send POST Request
   var url = 'http://localhost:3000/auth/2/:hash';
+  if (Platform.isAndroid) {
+    url = 'http://10.0.2.2:3000/auth/2/:hash';
+  }
   url = url.replaceAll(":hash", biohash);
   print("URL:" + url);
   final response = await http.post(Uri.parse(url));
   print(response.body);
+}
+
+void CheckBiometrics() async {
+  hasFaceID = await LocalAuthAPI.hasFace();
+  hasTouchID = await LocalAuthAPI.hasFingerprint();
 }
 
 class MyApp extends StatelessWidget {
@@ -108,8 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.max,
-                                children: const [
-                                  Padding(
+                                children: [
+                                  const Padding(
                                     padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                                     child: Text(
                                       "Fingerprint:",
@@ -124,10 +150,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                   Text(
-                                    "Text",
+                                    hasTouchID.toString(),
                                     textAlign: TextAlign.start,
                                     overflow: TextOverflow.clip,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontStyle: FontStyle.normal,
                                       fontSize: 14,
@@ -140,8 +166,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.max,
-                                children: const [
-                                  Padding(
+                                children: [
+                                  const Padding(
                                     padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                                     child: Text(
                                       "FaceID:",
@@ -156,10 +182,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                   Text(
-                                    "Text",
+                                    hasFaceID.toString(),
                                     textAlign: TextAlign.start,
                                     overflow: TextOverflow.clip,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontStyle: FontStyle.normal,
                                       fontSize: 14,
@@ -184,10 +210,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Padding(
                           padding: EdgeInsets.all(10),
                           child: MaterialButton(
-                            onPressed: () {
+                            onPressed: () async {
                               debugPrint("Button pressed");
-                              // [TODO]: While true loop, wait for fingerprint : Send API
-                              SendAPI();
+                              final isAuthenicated =
+                                  await LocalAuthAPI.authenticate();
+                              if (isAuthenicated) {
+                                SendAPI();
+                              }
                             },
                             color: Color(0xff3388bd),
                             elevation: 0,
