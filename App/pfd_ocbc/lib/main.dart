@@ -14,11 +14,7 @@ void main() {
   String os = Platform.operatingSystem; //in your code
   print("Operating System: " + os);
 
-  // CHECK FOR BIOMETRICS
-  CheckBiometrics();
-
   print("TouchID: ${hasTouchID}");
-
   runApp(const MyApp());
 }
 
@@ -38,11 +34,6 @@ void SendAPI() async {
   print("URL:" + url);
   final response = await http.post(Uri.parse(url));
   print(response.body);
-}
-
-void CheckBiometrics() async {
-  hasFaceID = await LocalAuthAPI.hasFace();
-  hasTouchID = await LocalAuthAPI.hasFingerprint();
 }
 
 class MyApp extends StatelessWidget {
@@ -69,6 +60,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void CheckBiometrics() async {
+    final x1 = await LocalAuthAPI.hasFace();
+    final x2 = await LocalAuthAPI.hasFingerprint();
+    setState(() {
+      hasFaceID = x1.toString();
+      hasTouchID = x2.toString();
+      print("HasTouch: ${hasTouchID}");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -238,6 +239,34 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: MaterialButton(
+                            onPressed: () async {
+                              CheckBiometrics();
+                            },
+                            color: Color(0xff3388bd),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: EdgeInsets.all(16),
+                            textColor: Color(0xffffffff),
+                            height: 40,
+                            minWidth: 140,
+                            child: const Text(
+                              "Biometric Check",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ],
