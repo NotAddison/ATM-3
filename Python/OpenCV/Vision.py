@@ -144,7 +144,7 @@ while True:
     cv2.putText(frame, f"HasWeapon: {hasWeapon}", (20, 50), font, font_scale, text_colour, thickness)
     cv2.putText(frame, f"isHostage: {(hasWeapon and hasNegativeEmotion) == True}", (20, 70), font, font_scale, text_colour, thickness)
     cv2.putText(frame, f"isCovered: {isCovered}", (20, 90), font, font_scale, text_colour, thickness)
-    cv2.putText(frame, f"API (covered) Request Sent: {isSentCovered}", (20, height-60), font, font_scale, text_colour, thickness)
+    # cv2.putText(frame, f"API (covered) Request Sent: {isSentCovered}", (20, height-60), font, font_scale, text_colour, thickness)
     cv2.putText(frame, f"API (hostage) Request Sent: {isSentHostage}", (20, height-40), font, font_scale, text_colour, thickness)
     print(f"[Vision.py] >> HasWeapon: {hasWeapon} | NegativeEmotions: {hasNegativeEmotion} | isSentHostage: {isSentHostage} | isSentCovered: {isSentCovered}")
 
@@ -171,7 +171,7 @@ while True:
         # Send Alert to Server
         if not isSentCovered: # Check if request is already sent.
             print("[!] User is covered!")
-            isSentCovered = True
+            # isSentCovered = True [NOTE: Constantly updates server with covered status]
             try:
                 r = requests.post(f'http://localhost:3000/covered/{True}')
                 print(f"Vision.py: {r.status_code}")
