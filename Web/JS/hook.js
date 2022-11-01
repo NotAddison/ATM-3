@@ -1,4 +1,4 @@
-function SendHook(title, message){
+async function SendHook(title, message){
     var url = "https://discord.com/api/webhooks/1036102961996247150/3keTw9J2paixnUpe39wytQEzo0hKP3RnoYWu6TZbhpctne6BKHRMOIntAoEDtECSftZH";
     const request = new XMLHttpRequest();
     request.open("POST", url);
