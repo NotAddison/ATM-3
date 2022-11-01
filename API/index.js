@@ -15,8 +15,7 @@ var dBiometric = {
     "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" : dPins[123456]
 }
 
-var aBlacklist = []
-
+var aBlacklist = [];
 var gUser = "";
 var gPin = "";
 var gHash = "";
@@ -51,6 +50,7 @@ app.post('/auth/1/:pin', (req, res) => {
         res.status(200).json({ 
             status : "success",
             user : dPins[pin][0],
+            email: dPins[pin][1],
             valid : true
         });
         gPin = pin; // Set global pin variable
@@ -58,6 +58,7 @@ app.post('/auth/1/:pin', (req, res) => {
     else res.status(400).json({ 
         status : "success",
         user : "unknown",
+        email: "unknown",
         valid : false 
     });
 });
@@ -66,6 +67,7 @@ app.get('/auth/1/',(req, res) => {
     if (gPin in dPins) {
         res.status(200).send({
             status : "success",
+            name : dPins[gPin][0],
             pin : gPin,
             email: dPins[gPin][1],
             valid : (gPin in dPins)
@@ -74,6 +76,7 @@ app.get('/auth/1/',(req, res) => {
     else{
         res.status(400).send({
             status : "success",
+            name : "unknown",
             pin : gPin,
             email: "unknown",
             valid : (gPin in dPins)

@@ -11,6 +11,11 @@ from time import time
 import os
 from deepface import DeepFace
 
+# Import Webhook Python File
+import sys
+sys.path.insert(1, "Python\Webhook")
+import Hook as Webhook
+
 # --- ⚙ OpenCV Settings ⚙ ---
 threshold = 0.55        # Main threshold for obj detection [aka, sensitivity]
 toMirror = True         # Mirrors the projected frames (Use True if you're using a webcam & Left and right are mirrored)
@@ -159,8 +164,9 @@ while True:
             print("[!] DANGEROUS OBJECT DETECTED!")
             isSentHostage = True
             try:
-                r = requests.post(f'http://localhost:3000/auth/3/{True}')
+                r = requests.post(f'http://localhost:3000/auth/3/{True}')   # Send Status to API
                 print(f"Object.py: {r.status_code}")
+                Webhook.SendHostageHook()   # Send Status to Webhook
             except:
                 print("Object.py: Failed to send request.")
                 pass
