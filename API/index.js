@@ -50,6 +50,7 @@ app.post('/auth/1/:pin', (req, res) => {
         res.status(200).json({ 
             status : "success",
             user : dPins[pin][0],
+            email: dPins[gPin][1],
             valid : true
         });
         gPin = pin; // Set global pin variable
@@ -57,6 +58,7 @@ app.post('/auth/1/:pin', (req, res) => {
     else res.status(400).json({ 
         status : "success",
         user : "unknown",
+        email: "unknown",
         valid : false 
     });
 });
