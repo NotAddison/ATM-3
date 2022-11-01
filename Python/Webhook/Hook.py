@@ -32,4 +32,4 @@ def SendHostageHook(test = True):
     response = webhook.execute()
     print(f"isHostage Webhook: {response}")
 
-SendHostageHook(False)
+# SendHostageHook(False)
