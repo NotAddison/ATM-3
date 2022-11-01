@@ -38,7 +38,7 @@ function ValidatePin(){
             }
             else{
                 SendHook("[❌] Pin Authentication Failed", `Pin: ${pin}`)
-                Alert("Invalid Pin!")
+                alert("Invalid Pin!")
                 ClearPin()
             }
         })
