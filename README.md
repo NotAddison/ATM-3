@@ -78,4 +78,5 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 <details>
 <summary><b>References / Credits</b></summary>
 - UX of digital randomized Numberpad : https://uxpajournal.org/usability-evaluation-of-randomized-keypad/<br>
+- HaveIBeenPwned API: https://haveibeenpwned.com/API/v3 <br>
 </details>
