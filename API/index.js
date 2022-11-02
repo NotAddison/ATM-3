@@ -6,9 +6,9 @@ const PORT  = process.env.PORT || 3000;
 
 // Variables (for testing, should use database)
 var dPins = {
-    123456 : ["John Doe","lol@gmail.com"],
-    891011 : ["Jane Doe","abc@gmail.com"],
-    121314 : ["Addison","monkey@gmail.com"]
+    123456 : ["John Doe","lol@gmail.com",'80'],
+    891011 : ["Jane Doe","abc@gmail.com",'50'],
+    121314 : ["Addison","monkey@gmail.com",'18']
 };
 
 var dBiometric = {
@@ -51,6 +51,7 @@ app.post('/auth/1/:pin', (req, res) => {
             status : "success",
             user : dPins[pin][0],
             email: dPins[pin][1],
+            age: dPins[pin][2],
             valid : true
         });
         gPin = pin; // Set global pin variable
@@ -59,6 +60,7 @@ app.post('/auth/1/:pin', (req, res) => {
         status : "success",
         user : "unknown",
         email: "unknown",
+        age: 'unknown',
         valid : false 
     });
 });
@@ -70,6 +72,7 @@ app.get('/auth/1/',(req, res) => {
             name : dPins[gPin][0],
             pin : gPin,
             email: dPins[gPin][1],
+            age: dPins[pin][2],
             valid : (gPin in dPins)
         });
     }
