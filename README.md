@@ -29,7 +29,7 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
    - Checks if camera of ATM is covered / broken.
 3. **Mobile App** - Addison
    - To utilize Biometrics (fingerprint / face recognition)
-4. **Outlier Analysis** (ML) - Paul
+4. **Outlier Analysis** (ML) - Paul & Haziq
    - Check for outlier when withdrawing cash.
    - If an account receives a large amount of money within a short period, mark account as "Suspicious".
    - If an account withdraws a large amount of money within a short period, mark account as "Suspicious".
@@ -41,7 +41,7 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
    - (esp for Senior Citizen) & Scams.
 6. **Database Leak Checker** (HaveIBeenPwned API) - Jia Hau
    - Check if user's data has been leaked, send a pop-up notification on the ATM **ONCE**.
-7. **Message Alert** (Webhook) - Haziq
+7. **Message Alert** (Webhook) - Addison
    - Integrate w/ Database Leak Checker & Authentications (OpenCV & Pin failure).
    - Send a message to the user's phone when the ATM detects a suspicious activity (ML - #4).
    - Send alert when user is withdrawing a large amount of money (#5).
