@@ -72,7 +72,7 @@ app.get('/auth/1/',(req, res) => {
             name : dPins[gPin][0],
             pin : gPin,
             email: dPins[gPin][1],
-            age: dPins[pin][2],
+            age: dPins[gPin][2],
             valid : (gPin in dPins)
         });
     }
