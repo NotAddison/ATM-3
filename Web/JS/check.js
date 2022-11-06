@@ -15,13 +15,6 @@ hibp_link = 'https://haveibeenpwned.com/api/v3/breachedaccount/'+ encoded_email
 
 isBreached = "None"
 
-var req = new XMLHttpRequest()
-req.open('GET',hibp_link, true)
-req.setRequestHeader('hibp-api-key',cc9cbc26678d4e959e80f4ab36bc7dff)
-req.onload = function(){
-    breached_site = this.response["Name"]
-}
-
 function CheckBreached () { 
     const options = {method: 'GET', headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}};
     fetch(hibp_link,{
