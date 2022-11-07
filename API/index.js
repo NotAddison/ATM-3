@@ -22,6 +22,7 @@ var gHash = "";
 var gIsOutlier = false;
 var isHostage = false;
 var isCovered = false;
+var isRequestingBio = false;
 
 
 // Middleware
@@ -109,6 +110,9 @@ app.post('/auth/2/:hash',(req, res) => {
             email : "unknown",
             valid : false
         });
+
+        gHash = ""; // Set global hash variable
+        gUser = ""; // Set global user variable
     }
 });
 
@@ -126,8 +130,25 @@ app.get('/auth/2/',(req, res) => {
             email : "unknown",
             valid : false
         });
-    }
-    
+    } 
+});
+
+// Biometric Request
+// FLOW : WEB (POST) > API > APP (GET) > APP (POST)> API > WEB (GET [Listen : if false then true then false = user failed])
+app.get('/auth/2/request/',(req, res) => {
+    // Request Biometrics from APP (Listen to boolean, if true > Send request biometric popup in flutter app)
+    res.status(200).send({
+        request: isRequestingBio
+    });
+});
+
+app.post('/auth/2/request/:bool',(req, res) => {
+    // Request Biometrics from APP
+    var { bool } = req.params;
+    isRequestingBio = bool.toLocaleLowerCase() === 'true'
+    res.status(200).send({
+        request: isRequestingBio
+    });
 });
 
 // -------- [ CV (Object) Authentication API (2) ] --------
