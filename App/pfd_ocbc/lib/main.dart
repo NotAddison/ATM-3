@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 import 'package:local_auth/local_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+// Local Dart Files
 import 'package:pfd_ocbc/local_auth_api.dart';
 import 'package:pfd_ocbc/functions.dart';
 
@@ -46,214 +49,152 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void CheckBiometrics() async {
-    final x1 = await LocalAuthAPI.hasFace();
-    final x2 = await LocalAuthAPI.hasFingerprint();
-    setState(() {
-      hasFaceID = x1.toString();
-      hasTouchID = x2.toString();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffffffff),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              margin: const EdgeInsets.all(0),
-              padding: const EdgeInsets.all(0),
-              width: 200,
-              height: 250,
-              decoration: BoxDecoration(
-                color: const Color(0xfff4f4f4),
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: const [
-                        Text(
-                          "Biometric Data",
-                          textAlign: TextAlign.start,
-                          overflow: TextOverflow.clip,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 14,
-                            color: Color(0xff000000),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                                    child: Text(
-                                      "Fingerprint:",
-                                      textAlign: TextAlign.start,
-                                      overflow: TextOverflow.clip,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 14,
-                                        color: Color(0xff000000),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    hasTouchID.toString(),
-                                    textAlign: TextAlign.start,
-                                    overflow: TextOverflow.clip,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 14,
-                                      color: Color(0xff000000),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                                    child: Text(
-                                      "FaceID:",
-                                      textAlign: TextAlign.start,
-                                      overflow: TextOverflow.clip,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 14,
-                                        color: Color(0xff000000),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    hasFaceID.toString(),
-                                    textAlign: TextAlign.start,
-                                    overflow: TextOverflow.clip,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 14,
-                                      color: Color(0xff000000),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Row(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+              flex: 1,
+              child: OverflowBox(
+                  maxHeight: double.infinity,
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: MaterialButton(
-                            onPressed: () async {
-                              debugPrint("Button pressed");
-                            },
-                            color: Color(0xff3388bd),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            padding: EdgeInsets.all(16),
-                            textColor: Color(0xffffffff),
-                            height: 40,
-                            minWidth: 140,
-                            child: const Text(
-                              "Send Request ☁",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                              ),
-                            ),
-                          ),
-                        ),
+                      Image(
+                        image: const NetworkImage(
+                            "https://images.squarespace-cdn.com/content/v1/5e421c8ee6a94d090daaed70/a21e1832-02f5-427d-9e09-a7051be1189a/Hong+Kong_Final+for+Animating_18May_New+Logob-01.jpg"),
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: MaterialButton(
-                            onPressed: () async {
-                              CheckBiometrics();
+                    ],
+                  ))),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Card(
+                margin: const EdgeInsets.fromLTRB(4, 10, 4, 30),
+                color: Color.fromARGB(252, 245, 245, 245),
+                shadowColor: Color(0xff000000),
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      child: Image(
+                        image: NetworkImage(
+                            "https://img.icons8.com/windows/512/000000/user.png"),
+                        height: 100,
+                        width: 120,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const Text(
+                      "OCBC",
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.clip,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20,
+                        color: Color(0xffde3a3a),
+                      ),
+                    ),
+                    const Text(
+                      "Dev Build - ATM 3.0",
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.clip,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 13,
+                        color: Color(0xffb4b4b4),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          MaterialButton(
+                            onPressed: () {
+                              ValidateBio();
                             },
-                            color: Color(0xff3388bd),
+                            color: Color(0xff1f1f1f),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(5.0),
                             ),
                             padding: EdgeInsets.all(16),
                             textColor: Color(0xffffffff),
-                            height: 40,
-                            minWidth: 140,
+                            height: 50,
+                            minWidth: MediaQuery.of(context).size.width * 0.45,
                             child: const Text(
-                              "Biometric Check",
+                              "Login",
                               style: TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 fontStyle: FontStyle.normal,
                               ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                          MaterialButton(
+                            onPressed: () {
+                              Fluttertoast.showToast(
+                                  msg: "404 - Singpass Unavailable",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor:
+                                      Color.fromARGB(255, 240, 80, 69),
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            },
+                            color: Color(0xffd13d3d),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            padding: EdgeInsets.all(16),
+                            textColor: Color(0xffffffff),
+                            height: 50,
+                            minWidth: MediaQuery.of(context).size.width * 0.45,
+                            child: const Text(
+                              "Singpass 🔐",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }
