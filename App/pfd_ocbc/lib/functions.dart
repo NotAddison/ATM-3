@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:local_auth/local_auth.dart';
 import 'package:pfd_ocbc/local_auth_api.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // Send API Request (Auth Success)
 // ignore: non_constant_identifier_names
@@ -76,13 +77,9 @@ Future<void> ListenRequest() async {
     if (res["request"] == true) {
       debugPrint("Request: ${res["request"]}");
 
-      final isAuthenicated = await LocalAuthAPI.authenticate();
-      if (isAuthenicated) {
-        // Send Biometrics to API
-        SendAPI();
-      } else {
-        FailedVerification();
-      }
+      // Validate Biometrics
+      ValidateBio();
+
       // Reset Request
       ResetRequest();
     }
@@ -102,4 +99,14 @@ void ResetRequest() async {
   final response = await http.post(Uri.parse(url));
   var res = jsonDecode(response.body);
   debugPrint(">> RESET BIOMETRIC REQUEST STATUS! ${res["request"]}");
+}
+
+void ValidateBio() async {
+  final isAuthenicated = await LocalAuthAPI.authenticate();
+  if (isAuthenicated) {
+    // Send Biometrics to API
+    SendAPI();
+  } else {
+    FailedVerification();
+  }
 }
