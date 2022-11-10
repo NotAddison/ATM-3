@@ -15,7 +15,7 @@ $('#pin').submit(function(e){
     ValidatePin();
 });
 
-function ValidatePin(){
+async function ValidatePin(){
     console.log("Validating pin...")
     const options = {method: 'POST', headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}};
 
@@ -25,16 +25,14 @@ function ValidatePin(){
         // Send pin to server
         fetch(`http://localhost:3000/auth/1/${pin}`,options)
         .then(response => response.json())
-        .then(data => {
+        .then(async data => {
             console.log(data)
             if (data.valid){
-                SendHook("[🔓] Pin Authenticated", `Pin: ${pin} \nUser: ${data.user} \nEmail: ${data.email}`)
-                
+                SendHook("[🔓] Pin Authenticated", `Pin: ${pin} \nUser: ${data.user} \nEmail: ${data.email}`)  
                 // [DELAY : 2 Seconds] :: Wait for webhook to send before redirect.
                 window.setTimeout(function(){
                     window.location.href = "navigation.html";
-                }, 1000);
-                
+                }, 2000);              
             }
             else{
                 SendHook("[❌] Pin Authentication Failed", `Pin: ${pin}`)
