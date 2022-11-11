@@ -1,32 +1,30 @@
-var req = new XMLHttpRequest()
-req.open('POST', 'http://localhost:3000/auth/1/123456', true)
-req.send()
+isBreached = false
 
-var req = new XMLHttpRequest()
-req.open('GET', 'http://localhost:3000/auth/1/', true)
-req.onload = function(){
-    email = this.response["email"]
-}
-req.send()
+const options = {method: 'GET', headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}}
+fetch("http://localhost:3000/auth/1/", options)
+.then(response => response.json())
+.then(response => {
+    console.log(response)
+    console.log("Email: " + response["email"])
+    encoded_email = encodeURIComponent(response["email"])
+    CheckBreached(encoded_email, isBreached)
+})
 
-encoded_email = encodeURIComponent(email)
 
-hibp_link = 'https://haveibeenpwned.com/api/v3/breachedaccount/'+ encoded_email
 
-isBreached = "None"
+CheckBreached(encodeURIComponent("lol@gmail.com"), isBreached)
 
-function CheckBreached () { 
-    const options = {method: 'GET', headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}};
-    fetch(hibp_link,{
-        method: 'GET',
-        headers:{
-            'hibp-api-key': 'cc9cbc26678d4e959e80f4ab36bc7dff',
-        },
-    })
+
+function CheckBreached (email, isBreached) { 
+    hibp_link = 'https://haveibeenpwned.com/api/v3/breachedaccount/'+ encoded_email
+    api_key = "cc9cbc26678d4e959e80f4ab36bc7dff"
+    const options = {method: 'GET', headers: {'hibp-api-key': api_key , 'Accept': 'application/json', 'mode': 'no-cors'}}
+
+    fetch(hibp_link, options)
         .then(response => response.json())
         .then(response => {
             isBreached = response["Name"];
-            if (isBreached != "None") {
+            if (isBreached != false) {
                 // Show POPUP Message to user : Inform them their email been breached
                 $("body").prepend(`
                     <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute" id="CameraPopup">
@@ -65,7 +63,5 @@ function CheckBreached () {
 
 function DismissBreach(){
     // CALL THIS FUNCTION WHEN BUTTON IS PRESSED!
-    // Once message is dismissed, change isBreached back to "None"
     $("#CameraPopup").remove();
-    isbreached = "None"
 }
