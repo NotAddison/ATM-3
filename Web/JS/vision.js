@@ -7,7 +7,7 @@ function CheckVision () {
         .then(response => response.json())
         .then(response => {
             isCovered = response["valid"];
-            console.log(`>> isCovered: ${isCovered}`);
+            // console.log(`>> isCovered: ${isCovered}`);
             if (isCovered) {
                 if (!isShown) {
                     SendHook("[⚠ 📷] Camera Blocked/Broken", "Camera is blocked by a physical object.")
