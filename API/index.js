@@ -1,6 +1,9 @@
-const e = require('express');
-const cors = require('cors')
 const express = require('express');
+const cors = require('cors');
+
+const {PythonShell} = require('python-shell');  // Python Shell
+const request = require('request'); // HTTPS Requests
+
 const app = express();
 const PORT  = process.env.PORT || 3000;
 
@@ -23,6 +26,7 @@ var gIsOutlier = false;
 var isHostage = false;
 var isCovered = false;
 var isRequestingBio = false;
+var isPwned = false;
 
 
 // Middleware
@@ -30,18 +34,36 @@ app.use(express.json());
 
 // CORS Policy  
 app.use(cors());
-
-// Functions
-function CheckValueExists(value) {
-    for (var key in dPins) if (dPins[key] == value) return true;
-    return false;
-}
-
+ 
 // Routes
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`>> http://localhost:${PORT}`);
 });
+
+//Python Shell Triggers (TEST)
+app.get("/", (req, res, next)=>{
+    PythonShell.run('PwndRequest.py', {mode:'text', pythonOptions: ['-u'], scriptPath: './Python/HaveIBeenPwned',}, function (err, result){
+        if (err) throw err;
+        isPwned = result[0] == "True";
+        res.send(isPwned);
+    });
+});
+
+
+// -------- [ Reset variables ] --------
+app.get("/reset", (req, res, next)=>{
+    gUser = "";
+    gPin = "";
+    gHash = "";
+    gIsOutlier = false;
+    isHostage = false;
+    isCovered = false;
+    isRequestingBio = false;
+    res.send("Reset Variables");
+    console.log(">> Reset Variables");
+});
+
 
 // -------- [ Pin Authentication (1) ] --------
 app.post('/auth/1/:pin', (req, res) => {
@@ -235,5 +257,35 @@ app.post('/covered/:bool', (req, res) => {
 app.get('/covered/',(req, res) => {
     res.status(200).send({
         valid : isCovered
+    });
+});
+
+// -------- [ HaveIBeenPwned API Request ] --------
+app.get('/pwned/:email', (req, res) => {
+    var { email } = req.params;
+    if (!email) return res.status(400).send({ status : "error", message : "Missing Params" });
+    if (gPin in dPins && email == ""){ email = dPins[gPin][1]; }
+
+    var url = `https://haveibeenpwned.com/api/v3/breachedaccount/${email}`;
+    var headers = { "hibp-api-key":"cc9cbc26678d4e959e80f4ab36bc7dff", "user-agent":"nodejs" };
+    // Send API get with api key
+    request.get(url, {headers: headers}, (error, response, body) => {
+        if (error) { return console.dir(error);}
+        if (response.statusCode === 200){
+            res.status(200).send({
+                email : email,
+                isBreached : JSON.parse(body).length > 0,
+                breaches : JSON.parse(body)
+            });
+            isPwned = true;
+        }
+        else{
+            res.status(400).send({
+                email : email,
+                isBreached : false,
+                breaches : []
+            });
+            isPwned = false;
+        }
     });
 });
