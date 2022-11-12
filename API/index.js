@@ -1,14 +1,37 @@
-const e = require('express');
-const cors = require('cors')
 const express = require('express');
+const cors = require('cors');
+
+const {PythonShell} = require('python-shell');  // Python Shell
+const request = require('request'); // HTTPS Requests
+
 const app = express();
 const PORT  = process.env.PORT || 3000;
 
 // Variables (for testing, should use database)
 var dPins = {
-    123456 : ["John Doe","lol@gmail.com",'80'],
-    891011 : ["Jane Doe","abc@gmail.com",'50'],
-    121314 : ["Addison","monkey@gmail.com",'18']
+    123456 : {
+        "name" : "John Doe",
+        "accountNo" : "501123456789",
+        "email" : "lol@gmail.com",
+        "age" : 80,
+        "isPwnedDismissed": false
+    },
+
+    891011 : {
+        "name" : "Jane Doe",
+        "accountNo" : "501891011121",
+        "email" : "JaneLikesPaul@gmail.com",
+        "age" : 20,
+        "isPwnedDismissed": false
+    },
+
+    121314 : {
+        "name" : "Addison Chua",
+        "accountNo" : "501121314151",
+        "email" : "addisonchua@rocketmail.com",
+        "age": 18,
+        "isPwnedDismissed": false
+    }
 };
 
 var dBiometric = {
@@ -30,18 +53,58 @@ app.use(express.json());
 
 // CORS Policy  
 app.use(cors());
-
-// Functions
-function CheckValueExists(value) {
-    for (var key in dPins) if (dPins[key] == value) return true;
-    return false;
-}
-
+ 
 // Routes
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`>> http://localhost:${PORT}`);
 });
+
+//Python Shell Triggers (TEST)
+app.get("/", (req, res, next)=>{
+    PythonShell.run('PwndRequest.py', {mode:'text', pythonOptions: ['-u'], scriptPath: './Python/HaveIBeenPwned',}, function (err, result){
+        if (err) throw err;
+        isPwned = result[0] == "True";
+        res.send(isPwned);
+    });
+});
+
+// -------- [ GET variables ] --------
+app.get("/variables", (req, res, next)=>{
+    res.status(200).json({
+        'gUser': gUser,
+        'gPin': gPin,
+        'gHash': gHash,
+        'gIsOutlier': gIsOutlier,
+        'isHostage': isHostage,
+        'isCovered': isCovered,
+        'isRequestingBio': isRequestingBio,
+    });
+});
+
+
+// -------- [ Reset variables ] --------
+app.get("/reset", (req, res, next)=>{
+    gUser = "";
+    gPin = "";
+    gHash = "";
+    gIsOutlier = false;
+    isHostage = false;
+    isCovered = false;
+    isRequestingBio = false;
+
+    res.status(200).json({
+        'gUser': gUser,
+        'gPin': gPin,
+        'gHash': gHash,
+        'gIsOutlier': gIsOutlier,
+        'isHostage': isHostage,
+        'isCovered': isCovered,
+        'isRequestingBio': isRequestingBio,
+    });
+    console.log(">> Reset variables");
+});
+
 
 // -------- [ Pin Authentication (1) ] --------
 app.post('/auth/1/:pin', (req, res) => {
@@ -49,16 +112,14 @@ app.post('/auth/1/:pin', (req, res) => {
     pin = parseInt(pin);
     if (pin in dPins) {
         res.status(200).json({ 
-            status : "success",
-            user : dPins[pin][0],
-            email: dPins[pin][1],
-            age: dPins[pin][2],
+            user : dPins[pin]["name"],
+            email: dPins[pin]["email"],
+            age: dPins[pin]["age"],
             valid : true
         });
         gPin = pin; // Set global pin variable
     } 
-    else res.status(400).json({ 
-        status : "success",
+    else res.status(200).json({ 
         user : "unknown",
         email: "unknown",
         age: 'unknown',
@@ -69,17 +130,15 @@ app.post('/auth/1/:pin', (req, res) => {
 app.get('/auth/1/',(req, res) => {
     if (gPin in dPins) {
         res.status(200).send({
-            status : "success",
-            name : dPins[gPin][0],
+            name : dPins[gPin]["name"],
             pin : gPin,
-            email: dPins[gPin][1],
-            age: dPins[gPin][2],
+            email: dPins[gPin]["email"],
+            age: dPins[gPin]["age"],
             valid : (gPin in dPins)
         });
     }
     else{
-        res.status(400).send({
-            status : "success",
+        res.status(200).send({
             name : "unknown",
             pin : gPin,
             email: "unknown",
@@ -157,7 +216,6 @@ app.post('/auth/3/:hostage',(req, res) => {
     isHostage = hostage.toLocaleLowerCase() === 'true'
 
     res.status(200).send({
-        status : "success",
         isHostage: isHostage
     });
 });
@@ -175,12 +233,10 @@ app.post('/outlier/:bool', (req, res) => {
     
     if (!bool){
         res.status(418).send({
-            status : "success", 
             user: "Boolean Value Missing!" 
         });
     }
     res.status(200).json({ 
-        status : "success",
         valid : isOutlier
     });
 
@@ -189,7 +245,6 @@ app.post('/outlier/:bool', (req, res) => {
 
 app.get('/outlier/',(req, res) => {
     res.status(200).send({
-        status : "success",
         IsOutlier : gIsOutlier
     });
 });
@@ -217,7 +272,6 @@ app.post('/blacklist/remove/:sus',(req, res) => {
 
 app.get('/blacklist/',(req, res) => {
     res.status(200).send({
-        status : "success",
         sus : aBlacklist
     });
 });
@@ -235,5 +289,48 @@ app.post('/covered/:bool', (req, res) => {
 app.get('/covered/',(req, res) => {
     res.status(200).send({
         valid : isCovered
+    });
+});
+
+// -------- [ HaveIBeenPwned API Request ] --------
+app.get('/pwned/check/:email', (req, res) => {
+    var { email } = req.params;
+    if (!email) return res.status(400).send({ status : "error", message : "Missing Params" });
+    if (gPin in dPins && email == ""){ email = dPins[gPin][1]; }
+
+    var url = `https://haveibeenpwned.com/api/v3/breachedaccount/${email}`;
+    var headers = { "hibp-api-key":"cc9cbc26678d4e959e80f4ab36bc7dff", "user-agent":"nodejs" };
+    // Send API get with api key
+    request.get(url, {headers: headers}, (error, response, body) => {
+        if (error) { return console.dir(error);}
+        if (response.statusCode === 200){
+            res.status(200).send({
+                email : email,
+                isBreached : JSON.parse(body).length > 0,
+                breaches : JSON.parse(body)
+            });
+        }
+        else{
+            res.status(400).send({
+                email : email,
+                isBreached : false,
+                breaches : []
+            });
+        }
+    });
+});
+
+app.get('/pwned/dismiss/',(req, res) => {
+    res.status(200).send({
+        dismiss : dPins[gPin]["isPwnedDismissed"]
+    });
+});
+
+app.post('/pwned/dismiss/:bool',(req, res) => {
+    var { bool } = req.params;
+    bool = bool.toLocaleLowerCase() === 'true'
+    dPins[gPin]["isPwnedDismissed"] = bool;
+    res.status(200).send({
+        dismiss : dPins[gPin]["isPwnedDismissed"]
     });
 });
