@@ -32,7 +32,7 @@ function ValidatePin(){
                 
                 // [DELAY : 2 Seconds] :: Wait for webhook to send before redirect.
                 window.setTimeout(function(){
-                    window.location.href = "navigation.html";
+                    window.location.href = "landing.html";
                 }, 1000);
                 
             }

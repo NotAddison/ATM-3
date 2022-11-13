@@ -7,10 +7,11 @@
     <title></title>
     <link rel="stylesheet" href="../CSS/default.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../JS/numpad.js" async defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
     <script src="../JS/vision.js" async defer></script>
     <script src="../JS/hook.js" async defer></script>
+    <script src="../JS/toast.js" async defer></script>
+    <script src="../JS/authenticate.js" async defer></script>
 </head>
 <body>
     <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg">
@@ -97,7 +98,7 @@
           <!-- Right Column -->
           <div class="flex flex-col flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md text-black p-5">
             <p class="text-center mb-2">Authenticate with OCBC Banking App</p>              
-            <button class="text-white bg-green-500 hover:bg-green-600 hover:rounded-md p-5 rounded-lg w-full" onclick="alert(`Validate`)">Phone Authentication</button>
+            <button class="text-white bg-green-500 hover:bg-green-600 hover:rounded-md p-5 rounded-lg w-full" onclick="ShowWithdrawToast('Phone biometric', 'red')">Phone Authentication</button>
           </div>
         </div>
     </div>
