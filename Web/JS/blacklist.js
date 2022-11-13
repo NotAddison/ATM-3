@@ -11,7 +11,7 @@ function CheckBlacklist() {
             console.log(blackList);
             if (blackList.length > 0) {
                 if (blackList.includes(current)) {
-                    SendHook("[⚠ 📷] Blacklist", "Camera is blocked by a physical object.")
+                    SendHook("[⚠] Blacklist alert", "Potential scam occuring.")
                     $("body").prepend(`
                     <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BlacklistPopup">
                         <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-red-400">
