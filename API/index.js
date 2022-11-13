@@ -150,6 +150,7 @@ app.get('/auth/1/',(req, res) => {
 
 // -------- [ Biometric Authentication API (2) ] --------
 app.post('/auth/2/:hash',(req, res) => {
+    console.log(">> Biometric Authentication");
     var { hash } = req.params;
     // Missing Params
     if (!hash) return res.status(400).send({ status : "error", message : "Missing Params" });
@@ -161,7 +162,14 @@ app.post('/auth/2/:hash',(req, res) => {
             valid : true
         });
         gHash = hash; // Set global hash variable
-        gUser = dBiometric[hash][0]; // Set global user variable
+        gUser = dBiometric[hash][0]; // Set global user variable\
+
+        // Set timeout :
+        setTimeout(function(){
+            gHash = "";
+            console.log(">> Hash reset");
+            clearTimeout();
+        }, 20000); 
     }
     else{
         res.status(400).send({
@@ -178,8 +186,8 @@ app.post('/auth/2/:hash',(req, res) => {
 app.get('/auth/2/',(req, res) => {
     if (gHash != ""){
         res.status(200).send({
-            user : dBiometric[gHash][0],
-            email : dBiometric[gHash][1],
+            user : dBiometric[gHash],
+            email : dBiometric[gHash]["email"],
             valid : true
         });
     }
