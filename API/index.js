@@ -72,6 +72,7 @@ app.get("/", (req, res, next)=>{
 // -------- [ GET variables ] --------
 app.get("/variables", (req, res, next)=>{
     res.status(200).json({
+        "dPins" : dPins,
         'gUser': gUser,
         'gPin': gPin,
         'gHash': gHash,
@@ -93,7 +94,11 @@ app.get("/reset", (req, res, next)=>{
     isCovered = false;
     isRequestingBio = false;
 
+    // Reset dPins
+    ResetDPins();
+
     res.status(200).json({
+        "dPins" : dPins,
         'gUser': gUser,
         'gPin': gPin,
         'gHash': gHash,
@@ -104,6 +109,12 @@ app.get("/reset", (req, res, next)=>{
     });
     console.log(">> Reset variables");
 });
+
+function ResetDPins(){
+    for (var key in dPins) {
+        dPins[key]["isPwnedDismissed"] = false;
+    }
+}
 
 
 // -------- [ Pin Authentication (1) ] --------
@@ -190,6 +201,9 @@ app.get('/auth/2/',(req, res) => {
             email : dBiometric[gHash]["email"],
             valid : true
         });
+
+        // Set Pin Global Variable (Find Key using value)
+        gPin = Object.keys(dPins).find(key => dPins[key] === dBiometric[gHash]);
     }
     else{
         res.status(400).send({

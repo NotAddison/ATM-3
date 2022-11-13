@@ -10,14 +10,18 @@
     <script src="../JS/transfer.js" async defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
     <script src="../JS/vision.js" async defer></script>
+    <script src="../JS/toast.js" async defer></script>
 </head>
 <body>
-    <div class="flex flex-wrap min-h-screen w-full content-center justify-center bg-white py-10">
+    <div class="flex flex-wrap min-h-screen w-full content-center justify-center">
+        <video autoplay loop muted class="absolute w-auto min-w-full min-h-full max-w-none" id="bg-video" style="z-index: -1;">
+            <source src="../../Assets/Videos/background.mp4" type="video/mp4" />Your browser does not support the video tag.
+        </video>
         <!-- Container -->
-        <div class="flex flex-wrap justify-center rounded-lg bg-gray-200 shadow-md" style="width: 40rem; height: 32rem;">
-            <div class="w-5/6">
+        <div class="flex flex-wrap justify-center rounded-lg bg-gray-200 shadow-md w-2/5">
+            <div class="w-5/6 pt-10">
             <!-- Header Text -->
-            <div class="flex flex-wrap justify-between mt-8 mb-1">
+            <div class="flex flex-wrap justify-between mb-1">
                 <p class="text-black font-bold text-3xl">Transfer Funds</p>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="" class="w-8 h-8 stroke-gray-400">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
@@ -25,15 +29,64 @@
             </div>             
             <hr class="border-t-2 border-gray-400 p-2">
             <!-- Form -->
-            <form id="transferForm" class="flex flex-wrap justify-center content-evenly rounded-lg bg-gray-50 shadow-md w-full h-3/4 relative">
-                <label for="transferAmt" class="text-black">Enter your desired amount:</label>
-                <input type="number" id="transferAmt" class="text-black border-b-2 border-black bg-gray-50"></input>
-                <label for="transferDest" class="text-black">Destination Account No:</label>
-                <input type="text" id="transferDest" class="text-black border-b-2 border-black bg-gray-50"></input>
-                <p class="text-black text-xs absolute left-14 bottom-10">Transfer Limit: $10000</p>
+            <form id="transferForm" class="flex flex-wrap justify-center content-evenly rounded-lg bg-gray-50 shadow-md w-full p-10">
+                <div class="flex flex-col flex-wrap w-full">
+                    <!-- Inputs -->
+                    <div class="flex flex-col w-full mb-10 justify-between">
+                        <div class="flex flex-col mb-6">
+                            <div class="flex flex-row flex-wrap">
+                                <label for="transferAcc" class="text-black mr-2 w-[80px]">Account:</label>
+                                <input type="number" id="transferAcc" class="text-black border-b-2 border-gray-600 bg-transparent rounded-sm"></input>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-wrap">
+                            <div class="flex flex-row justify-start flex-wrap">
+                                <label for="transferAmt" class="text-black mr-2 w-[80px]">Amount:</label>
+                                <input type="number" id="transferAmt" class="text-black border-b-2 border-gray-600 bg-transparent rounded-sm mr-2"></input>
+                                <p class="text-black text-xs pt-2">(Limit: $10000)</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- User -->
+                    <div class="flex flex-row w-full justify-between">
+                        <div class="flex lg:flex-row flex-col w-1/2 text-black">
+                            <img src="https://img.icons8.com/fluency-systems-regular/48/null/user.png" class="rounded-lg shadow-lg h-[100px] w-[100px] mr-5">
+                            <div class="flex-col w-full">
+                                <div class="flex flex-row">
+                                    <label for="transferDest" class="text-black text-right pr-2"><b>Name:</b></label>
+                                    <span> -- </span>
+                                </div>
+                                <div class="flex flex-row">
+                                    <label for="transferDest" class="text-black text-right pr-2"><b>Age:</b></label>
+                                    <span> -- </span>
+                                </div>
+                                <div class="flex flex-row">
+                                    <label for="transferDest" class="text-black text-right pr-2"><b>Email:</b></label>
+                                    <span> -- </span>
+                                </div>
+                                <div class="flex flex-row">
+                                    <!-- Score = Trustworthiness -->
+                                    <label for="transferDest" class="text-black text-right pr-2"><b>Score:</b></label>
+                                    <span> -- </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-row w-1/2 text-black justify-end">
+                            <button class="bg-gray-800 hover:bg-gray-700 hover:rounded-md p-5 rounded-lg w-[100px]" onclick="alert(`Hello World`)">
+                                <div class="flex flex-col">
+                                    <span class="text-white">✈</span>
+                                    <span class="text-white">Transfer</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </form>
+
             <!--Back Button-->
-            <a href="navigation.html" class="flex flex-row flex-wrap items-center">
+            <a href="landing.html" class="flex flex-row flex-wrap items-center my-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="black" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
                 </svg>                  
