@@ -1,4 +1,4 @@
-function ShowWithdrawToast(message, color, icon="i", iconIntensity = 500, outlineIntensity = 500 ,isCashToast = false, isSuccessful = false) {
+function ShowToast(message, color, icon="i", iconIntensity = 500, outlineIntensity = 500 ,isCashToast = false, isSuccessful = false) {
     
     // Special Message for cash related toast messages
     if(isCashToast) {

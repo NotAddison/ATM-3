@@ -52,7 +52,7 @@ function ValidatePin(pin=""){
 }
 
 function BioAuth(type = 1){
-    ShowWithdrawToast('Phone Authentication Requested!', 'green', '📲', 0)
+    ShowToast('Phone Authentication Requested!', 'green', '📲', 0)
 
     // Type 1 : Bio -> Get User
     if(type === 1){
@@ -71,7 +71,7 @@ function BioAuth(type = 1){
                     console.log(`Biometric Request: ${data["request"]}`)
                     if (!data["request"]){
                         // Request sent
-                        ShowWithdrawToast('Got Biometric Response! Checking Validity...', 'green', '✅', 0)
+                        ShowToast('Got Biometric Response! Checking Validity...', 'green', '✅', 0)
 
                         // Verify Validity
                         VerifyValidity();
@@ -104,7 +104,7 @@ function VerifyValidity(){
         }
         else{
             // Invalid
-            ShowWithdrawToast('Biometric Authentication Failed!', 'red', '❌', 0)
+            ShowToast('Biometric Authentication Failed!', 'red', '❌', 0)
         }
     })
 }
