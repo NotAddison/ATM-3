@@ -218,7 +218,7 @@ app.post('/blacklist/remove/:sus',(req, res) => {
 app.get('/blacklist/',(req, res) => {
     res.status(200).send({
         status : "success",
-        sus : aBlacklist,
+        sus : aBlacklist
     });
 });
 
