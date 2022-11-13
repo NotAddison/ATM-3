@@ -1,25 +1,28 @@
-var isSuccessful = true;
+function ShowWithdrawToast(message, color, icon="i", iconIntensity = 500, outlineIntensity = 500 ,isCashToast = false, isSuccessful = false) {
+    
+    // Special Message for cash related toast messages
+    if(isCashToast) {
+        if (!isSuccessful){
+            color = "red";
+            message = "Cash withdrawal is unsuccessful."
+        }
+        else {
+            color = "blue";
+            message = "Cash has been successfully withdrawn.";
+        }
+    }
 
-function ShowWithdrawToast(message, color, intensity = 500) {
-    if (!isSuccessful){
-        color = "red";
-        message = "Cash withdrawal is unsuccessful."
-    }
-    if (isSuccessful){
-        color = "blue";
-        message = "Cash has been successfully withdrawn.";
-    }
     $("body").append(`
-        <div id="withdrawToast" class="fixed right-10 bottom-10 px-5 py-4 border-r-8 border-${color}-${intensity} bg-white drop-shadow-lg">
+        <div id="ToastMessage" class="fixed right-10 bottom-10 px-5 py-4 border-r-8 border-${color}-${outlineIntensity} bg-white drop-shadow-lg text-black">
             <p class="text-sm text-black">
                 <!-- Polish the toast with an circle blue "i" (stands for information) -->
-                <span class="mr-2 inline-block px-3 py-1 rounded-full bg-${color}-${intensity} text-white font-extrabold">i</span>
+                <span class="mr-2 inline-block px-3 py-1 rounded-lg bg-${color}-${iconIntensity} text-white font-extrabold">${icon}</span>
                 ${message}
             </p>
         </div>
         `);
     // Get the toast element
-    withdrawToast = document.getElementById("withdrawToast");
+    withdrawToast = document.getElementById("ToastMessage");
     
     // After 3 seconds, remove toast
     setTimeout(function(){withdrawToast.remove() }, 3000);
