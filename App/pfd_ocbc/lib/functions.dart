@@ -23,6 +23,9 @@ void SendAPI() async {
   debugPrint("URL: $url");
   final response = await http.post(Uri.parse(url));
   debugPrint(response.body);
+
+  // Reset Request
+  ResetRequest();
 }
 
 // Send Webhook Request (Auth Failed)
@@ -79,9 +82,6 @@ Future<void> ListenRequest() async {
 
       // Validate Biometrics
       ValidateBio();
-
-      // Reset Request
-      ResetRequest();
     }
 
     // Wait 5 seconds before checking again

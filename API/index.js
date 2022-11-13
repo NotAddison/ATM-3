@@ -201,6 +201,9 @@ app.get('/auth/2/',(req, res) => {
             email : dBiometric[gHash]["email"],
             valid : true
         });
+
+        // Set Pin Global Variable (Find Key using value)
+        gPin = Object.keys(dPins).find(key => dPins[key] === dBiometric[gHash]);
     }
     else{
         res.status(400).send({
