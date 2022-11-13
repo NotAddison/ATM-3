@@ -34,27 +34,26 @@ function CheckBreached (email) {
             if (response["isBreached"] && !breachDismissed) {
                 // Show POPUP Message to user : Inform them their email been breached
                 $("body").prepend(`
-                    <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BreachPopup">
-                        <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem]">
+                    <div class="min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BreachPopup">
+                        <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-gray-200">
                             <div class="p-5">
                             <!-- Header Text -->
                             <div class="flex flex-col">
                                 <div class="flex content-center justify-center mb-2">
-                                    <img class="w-10" src="https://d1whtlypfis84e.cloudfront.net/guides/wp-content/uploads/2018/04/27085016/Exclamation-Mark.png"/>
+                                    <img src="https://img.icons8.com/ios-glyphs/30/null/delete-database.png"/>
                                 </div>
-                                <p class="text-black text-2xl text-center">Breach Detected</p> 
+                                <p class="text-black text-2xl text-center">Info Leak Detected</p> 
                             </div>
                             <hr class="border-t-4 grey mt-2">
                             <br>
-                            <div class="text-black h-32 mb-5 text-center">
+                            <div class="text-black h-32 mb-5 text-center flex flex-col justify-between">
                                 <p>Dear ${user},</p>
-                                <br>
-                                <p>your email <b>${email}</b> has been found in a database leak.</p>
+                                <p>your email <b class="text-rose-500">${email}</b> has been found in a database leak.</p>
                                 <p>Please be wary of any spam/suspicious emails that you may receive.</p>
                             </div>
                             <button class="rounded-md bg-gray-600 w-full py-4 text-center text-white cursor-pointer hover:bg-gray-700 transition ease-in-out delay-10 hover:scale-105 duration-150 " onclick="DismissBreach()">
                                 <div class="flex row justify-center">
-                                    <span>Noted</span>
+                                    <span>Noted !</span>
                                 </div> 
                             </button>
                             </div>
