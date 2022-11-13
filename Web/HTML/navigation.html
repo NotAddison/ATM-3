@@ -15,9 +15,12 @@
         <script src="../JS/breach.js" async defer></script>
     </head>
     <body>
-        <div class="flex flex-wrap min-h-screen w-full content-center justify-center bg-white py-10 rounded-lg">
+        <div class="flex flex-wrap min-h-screen w-full content-center justify-center rounded-lg content">
+            <video autoplay loop muted class="absolute w-auto min-w-full min-h-full max-w-none" id="bg-video" style="z-index: -1;">
+                <source src="../../Assets/Videos/background.mp4" type="video/mp4" />Your browser does not support the video tag.
+            </video>
             <!-- Container -->
-            <div class="flex shadow-md bg-gray-200">
+            <div class="flex shadow-md bg-gray-200 rounded-lg">
               <!-- Left Column -->
               <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md" style="width: 24rem; height: 32rem;">
                 <div class="w-72">
