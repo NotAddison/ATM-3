@@ -34,7 +34,7 @@ function CheckBreached (email) {
             if (response["isBreached"] && !breachDismissed) {
                 // Show POPUP Message to user : Inform them their email been breached
                 $("body").prepend(`
-                    <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute" id="BreachPopup">
+                    <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BreachPopup">
                         <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-red-400">
                             <div class="p-5">
                             <!-- Header Text -->
@@ -59,7 +59,7 @@ function CheckBreached (email) {
                                     <span>Close</span>
                                 </div> 
                             </button>
-                            <input type="button" value="Retry" >
+                            <input type="button" value="Okay" >
                             </div>
                         </div>
                     </div>
