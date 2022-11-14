@@ -20,14 +20,14 @@ function CheckAge () {
                                 <!-- Header Text -->
                                 <div class="flex flex-col">
                                     <div class="flex content-center justify-center mb-2">
-                                        <img class="w-10" src="https://img.icons8.com/ios-glyphs/30/000000/no-video.png"/>
+                                        <img class="w-10" src="https://img.icons8.com/external-ddara-lineal-ddara/512/external-Elderly-elderly-ddara-lineal-ddara.png"/>
                                     </div>
                                     <p class="text-black text-2xl text-center">Elderly Detected</p> 
                                 </div>
                                 <hr class="border-t-4 grey mt-2">
                                 <br>
                                 <div class="text-black h-32 mb-5 text-center">
-                                    <p>For your wellbeing,</p>
+                                    <p>There has been a lot of recent cases of scam</p>
                                     <p>Please check that you are not being scammed.</p>
                                     <br>
                                     <p>You will be redirected soon to the ATM.</p>

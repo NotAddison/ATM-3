@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../CSS/default.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../JS/transfer.js" async defer></script>
     <script src="../JS/validation.js" async defer></script>
@@ -13,8 +14,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
     <script src="../JS/vision.js" async defer></script>
     <script src="../JS/blacklist.js" async defer></script>
+    <script src="../JS/banner.js" async defer></script>
 </head>
 <body>
+    <div class="banner">
+        <div class="banner__content">
+            <div class="banner__text">
+                <strong>Reminder: </strong> There have been cases of hoax scams occuring recently. Please proceed with caution.
+            </div>
+        </div>
+        <button class="banner__close" type="button">
+            <span class="material-icons" >
+                close
+            </span>
+        </button>
+    </div>
     <div class="flex flex-wrap min-h-screen w-full content-center justify-center bg-white py-10">
         <!-- Container -->
         <div class="flex flex-wrap justify-center rounded-lg bg-gray-200 shadow-md" style="width: 40rem; height: 32rem;">
