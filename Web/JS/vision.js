@@ -7,15 +7,15 @@ function CheckVision () {
         .then(response => response.json())
         .then(response => {
             isCovered = response["valid"];
-            console.log(`>> isCovered: ${isCovered}`);
+            // console.log(`>> isCovered: ${isCovered}`);
             if (isCovered) {
                 if (!isShown) {
                     SendHook("[⚠ 📷] Camera Blocked/Broken", "Camera is blocked by a physical object.")
                     console.log(">> [Covered]: SHOWING POPUP");
                     // Show POPUP Message to user : Inform them camera is covered & to remove cover
                     $("body").prepend(`
-                        <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute" id="CameraPopup">
-                            <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-red-400">
+                        <div class="min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="CameraPopup">
+                            <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-gray-200">
                                 <div class="p-5">
                                 <!-- Header Text -->
                                 <div class="flex flex-col">
@@ -26,11 +26,11 @@ function CheckVision () {
                                 </div>
                                 <hr class="border-t-4 grey mt-2">
                                 <br>
-                                <div class="text-black h-32 mb-5 text-center">
+                                <div class="text-black h-32 mb-5 text-center flex flex-col justify-between">
                                     <p>For safety reasons,</p>
                                     <p>Please do not cover or block the ATM Camera.</p>
                                     <br>
-                                    <p>You may continue with your banking once camera is <b>no longer obstructed</b>.</p>
+                                    <p>You may continue with your banking once camera is <b class="text-rose-500">no longer obstructed</b>.</p>
                                 </div>
                                 <button class="rounded-md bg-gray-600 w-full py-4 text-center text-white cursor-pointer hover:bg-gray-700 transition ease-in-out delay-10 hover:scale-105 duration-150 " onclick="DismissCheckVision()">
                                     <div class="flex row justify-center">
@@ -38,7 +38,6 @@ function CheckVision () {
                                         <span>Retry</span>
                                     </div> 
                                 </button>
-                                <input type="button" value="Retry" >
                                 </div>
                             </div>
                         </div>

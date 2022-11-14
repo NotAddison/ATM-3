@@ -53,6 +53,9 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 9.  ~~**Digital Numberpad**~~ 
 10. **Operator Dashboard** 
       - Summary of all ATM : [E.G: 3 Hostage situation detected]
+11. **Transfer Details** - Addison
+      - Show details of the transferee (Name, Address, etc).
+      - Allow the user to verify the details before transferring money (also can prevent accidental typo).
     
 
 ## Potential Validations
@@ -81,4 +84,5 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 <details>
 <summary><b>References / Credits</b></summary>
 - UX of digital randomized Numberpad : https://uxpajournal.org/usability-evaluation-of-randomized-keypad/<br>
+- HaveIBeenPwned API: https://haveibeenpwned.com/API/v3 <br>
 </details>
