@@ -56,13 +56,6 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 11. **Transfer Details** - Addison
       - Show details of the transferee (Name, Address, etc).
       - Allow the user to verify the details before transferring money (also can prevent accidental typo).
-    
-
-## Potential Validations
-> Necessary validations to improve user experience
-1. Validation for older people [❌]
-2. Validation for large withdrawals [❌]
-3. Validation towards potential scams [❌]
 
 ## Misc
 > Naming Conventions, Git, References & Credits
