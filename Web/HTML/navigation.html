@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="../CSS/default.css">
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="../JS/navigation.js" async defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+        <script src="../JS/vision.js" async defer></script>
     </head>
     <body>
         <div class="flex flex-wrap min-h-screen w-full content-center justify-center bg-white py-10 rounded-lg">
@@ -39,9 +41,10 @@
                     </div>
                 </div>
                 <div class="mt-6">
-                    <button class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-150 shadow-md bg-gradient-to-b from-blue-400 to-blue-800 w-full rounded-lg mt-2 py-2 text-md text-center">Other Cash Amounts</button>
+                    <a href="withdraw.html">
+                        <button class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-150 shadow-md bg-gradient-to-b from-blue-400 to-blue-800 w-full rounded-lg mt-2 py-2 text-md text-center">Other Cash Amounts</button>
+                    </a>
                 </div>
-          
                 </div>
               </div>
               <!-- Right Column -->
@@ -62,14 +65,16 @@
                 <!-- Elements -->
                 <p class="text-xs text-black mb-2">Non-Cash Services</p>
                 <div class="grid grid-cols-2 gap-x-4">
-                    <div class="rounded bg-gray-50 h-40 w-30 p-2 relative shadow-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-150 cursor-pointer">
-                        <div class="flex justify-between py-1 absolute top-1 right-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="gray" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-                            </svg>                                                           
+                    <a href="transfer.html">
+                        <div class="rounded bg-gray-50 h-40 w-30 p-2 relative shadow-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-150 cursor-pointer">
+                            <div class="flex justify-between py-1 absolute top-1 right-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="gray" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                                </svg>                                                           
+                            </div>
+                            <p class="absolute bottom-3 ml-2 text-black">Transfer <br> Funds</p>
                         </div>
-                        <p class="absolute bottom-3 ml-2 text-black">Transfer <br> Funds</p>
-                    </div>
+                    </a>
                     <div class="rounded bg-gray-50 h-40 w-30 p-2 relative shadow-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-150 cursor-pointer">
                         <div class="flex justify-between py-1 absolute top-1 right-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="gray" class="w-5 h-5">
@@ -83,13 +88,6 @@
                </div>
               </div>
             </div>
-        </div>
-        <div id="withdrawToast" class="hidden fixed right-10 bottom-10 px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg">
-            <p class="text-sm text-black">
-                <!-- Polish the toast with an circle blue "i" (stands for information) -->
-                <span class="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">i</span>
-                Cash has been successfully withdrawn.
-            </p>
         </div>
     </body>
 </html>
