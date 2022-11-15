@@ -17,6 +17,7 @@ sys.path.insert(1, "Python\Webhook")
 import Hook as Webhook
 
 # --- ⚙ OpenCV Settings ⚙ ---
+cam = 0                 # Camera ID [0 = Default Camera | 1 = External Camera | addr = Path to Video File]
 threshold = 0.55        # Main threshold for obj detection [aka, sensitivity]
 toMirror = True         # Mirrors the projected frames (Use True if you're using a webcam & Left and right are mirrored)
 
@@ -120,7 +121,7 @@ def CoverCheck(img):
 
 # --- ⚙ Main ⚙ ---
 # > Camera Setup [0 = Default Camera | 1 = External Camera | addr = Path to Video File]
-video = cv2.VideoCapture(0)
+video = cv2.VideoCapture(cam)
 video.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 video.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 

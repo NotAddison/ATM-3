@@ -29,6 +29,7 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
    - Checks if camera of ATM is covered / broken.
 3. **Mobile App** - Addison
    - To utilize Biometrics (fingerprint / face recognition)
+   - Listen to ATM response > Request from device (on request auth)
 4. **Outlier Analysis** (ML) - Paul & Haziq
    - Check for outlier when withdrawing cash.
    - If an account receives a large amount of money within a short period, mark account as "Suspicious".
@@ -50,7 +51,12 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 8.  **NFC/EVC Chip Biometrics** - Fredor & Addison
        - Read Card Number > Query backend > Get biometric "fingerprint"/hash > Compare with user's biometrics
 9.  ~~**Digital Numberpad**~~ 
-    ~~- Scrambled "numberpad" to prevent thermal imaging & shoulder surfing.~~
+10. **Operator Dashboard** 
+      - Summary of all ATM : [E.G: 3 Hostage situation detected]
+11. **Transfer Details** - Addison
+      - Show details of the transferee (Name, Address, etc).
+      - Allow the user to verify the details before transferring money (also can prevent accidental typo).
+    
 
 ## Potential Validations
 > Necessary validations to improve user experience
@@ -78,4 +84,5 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 <details>
 <summary><b>References / Credits</b></summary>
 - UX of digital randomized Numberpad : https://uxpajournal.org/usability-evaluation-of-randomized-keypad/<br>
+- HaveIBeenPwned API: https://haveibeenpwned.com/API/v3 <br>
 </details>
