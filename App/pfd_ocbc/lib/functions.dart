@@ -6,6 +6,8 @@ import 'package:pfd_ocbc/local_auth_api.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+bool isShown = false;
+
 // Send API Request (Auth Success)
 // ignore: non_constant_identifier_names
 void SendAPI() async {
@@ -20,9 +22,8 @@ void SendAPI() async {
     url = 'http://10.0.2.2:3000/auth/2/:hash';
   }
   url = url.replaceAll(":hash", biohash);
-  debugPrint("URL: $url");
   final response = await http.post(Uri.parse(url));
-  debugPrint(response.body);
+  debugPrint(">> SendAPI(): ${response.body}");
 
   // Reset Request
   ResetRequest();
@@ -65,6 +66,9 @@ void FailedVerification() async {
   // Parse to JSON
   var res = jsonDecode(response.body);
   debugPrint(">> FAILED BIOMETRICS (API STATUS): ${res['valid']}");
+
+  // Reset Request
+  ResetRequest();
 }
 
 // Listen to API (When Site requires Biometrics)
@@ -81,7 +85,10 @@ Future<void> ListenRequest() async {
       debugPrint("Request: ${res["request"]}");
 
       // Validate Biometrics
-      ValidateBio();
+      if (!isShown) {
+        isShown = true;
+        ValidateBio();
+      }
     }
 
     // Wait 5 seconds before checking again
@@ -98,7 +105,7 @@ void ResetRequest() async {
   }
   final response = await http.post(Uri.parse(url));
   var res = jsonDecode(response.body);
-  debugPrint(">> RESET BIOMETRIC REQUEST STATUS! ${res["request"]}");
+  debugPrint(">> ResetRequest(): Reset Status : ${res["request"]}");
 }
 
 void ValidateBio() async {
@@ -106,7 +113,11 @@ void ValidateBio() async {
   if (isAuthenicated) {
     // Send Biometrics to API
     SendAPI();
+    isShown = false;
   } else {
+    // Send Webhook > Auth Failed :: NOTE: Check is done on site
+    print(">> AUTH Failed");
     FailedVerification();
+    isShown = false;
   }
 }
