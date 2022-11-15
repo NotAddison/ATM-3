@@ -10,7 +10,7 @@ function CheckFingerprint () {
             console.log(`>> isFingerprint: ${isFingerprint}`);
             if (isFingerprint) {
                 if (is) {
-                    SendHook("[⚠] Fingerprint mismatched", "Potential Scam.")
+                    SendHook("[⚠] Fingerprint mismatched", "Fingerprint mismatch detected")
                     console.log(">> [Covered]: SHOWING POPUP");
                     // Show POPUP Message to user : Inform them camera is covered & to remove cover
                     $("body").prepend(`
