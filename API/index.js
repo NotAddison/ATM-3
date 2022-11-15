@@ -20,8 +20,12 @@ var gUser = "";
 var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
-var isHostage = false;
-var isCovered = false;
+var isRequestingBio = false;
+
+var isCovered = false; // Camera Covered Boolean
+var isHostage = false; // If hostage situation
+var hasWeapon = false;
+var emotion = "neutral";
 
 
 // Middleware
@@ -126,6 +130,25 @@ app.get('/auth/3/',(req, res) => {
         isHostage: isHostage
     });
 });
+
+// -- CV Weapon
+app.post('/auth/weapon/:bool',(req, res) => {
+    var { bool } = req.params;
+    res.status(200).send({
+        isHostage: bool
+    });
+    hasWeapon = bool;
+});
+
+// -- CV Emotion
+app.post('/auth/weapon/:bool',(req, res) => {
+    var { bool } = req.params;
+    res.status(200).send({
+        isHostage: bool
+    });
+    hasWeapon = bool;
+});
+
 
 // -------- [ Outlier Analysis ] --------
 app.post('/outlier/:bool', (req, res) => {
