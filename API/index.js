@@ -46,9 +46,9 @@ var gIsOutlier = false;
 var isRequestingBio = false;
 
 var isCovered = false; // Camera Covered Boolean
-var isHostage = false; // If hostage situation
+var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 var hasWeapon = false;
-var emotion = "neutral";
+var hasNegativeEmotion = false;
 
 
 // Middleware
@@ -83,6 +83,8 @@ app.get("/variables", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'hasNegativeEmotion': hasNegativeEmotion,
+        'hasWeapon': hasWeapon,
     });
 });
 
@@ -96,6 +98,8 @@ app.get("/reset", (req, res, next)=>{
     isHostage = false;
     isCovered = false;
     isRequestingBio = false;
+    hasNegativeEmotion = false;
+    hasWeapon = false;
 
     // Reset dPins
     ResetDPins();
@@ -109,6 +113,8 @@ app.get("/reset", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'hasNegativeEmotion': hasNegativeEmotion,
+        'hasWeapon': hasWeapon,
     });
     console.log(">> Reset variables");
 });
@@ -240,6 +246,11 @@ app.post('/auth/3/:hostage',(req, res) => {
     var { hostage } = req.params;
     isHostage = hostage.toLocaleLowerCase() === 'true'
 
+    if(isHostage){
+        hasWeapon = true;
+        hasNegativeEmotion = true;
+    }
+
     res.status(200).send({
         isHostage: isHostage
     });
@@ -254,21 +265,33 @@ app.get('/auth/3/',(req, res) => {
 // -- CV Weapon
 app.post('/auth/weapon/:bool',(req, res) => {
     var { bool } = req.params;
+    hasWeapon = bool.toLocaleLowerCase() === 'true'
+
     res.status(200).send({
-        isHostage: bool
+        hasWeapon: bool
     });
-    hasWeapon = bool;
+});
+
+app.get('/auth/weapon/',(req, res) => {
+    res.status(200).send({
+        hasWeapon: hasWeapon
+    });
 });
 
 // -- CV Emotion
-app.post('/auth/weapon/:bool',(req, res) => {
+app.post('/auth/emotion/:bool',(req, res) => {
     var { bool } = req.params;
+    hasNegativeEmotion = bool.toLocaleLowerCase() === 'true'
     res.status(200).send({
-        isHostage: bool
+        hasNegativeEmotion: bool
     });
-    hasWeapon = bool;
 });
 
+app.get('/auth/emotion/',(req, res) => {
+    res.status(200).send({
+        hasNegativeEmotion: hasNegativeEmotion
+    });
+});
 
 // -------- [ Outlier Analysis ] --------
 app.post('/outlier/:bool', (req, res) => {
