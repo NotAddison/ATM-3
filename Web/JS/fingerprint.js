@@ -27,7 +27,7 @@ function CheckFingerprint () {
                                 <hr class="border-t-4 grey mt-2">
                                 <br>
                                 <div class="text-black h-32 mb-5 text-center">
-                                    <p>For security reasons,</p>
+                                    <p>Fingerprint mismatched,</p>
                                     <p>You are not allowed to continue withdrawal.</p>
                                     <br>
                                     <p>You may continue with your banking once the fingerprint is matched.</p>
