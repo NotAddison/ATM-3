@@ -11,8 +11,7 @@ function GetTransferInfo(){
                 if (dict[key]["accountNo"] === accountNo){
                     $("#transferName").text(dict[key]["name"]);
                     $("#transferAccVerify").text(dict[key]["accountNo"]);
-                    $("#transferEmail").text(dict[key]["email"]);
-                    $("#transferScore").text(100);
+                    $("#transferScore").text(dict[key]["score"]);
                     clearInterval(4);
                     break;
                 }
