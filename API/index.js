@@ -11,26 +11,47 @@ const PORT  = process.env.PORT || 3000;
 var dPins = {
     123456 : {
         "name" : "John Doe",
-        "accountNo" : "501123456789",
+        "accountNo" : "501124515611",
         "email" : "lol@gmail.com",
         "age" : 80,
-        "isPwnedDismissed": false
+        "isPwnedDismissed": false,
+        "score": 100
     },
 
     891011 : {
         "name" : "Jane Doe",
-        "accountNo" : "501891011121",
+        "accountNo" : "501171904212",
         "email" : "JaneLikesPaul@gmail.com",
         "age" : 20,
-        "isPwnedDismissed": false
+        "isPwnedDismissed": false,
+        "score": 100
     },
 
     121314 : {
         "name" : "Addison Chua",
-        "accountNo" : "501121314151",
+        "accountNo" : "501177064303",
         "email" : "addisonchua@rocketmail.com",
         "age": 18,
-        "isPwnedDismissed": false
+        "isPwnedDismissed": false,
+        "score": 100
+    },
+
+    151617 : {
+        "name" : "Paul M Lim",
+        "accountNo" : "501130862511",
+        "email" : "paully@gmail.com",
+        "age" : 18,
+        "isPwnedDismissed": false,
+        "score": 100
+    },
+
+    181920 : {
+        "name" : "Ling Ling",
+        "accountNo" : "501144703441",
+        "email" : "lingling@gmail.com",
+        "age": 92,
+        "isPwnedDismissed": false,
+        "score": 100
     }
 };
 
@@ -38,7 +59,7 @@ var dBiometric = {
     "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" : dPins[123456]
 }
 
-var aBlacklist = [501891011121];
+var aBlacklist = [501124515611];
 var gUser = "";
 var gPin = "";
 var gHash = "";
@@ -341,6 +362,24 @@ app.get('/blacklist/',(req, res) => {
     res.status(200).send({
         sus : aBlacklist
     });
+});
+
+app.post('/blacklist/modify/:item',(req, res) => {
+    var { item } = req.params;
+    temp = item.split(",");
+    for (key in dPins){
+        if (dPins[key]["accountNo"] == temp[0]){
+                // Modify score
+                dPins[key]["score"] = dPins[key]["score"] - parseInt(temp[1]); 
+                // Send Response
+                res.status(200).send({
+                    status : "successfully modified score",
+                    accountNo : dPins[key]["accountNo"],
+                    score : dPins[key]["score"]
+                });
+            break;
+        }
+    }
 });
 
 // -------- [ Covered Camera ] --------
