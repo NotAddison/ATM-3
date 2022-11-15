@@ -1,5 +1,4 @@
 console.log(">> [Running Blacklist.js]");
-var current = 891011
 var blackList;
 
 function CheckBlacklist() { 
@@ -8,9 +7,8 @@ function CheckBlacklist() {
         .then(response => response.json())
         .then(response => {     
             blackList = response["sus"];
-            console.log(blackList);
             if (blackList.length > 0) {
-                if (blackList.includes(current)) {
+                if (blackList.includes(parseInt($("#transferAcc").val()))) {
                     SendHook("[⚠] Blacklist alert", "Potential scam occuring.")
                     $("body").prepend(`
                     <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BlacklistPopup">
