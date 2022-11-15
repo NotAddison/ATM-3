@@ -74,12 +74,13 @@ print(f">> Loaded {len(classes)} classes...")
 def ObjectDetection(frame):
     classid, scores, boxes = model.detect(frame, threshold, 0.4)
     for (classid,score,box) in zip(classid,scores,boxes):
-        x,y,w,h = box
-        label = f"{classes[classid]} | {score}"
-        cv2.rectangle(frame, (x,y), (x+w,y+h), bbox_color, thickness)
-        cv2.putText(frame, label, (x,y-10), font, font_scale, text_colour, thickness)
-        return classes[classid] in danger_item
-            
+        if classes[classid] in danger_item:
+            x,y,w,h = box
+
+            label = f"{classes[classid]} | {score}"
+            cv2.rectangle(frame, (x,y), (x+w,y+h), bbox_color, thickness)
+            cv2.putText(frame, label, (x,y-10), font, font_scale, text_colour, thickness)
+            return classes[classid] in danger_item
 
 # --- ⚙ Main ⚙ ---
 # > Camera Setup [0 = Default Camera | 1 = External Camera | addr = Path to Video File]
