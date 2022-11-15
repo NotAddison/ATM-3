@@ -301,6 +301,24 @@ app.get('/blacklist/',(req, res) => {
     });
 });
 
+app.post('/blacklist/modify/:item',(req, res) => {
+    var { item } = req.params;
+    temp = item.split(",");
+    for (key in dPins){
+        if (dPins[key]["accountNo"] == temp[0]){
+                // Modify score
+                dPins[key]["score"] = dPins[key]["score"] - parseInt(temp[1]); 
+                // Send Response
+                res.status(200).send({
+                    status : "successfully modified score",
+                    accountNo : dPins[key]["accountNo"],
+                    score : dPins[key]["score"]
+                });
+            break;
+        }
+    }
+});
+
 // -------- [ Covered Camera ] --------
 app.post('/covered/:bool', (req, res) => {
     var { bool } = req.params;
