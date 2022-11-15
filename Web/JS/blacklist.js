@@ -8,10 +8,11 @@ function CheckBlacklist() {
         .then(response => response.json())
         .then(response => {     
             blackList = response["sus"];
+            blackList.append
             console.log(blackList);
             if (blackList.length > 0) {
                 if (blackList.includes(current)) {
-                    SendHook("[⚠] Blacklist alert", "Potential scam occuring.")
+                    SendHook("[⚠] Suspicious Transfer Detected", "A user is transferring money to a suspicious account.")
                     $("body").prepend(`
                     <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BlacklistPopup">
                         <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-gray-200">
@@ -21,13 +22,13 @@ function CheckBlacklist() {
                                 <div class="flex content-center justify-center mb-2">
                                     <img class="w-10" src="https://img.icons8.com/ios/512/delete-user-male.png"/>
                                 </div>
-                                <p class="text-black text-2xl text-center">Blacklisted Account Detected</p> 
+                                <p class="text-black text-2xl text-center">Suspicious Account Detected</p> 
                             </div>
                                 <hr class="border-t-4 grey mt-2">
                                 <br>
                                 <div class="text-black h-32 mb-5 text-center">
                                     <p>Please be careful.</p>
-                                    <p>Your are currently transfering/withdrawing money regarding a blacklisted account</p>
+                                    <p>Your are currently transferring/withdrawing money regarding a suspicious account</p>
                                     <br>
                                     <p>Are you sure you want to continue?</p>
                                 </div>
