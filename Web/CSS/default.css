@@ -16,6 +16,8 @@ input:focus{
 
 .banner {
     background: #009579;
+    position: absolute;
+    width: 100vw;
 }
 
 .banner__content {
