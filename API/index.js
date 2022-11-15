@@ -370,7 +370,7 @@ app.post('/blacklist/modify/:item',(req, res) => {
     for (key in dPins){
         if (dPins[key]["accountNo"] == temp[0]){
                 // Modify score
-                dPins[key]["score"] = dPins[key]["score"] - parseInt(temp[1]); 
+                dPins[key]["score"] = dPins[key]["score"] + parseInt(temp[1]); 
                 // Send Response
                 res.status(200).send({
                     status : "successfully modified score",
