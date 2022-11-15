@@ -3,6 +3,7 @@ async function SendHook(title, message){
     const request = new XMLHttpRequest();
     request.open("POST", url);
     request.setRequestHeader('Content-type', 'application/json');
+    request.setRequestHeader('Access-Control-Allow-Origin', '*');
 
     var data = {
         "embeds":[{"color": 1014235,
