@@ -1,6 +1,6 @@
 console.log(">> [Running Fingerprint.js]");
 
-function CheckVision () { 
+function CheckFingerprint () { 
     const options = {method: 'GET', headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}};
     fetch('http://localhost:3000/auth/2/', options)
         .then(response => response.json())
@@ -14,7 +14,7 @@ function CheckVision () {
                     console.log(">> [Covered]: SHOWING POPUP");
                     // Show POPUP Message to user : Inform them camera is covered & to remove cover
                     $("body").prepend(`
-                        <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute" id="CameraPopup">
+                        <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute" id="FingerprintPopup">
                             <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-red-400">
                                 <div class="p-5">
                                 <!-- Header Text -->
