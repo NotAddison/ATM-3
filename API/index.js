@@ -14,7 +14,8 @@ var dPins = {
         "accountNo" : "501123456789",
         "email" : "lol@gmail.com",
         "age" : 80,
-        "isPwnedDismissed": false
+        "isPwnedDismissed": false,
+        "score": 100
     },
 
     891011 : {
@@ -22,7 +23,8 @@ var dPins = {
         "accountNo" : "501891011121",
         "email" : "JaneLikesPaul@gmail.com",
         "age" : 20,
-        "isPwnedDismissed": false
+        "isPwnedDismissed": false,
+        "score": 100
     },
 
     121314 : {
@@ -30,7 +32,8 @@ var dPins = {
         "accountNo" : "501121314151",
         "email" : "addisonchua@rocketmail.com",
         "age": 18,
-        "isPwnedDismissed": false
+        "isPwnedDismissed": false,
+        "score": 100
     }
 };
 
