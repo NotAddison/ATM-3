@@ -20,10 +20,13 @@ function ShowToast(message, color, icon="i", iconIntensity = 500, outlineIntensi
                 ${message}
             </p>
         </div>
-        `);
-    // Get the toast element
-    withdrawToast = document.getElementById("ToastMessage");
-    
-    // After 3 seconds, remove toast
-    setTimeout(function(){withdrawToast.remove() }, 3000);
-  }
+    `);
+
+    // Remove the toast after 5 seconds
+    toast = document.getElementById("ToastMessage");
+
+    setTimeout(function(){
+        console.log(">> Removing toast message")
+        toast.remove();
+    }, 2000);
+}
