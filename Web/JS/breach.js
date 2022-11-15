@@ -12,7 +12,7 @@ fetch("http://localhost:3000/auth/1/", options)
     email = response["email"]
     user = response["name"]
     encoded_email = encodeURIComponent(email)
-    CheckBreached(encoded_email)
+    CheckBreached(email)
 });
 
 // -- Check if user dismissed previous popup --
