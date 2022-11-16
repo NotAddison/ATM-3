@@ -11,7 +11,7 @@ import warnings
 import requests
 import plotly.express as px
 import plotly.graph_objects as go
-df = pd.read_csv('mockdata.csv')
+df = pd.read_csv('Python/ML/mockdata.csv')
 df.info()
 
 df.head()
