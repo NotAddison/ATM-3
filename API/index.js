@@ -15,7 +15,7 @@ var dPins = {
         "email" : "lol@gmail.com",
         "age" : 80,
         "isPwnedDismissed": false,
-        "score": 40
+        "score": 30
     },
 
     891011 : {
@@ -24,7 +24,7 @@ var dPins = {
         "email" : "JaneLikesPaul@gmail.com",
         "age" : 20,
         "isPwnedDismissed": false,
-        "score": 19
+        "score": 50
     },
 
     121314 : {
@@ -64,9 +64,12 @@ var gUser = "";
 var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
-var isHostage = false;
-var isCovered = false;
 var isRequestingBio = false;
+
+var isCovered = false; // Camera Covered Boolean
+var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
+var hasWeapon = false;
+var hasNegativeEmotion = false;
 
 
 // Middleware
@@ -101,6 +104,8 @@ app.get("/variables", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'hasNegativeEmotion': hasNegativeEmotion,
+        'hasWeapon': hasWeapon,
     });
 });
 
@@ -114,6 +119,8 @@ app.get("/reset", (req, res, next)=>{
     isHostage = false;
     isCovered = false;
     isRequestingBio = false;
+    hasNegativeEmotion = false;
+    hasWeapon = false;
 
     // Reset dPins
     ResetDPins();
@@ -127,6 +134,8 @@ app.get("/reset", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'hasNegativeEmotion': hasNegativeEmotion,
+        'hasWeapon': hasWeapon,
     });
     console.log(">> Reset variables");
 });
@@ -258,6 +267,11 @@ app.post('/auth/3/:hostage',(req, res) => {
     var { hostage } = req.params;
     isHostage = hostage.toLocaleLowerCase() === 'true'
 
+    if(isHostage){
+        hasWeapon = true;
+        hasNegativeEmotion = true;
+    }
+
     res.status(200).send({
         isHostage: isHostage
     });
@@ -266,6 +280,37 @@ app.post('/auth/3/:hostage',(req, res) => {
 app.get('/auth/3/',(req, res) => {
     res.status(200).send({
         isHostage: isHostage
+    });
+});
+
+// -- CV Weapon
+app.post('/auth/weapon/:bool',(req, res) => {
+    var { bool } = req.params;
+    hasWeapon = bool.toLocaleLowerCase() === 'true'
+
+    res.status(200).send({
+        hasWeapon: bool
+    });
+});
+
+app.get('/auth/weapon/',(req, res) => {
+    res.status(200).send({
+        hasWeapon: hasWeapon
+    });
+});
+
+// -- CV Emotion
+app.post('/auth/emotion/:bool',(req, res) => {
+    var { bool } = req.params;
+    hasNegativeEmotion = bool.toLocaleLowerCase() === 'true'
+    res.status(200).send({
+        hasNegativeEmotion: bool
+    });
+});
+
+app.get('/auth/emotion/',(req, res) => {
+    res.status(200).send({
+        hasNegativeEmotion: hasNegativeEmotion
     });
 });
 
@@ -325,7 +370,7 @@ app.post('/blacklist/modify/:item',(req, res) => {
     for (key in dPins){
         if (dPins[key]["accountNo"] == temp[0]){
                 // Modify score
-                dPins[key]["score"] = dPins[key]["score"] - parseInt(temp[1]); 
+                dPins[key]["score"] = dPins[key]["score"] + parseInt(temp[1]); 
                 // Send Response
                 res.status(200).send({
                     status : "successfully modified score",

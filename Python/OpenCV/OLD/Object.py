@@ -52,7 +52,7 @@ print(f">> Loaded {len(classes)} classes...")
 # VideoCapture(0)       : 0 = Default Camera
 # VideoCapture(1)       : 1 = External Camera
 # VideoCapture(addr)    : addr = Path to Video File
-video = cv2.VideoCapture(0)
+video = cv2.VideoCapture(1)
 loop_time = time() # Time Bookmark
 while True:
     ret,frame = video.read()
