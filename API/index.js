@@ -59,7 +59,7 @@ var dBiometric = {
     "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" : dPins[123456]
 }
 
-var aBlacklist = [501124515611];
+var aBlacklist = [501171904212];
 var gUser = "";
 var gPin = "";
 var gHash = "";
