@@ -2,7 +2,6 @@ console.log(">> [Running Blacklist.js]");
 var blackList;
 
 function CheckScore() {
-    accountNo = $("#transferAcc").val();
     const options = {method: 'GET', headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}};
     fetch(`http://localhost:3000/variables`, options)
     .then(response => response.json())
@@ -10,11 +9,8 @@ function CheckScore() {
         dict = response["dPins"];
         for (key in dict){
             if (dict[key]["accountNo"] === accountNo){
-                console.log("yes")
                 score = dict[key]["score"]
-                console.log(score)
                 if (score < 20){
-                    console.log("blacklist")
                     return Blacklist()
                 }
                 else if (score < 60){
@@ -47,9 +43,6 @@ function CheckScore() {
                 `   );
                     console.log(">> [Blacklist]: SHOWING POPUP");
                 }
-            }
-            else{
-                $("#transferScore").text(" ");
             }
         }
     })
