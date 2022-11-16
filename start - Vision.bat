@@ -8,6 +8,9 @@ start cmd /c "cd API && node index.js"
 Echo ">> Starting Python - Vision (Object & Emotion) Detection ..."
 start cmd /c "Python Python/OpenCV/Vision.py"
 
+@REM Start ML
+Echo ">> Starting Outlier Analysis (ML) . . ."
+start cmd /c "Python Python/ML/OutlierAnalysis.py"
 
 @REM Start Flutter
 Echo ">> Starting Flutter . . ."
@@ -18,3 +21,5 @@ Echo ">> Starting Web Server . . ."
 Echo "<!> Need to manually run live server"
 cd Web/HTML
 start "" "index.html"
+
+PAUSE

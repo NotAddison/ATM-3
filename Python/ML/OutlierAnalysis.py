@@ -20,7 +20,7 @@ fig = go.Figure(go.Scatter(
     x = df['Transaction Date'],
     y = df['Transaction Amount']
 ))
-fig.show()
+# fig.show()
 
 px.box(data_frame=df, x='Transaction Amount')
 

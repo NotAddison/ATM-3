@@ -10,6 +10,9 @@ start cmd /c "Python Python/OpenCV/ObjectV2.py"
 Echo ">> Starting Python (1/2) - Emotion Detection ..."
 start cmd /c "Python Python/OpenCV/EmotionV2_Cover.py"
 
+@REM Start ML
+Echo ">> Starting Outlier Analysis (ML) . . ."
+start cmd /c "Python Python/ML/OutlierAnalysis.py"
 
 @REM Start Flutter
 Echo ">> Starting Flutter . . ."
