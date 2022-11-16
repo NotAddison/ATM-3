@@ -15,7 +15,7 @@ var dPins = {
         "email" : "lol@gmail.com",
         "age" : 80,
         "isPwnedDismissed": false,
-        "score": 100
+        "score": 40
     },
 
     891011 : {
@@ -24,7 +24,7 @@ var dPins = {
         "email" : "JaneLikesPaul@gmail.com",
         "age" : 20,
         "isPwnedDismissed": false,
-        "score": 100
+        "score": 19
     },
 
     121314 : {
