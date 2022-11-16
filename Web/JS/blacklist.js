@@ -61,8 +61,36 @@ function CheckScore() {
                     return Blacklist()
                 }
                 else if (score < 60){
-                    console.log("sus")
-                    return CheckSuspicious()
+                    SendHook("[⚠] Suspicious Transfer Detected", "A user is transferring money to a suspicious account.")
+                    $("body").prepend(`
+                    <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BlacklistPopup">
+                        <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-gray-200">
+                            <div class="p-5">
+                            <!-- Header Text -->
+                            <div class="flex flex-col">
+                                <div class="flex content-center justify-center mb-2">
+                                    <img class="w-10" src="https://img.icons8.com/ios/512/delete-user-male.png"/>
+                                </div>
+                                <p class="text-black text-2xl text-center">Suspicious Account Detected</p> 
+                            </div>
+                                <hr class="border-t-4 grey mt-2">
+                                <br>
+                                <div class="text-black h-32 mb-5 text-center">
+                                    <p>Please be careful.</p>
+                                    <p>Your are currently transferring/withdrawing money regarding a suspicious account</p>
+                                    <br>
+                                    <p>Are you sure you want to continue?</p>
+                                </div>
+                                <div class="flex flex-wrap content-center justify-between">
+                                <button class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg" onclick="DismissBlacklist()">Dismiss</button>
+                                <button class="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-lg" onclick="ConfirmBlacklist()">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                `   );
+                    console.log(">> [Blacklist]: SHOWING POPUP");
+                    //console.log("sus")
+                    //return CheckSuspicious()
                 }
             }
             else{
