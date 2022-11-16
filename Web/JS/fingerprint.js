@@ -12,7 +12,6 @@ function CheckFingerprint () {
                 if (is) {
                     SendHook("[⚠] Fingerprint mismatched", "Fingerprint mismatch detected")
                     console.log(">> [Covered]: SHOWING POPUP");
-                    // Show POPUP Message to user : Inform them camera is covered & to remove cover
                     $("body").prepend(`
                         <div class="flex flex-wrap min-h-screen w-full content-center justify-center py-10 rounded-lg absolute" id="FingerprintPopup">
                             <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-red-400">
