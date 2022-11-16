@@ -124,7 +124,6 @@ while True:
             print("ObjectV2.py: API Connection Error")
             pass
     else:
-        print("")
         try:
             r = requests.post(f'http://localhost:3000/auth/weapon/{False}')   # Send Status to API
             # Webhook.SendHostageHook()   # Send Status to Webhook
