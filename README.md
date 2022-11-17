@@ -58,11 +58,21 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
       - Allow the user to verify the details before transferring money (also can prevent accidental typo).
     
 
-## Potential Validations
-> Necessary validations to improve user experience
-1. Validation for older people [❌]
-2. Validation for large withdrawals [❌]
-3. Validation towards potential scams [❌]
+## Setup
+> Dependencies for the project
+- **Python** => 3.9
+  - OpenCV (Custom CUDA Build) [pip install opencv-python]
+  - Deepface [pip install deepface]
+  - YoloV4
+  - Matplotlib & Pandas
+  - Requests
+- **Flutter**
+  - Android Studio SDK (Virtual Device)
+- **NodeJS** (NPM)
+  - Express
+  - Requests
+  - Python-Shell
+
 
 ## Misc
 > Naming Conventions, Git, References & Credits
