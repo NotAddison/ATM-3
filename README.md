@@ -1,6 +1,9 @@
 # PFD-2022
 Portfolio Development (2022) - **OCBC ATM 3.0**
-> Notion Link: https://not-addison.notion.site/PFD-Plan-b576caeb2021486b8e30266434d8c97d
+> Index Deployment: https://notaddison.github.io/PFD-2022/Web/HTML/Index/ <br>
+> Dashboard Deployment: https://notaddison.github.io/PFD-2022/Web/HTML/Dashboard/ <br>
+
+> Ideation Notion Link: https://not-addison.notion.site/PFD-Plan-b576caeb2021486b8e30266434d8c97d <br>
 
 <details>
 <summary><b>API Flow</b></summary>
