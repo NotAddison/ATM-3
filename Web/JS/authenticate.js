@@ -108,3 +108,8 @@ function VerifyValidity(){
         }
     })
 }
+
+// Dashboard Login
+function StaffAuth(){
+    // TODO : Staff Login
+}
