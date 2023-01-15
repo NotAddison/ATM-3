@@ -11,26 +11,47 @@ const PORT  = process.env.PORT || 3000;
 var dPins = {
     123456 : {
         "name" : "John Doe",
-        "accountNo" : "501123456789",
+        "accountNo" : "501124515611",
         "email" : "lol@gmail.com",
         "age" : 80,
-        "isPwnedDismissed": false
+        "isPwnedDismissed": false,
+        "score": 30
     },
 
     891011 : {
         "name" : "Jane Doe",
-        "accountNo" : "501891011121",
+        "accountNo" : "501171904212",
         "email" : "JaneLikesPaul@gmail.com",
         "age" : 20,
-        "isPwnedDismissed": false
+        "isPwnedDismissed": false,
+        "score": 50
     },
 
     121314 : {
         "name" : "Addison Chua",
-        "accountNo" : "501121314151",
+        "accountNo" : "501177064303",
         "email" : "addisonchua@rocketmail.com",
         "age": 18,
-        "isPwnedDismissed": false
+        "isPwnedDismissed": false,
+        "score": 100
+    },
+
+    151617 : {
+        "name" : "Paul M Lim",
+        "accountNo" : "501130862511",
+        "email" : "paully@gmail.com",
+        "age" : 18,
+        "isPwnedDismissed": false,
+        "score": 100
+    },
+
+    181920 : {
+        "name" : "Ling Ling",
+        "accountNo" : "501144703441",
+        "email" : "lingling@gmail.com",
+        "age": 92,
+        "isPwnedDismissed": false,
+        "score": 100
     }
 };
 
@@ -38,14 +59,17 @@ var dBiometric = {
     "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" : dPins[123456]
 }
 
-var aBlacklist = [];
+var aBlacklist = [501171904212];
 var gUser = "";
 var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
-var isHostage = false;
-var isCovered = false;
 var isRequestingBio = false;
+
+var isCovered = false; // Camera Covered Boolean
+var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
+var hasWeapon = false;
+var hasNegativeEmotion = false;
 
 
 // Middleware
@@ -72,6 +96,7 @@ app.get("/", (req, res, next)=>{
 // -------- [ GET variables ] --------
 app.get("/variables", (req, res, next)=>{
     res.status(200).json({
+        "dPins" : dPins,
         'gUser': gUser,
         'gPin': gPin,
         'gHash': gHash,
@@ -79,6 +104,8 @@ app.get("/variables", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'hasNegativeEmotion': hasNegativeEmotion,
+        'hasWeapon': hasWeapon,
     });
 });
 
@@ -92,8 +119,14 @@ app.get("/reset", (req, res, next)=>{
     isHostage = false;
     isCovered = false;
     isRequestingBio = false;
+    hasNegativeEmotion = false;
+    hasWeapon = false;
+
+    // Reset dPins
+    ResetDPins();
 
     res.status(200).json({
+        "dPins" : dPins,
         'gUser': gUser,
         'gPin': gPin,
         'gHash': gHash,
@@ -101,9 +134,17 @@ app.get("/reset", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'hasNegativeEmotion': hasNegativeEmotion,
+        'hasWeapon': hasWeapon,
     });
     console.log(">> Reset variables");
 });
+
+function ResetDPins(){
+    for (var key in dPins) {
+        dPins[key]["isPwnedDismissed"] = false;
+    }
+}
 
 
 // -------- [ Pin Authentication (1) ] --------
@@ -150,6 +191,7 @@ app.get('/auth/1/',(req, res) => {
 
 // -------- [ Biometric Authentication API (2) ] --------
 app.post('/auth/2/:hash',(req, res) => {
+    console.log(">> Biometric Authentication");
     var { hash } = req.params;
     // Missing Params
     if (!hash) return res.status(400).send({ status : "error", message : "Missing Params" });
@@ -161,7 +203,14 @@ app.post('/auth/2/:hash',(req, res) => {
             valid : true
         });
         gHash = hash; // Set global hash variable
-        gUser = dBiometric[hash][0]; // Set global user variable
+        gUser = dBiometric[hash][0]; // Set global user variable\
+
+        // Set timeout :
+        setTimeout(function(){
+            gHash = "";
+            console.log(">> Hash reset");
+            clearTimeout();
+        }, 20000); 
     }
     else{
         res.status(400).send({
@@ -178,10 +227,13 @@ app.post('/auth/2/:hash',(req, res) => {
 app.get('/auth/2/',(req, res) => {
     if (gHash != ""){
         res.status(200).send({
-            user : dBiometric[gHash][0],
-            email : dBiometric[gHash][1],
+            user : dBiometric[gHash],
+            email : dBiometric[gHash]["email"],
             valid : true
         });
+
+        // Set Pin Global Variable (Find Key using value)
+        gPin = Object.keys(dPins).find(key => dPins[key] === dBiometric[gHash]);
     }
     else{
         res.status(400).send({
@@ -215,6 +267,11 @@ app.post('/auth/3/:hostage',(req, res) => {
     var { hostage } = req.params;
     isHostage = hostage.toLocaleLowerCase() === 'true'
 
+    if(isHostage){
+        hasWeapon = true;
+        hasNegativeEmotion = true;
+    }
+
     res.status(200).send({
         isHostage: isHostage
     });
@@ -223,6 +280,37 @@ app.post('/auth/3/:hostage',(req, res) => {
 app.get('/auth/3/',(req, res) => {
     res.status(200).send({
         isHostage: isHostage
+    });
+});
+
+// -- CV Weapon
+app.post('/auth/weapon/:bool',(req, res) => {
+    var { bool } = req.params;
+    hasWeapon = bool.toLocaleLowerCase() === 'true'
+
+    res.status(200).send({
+        hasWeapon: bool
+    });
+});
+
+app.get('/auth/weapon/',(req, res) => {
+    res.status(200).send({
+        hasWeapon: hasWeapon
+    });
+});
+
+// -- CV Emotion
+app.post('/auth/emotion/:bool',(req, res) => {
+    var { bool } = req.params;
+    hasNegativeEmotion = bool.toLocaleLowerCase() === 'true'
+    res.status(200).send({
+        hasNegativeEmotion: bool
+    });
+});
+
+app.get('/auth/emotion/',(req, res) => {
+    res.status(200).send({
+        hasNegativeEmotion: hasNegativeEmotion
     });
 });
 
@@ -274,6 +362,24 @@ app.get('/blacklist/',(req, res) => {
     res.status(200).send({
         sus : aBlacklist
     });
+});
+
+app.post('/blacklist/modify/:item',(req, res) => {
+    var { item } = req.params;
+    temp = item.split(",");
+    for (key in dPins){
+        if (dPins[key]["accountNo"] == temp[0]){
+                // Modify score
+                dPins[key]["score"] = dPins[key]["score"] + parseInt(temp[1]); 
+                // Send Response
+                res.status(200).send({
+                    status : "successfully modified score",
+                    accountNo : dPins[key]["accountNo"],
+                    score : dPins[key]["score"]
+                });
+            break;
+        }
+    }
 });
 
 // -------- [ Covered Camera ] --------

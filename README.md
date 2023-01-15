@@ -1,6 +1,9 @@
 # PFD-2022
 Portfolio Development (2022) - **OCBC ATM 3.0**
-> Notion Link: https://not-addison.notion.site/PFD-Plan-b576caeb2021486b8e30266434d8c97d
+> Index Deployment: https://notaddison.github.io/PFD-2022/Web/HTML/Index/ <br>
+> Dashboard Deployment: https://notaddison.github.io/PFD-2022/Web/HTML/Dashboard/ <br>
+
+> Ideation Notion Link: https://not-addison.notion.site/PFD-Plan-b576caeb2021486b8e30266434d8c97d <br>
 
 <details>
 <summary><b>API Flow</b></summary>
@@ -53,13 +56,26 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 9.  ~~**Digital Numberpad**~~ 
 10. **Operator Dashboard** 
       - Summary of all ATM : [E.G: 3 Hostage situation detected]
+11. **Transfer Details** - Addison
+      - Show details of the transferee (Name, Address, etc).
+      - Allow the user to verify the details before transferring money (also can prevent accidental typo).
     
 
-## Potential Validations
-> Necessary validations to improve user experience
-1. Validation for older people [❌]
-2. Validation for large withdrawals [❌]
-3. Validation towards potential scams [❌]
+## Setup
+> Dependencies for the project
+- **Python** => 3.9
+  - OpenCV (Custom CUDA Build) [pip install opencv-python]
+  - Deepface [pip install deepface]
+  - YoloV4
+  - Matplotlib & Pandas
+  - Requests
+- **Flutter**
+  - Android Studio SDK (Virtual Device)
+- **NodeJS** (NPM)
+  - Express
+  - Requests
+  - Python-Shell
+
 
 ## Misc
 > Naming Conventions, Git, References & Credits
