@@ -67,6 +67,7 @@ var gIsOutlier = false;
 var isHostage = false;
 var isCovered = false;
 var isRequestingBio = false;
+var isEmergency = false;
 
 
 // Middleware
@@ -101,6 +102,7 @@ app.get("/variables", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isEmergency': isEmergency
     });
 });
 
@@ -114,6 +116,7 @@ app.get("/reset", (req, res, next)=>{
     isHostage = false;
     isCovered = false;
     isRequestingBio = false;
+    isEmergency = false;
 
     // Reset dPins
     ResetDPins();
@@ -127,6 +130,7 @@ app.get("/reset", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isEmergency': isEmergency
     });
     console.log(">> Reset variables");
 });
@@ -393,5 +397,13 @@ app.post('/pwned/dismiss/:bool',(req, res) => {
     dPins[gPin]["isPwnedDismissed"] = bool;
     res.status(200).send({
         dismiss : dPins[gPin]["isPwnedDismissed"]
+    });
+});
+
+// -------[ Emergency Mode ]-------
+app.post('/emergency/', (req, res) => {
+    isEmergency = !isEmergency; // Set global pin variable
+    res.status(200).json({
+        valid : isEmergency
     });
 });
