@@ -20,7 +20,6 @@ cls
 @ REM Start Menu
 :menu
 cd /d %~dp0
-echo dir
 Echo off
 cls
 Echo Select a mode to start:
@@ -65,11 +64,11 @@ goto menu
 
 @REM Start Emulator
 :startEmulator
+cls
 Echo off
 cd C:\Users\%username%\AppData\Local\Android\sdk\tools
 emulator -list-avds
 set /p android=Enter emulator name:
-cls
 Echo Selected: %android%
 Echo Starting Emulator . . .
 cd /d C:\Users\%username%\AppData\Local\Android\Sdk\emulator
