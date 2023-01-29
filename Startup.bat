@@ -46,21 +46,56 @@ if %mode%==7 goto exit
 Echo off
 Echo Starting API Server . . .
 start cmd /c "cd API && node index.js"
-goto menu
+goto exit
+
 
 @REM Create start Python function
 :startPython
 Echo off
-Echo Starting Python - Vision (Object & Emotion) Detection . . .
+Echo Starting Python - Vision Detection . . .
 start cmd /c "Python Python/OpenCV/Vision.py"
-goto menu
+goto exit
+
 
 @REM Create start ML function
 :startML
 Echo off
 Echo Starting Outlier Analysis (ML) . . .
 start cmd /c "Python Python/ML/OutlierAnalysis.py"
-goto menu
+goto exit
+
+
+@REM Create start Flutter function
+:startFlutter
+Echo off
+Echo Starting Flutter . . .
+pause
+start cmd /c "cd App/pfd_ocbc && flutter run lib/main.dart"
+goto exit
+
+
+@REM Create start Web function
+:startWeb
+Echo off
+Echo Starting Web Server . . .
+Echo Need to manually run live server
+cd Web/HTML/Index
+start "" "index.html"
+cd Web/HTML/Dashboard
+start "" "index.html"
+goto exit
+
+
+@REM Create start All function
+:startAll
+Echo off
+Echo Starting All . . .
+call :startAPI
+call :startPython
+call :startML
+call :startFlutter
+call :startWeb
+goto exit
 
 @REM Start Emulator
 :startEmulator
@@ -74,36 +109,6 @@ Echo Starting Emulator . . .
 cd /d C:\Users\%username%\AppData\Local\Android\Sdk\emulator
 start cmd /c "emulator -avd %android%"
 goto menu
-
-
-@REM Create start Flutter function
-:startFlutter
-Echo off
-Echo Starting Flutter . . .
-pause
-start cmd /c "cd App/pfd_ocbc && flutter run lib/main.dart"
-goto menu
-
-@REM Create start Web function
-:startWeb
-Echo off
-Echo Starting Web Server . . .
-Echo "Need to manually run live server"
-cd Web/HTML/Index
-start "" "index.html"
-cd Web/HTML/Dashboard
-start "" "index.html"
-goto menu
-
-@REM Create start All function
-:startAll
-Echo off
-Echo "Starting All . . ."
-call :startAPI
-call :startPython
-call :startML
-call :startFlutter
-call :startWeb
 
 
 :exit
