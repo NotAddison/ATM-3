@@ -1,0 +1,4 @@
+requests
+geocoder
+discord_webhook
+deepface
