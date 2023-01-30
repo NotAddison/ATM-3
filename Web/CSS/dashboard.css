@@ -44,15 +44,17 @@ div.scroll::-webkit-scrollbar {
     /* https://codepen.io/sosuke/pen/Pjoqqp */
 }
 
+.atm-danger{
+    /* filter red */
+    filter: invert(61%) sepia(55%) saturate(1139%) hue-rotate(312deg) brightness(78%) contrast(136%) !important;
+}
+
 .atm-offline{
     /* filter light gray */
     filter: invert(14%) sepia(11%) saturate(0%) hue-rotate(209deg) brightness(98%) contrast(93%) !important;
 }
 
-.atm-danger{
-    /* filter red */
-    filter: invert(61%) sepia(55%) saturate(1139%) hue-rotate(312deg) brightness(78%) contrast(136%) !important;
-}
+
 
 
 

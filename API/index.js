@@ -71,6 +71,7 @@ var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 var hasWeapon = false;
 var hasNegativeEmotion = false;
 
+var ATMs = []
 
 // Middleware
 app.use(express.json());
@@ -439,4 +440,22 @@ app.post('/pwned/dismiss/:bool',(req, res) => {
     res.status(200).send({
         dismiss : dPins[gPin]["isPwnedDismissed"]
     });
+});
+
+
+// -------- [ ATM Status ] --------
+app.post('/atm', (req, res) => {
+    response = req.body;
+    atmID = response["atmID"];
+
+    if ((atmID != "" || atmID != undefined) && !(ATMs.includes(atmID))){
+        ATMs.push(response["atmID"]);
+        console.log(`>> ATM - ${atmID} is online`);
+        res.status(200).send({ "ATMs" : ATMs });
+    }
+    else{ res.status(400).send({ "ATMs" : ATMs });}
+});
+
+app.get('/atm', (req, res) => {
+    res.status(200).send({ "ATMs" : ATMs });
 });

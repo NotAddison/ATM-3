@@ -4,10 +4,43 @@ async function GetLogs(){
     // HTML Inject into Log area
 }
 
-async function GetATM(){
+async function GetATMStatus(){
     console.log(">> Retrieving ATM Status...")
-    // HTTP Request to local API (Returns Object)
-    // Get ATM Status
+    var url = "http://localhost:3000/atm";
+    response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    response = await response.json();
+
+    $('button[id^="atm"]').each(function () {
+        var id = $(this).children().first().attr("id");
+        id = parseInt(id.split("-")[1]);
+
+        if (response["ATMs"].includes(id)){ DisplayATMStatus(id, 0); }
+        else{ DisplayATMStatus(id, 1); }
+    });
+
+
+    // for (var i = 0; i < response["ATMs"].length; i++){
+    //     atm = response["ATMs"][i];
+    //     DisplayATMStatus(atm, "atm-offline");
+    // }
+
+    return response["ATMs"];
+}
+
+function DisplayATMStatus(id, status){
+    css = ''
+    if (status == 0){ css = 'icon-white'; }
+    else if (status == 1){ css = 'atm-offline'; }
+    else if (status == 2){ css = 'atm-danger'; }
+
+    // Reset all classes
+    $(`#atm-${id}`).removeClass("atm-online atm-offline atm-danger");
+    $(`#atm-${id}`).addClass(css);
 }
 
 async function GetATMFeed(){
@@ -18,17 +51,12 @@ async function GetATMFeed(){
 }
 
 function AtmButtonPressed(id){
-    console.log(">> Button Pressed: " + id);
-
-    // Check if atm is online (query API)
-    if (id == 2729){
-        // Redirect to ATM Page
-        window.location.href = "atm.html";
-    }
-    else{
-        ShowToast(`ATM ${id} is currently offline...`, "red", icon="X", iconIntensity = 500, outlineIntensity = 500 ,isCashToast = false, isSuccessful = false)
-    }
-
+    online_atms = GetATMStatus();
+    online_atms.then(function(result){
+        online_atms = result;
+        if (online_atms.includes(id)) window.location.href = "atm.html";
+        else ShowToast(`ATM ${id} is currently offline...`, "red", icon="X", iconIntensity = 500, outlineIntensity = 500 ,isCashToast = false, isSuccessful = false);
+    });
 }
 
 // If page is on "main.html" for dashboard, call functions on load
@@ -39,7 +67,8 @@ $(document).ready(function(){
 
     if(pageName == "main.html"){
         GetLogs();
-        GetATM();
+        GetATMStatus();
+        setInterval(GetATMStatus, 5000);
     }
 
     if (pageName == "atm.html"){
