@@ -69,12 +69,16 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
   - YoloV4
   - Matplotlib & Pandas
   - Requests
+  - Tensorflow-GPU (https://www.tensorflow.org/install/source#gpu)
 - **Flutter**
   - Android Studio SDK (Virtual Device)
 - **NodeJS** (NPM)
   - Express
   - Requests
   - Python-Shell
+- **CUDA Toolkit**
+  - CUDA (Version 11.2)
+  - cuDNN (Version 8.1.0)
 
 
 ## Misc
