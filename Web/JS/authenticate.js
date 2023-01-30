@@ -111,5 +111,49 @@ function VerifyValidity(){
 
 // Dashboard Login
 function StaffAuth(){
-    // TODO : Staff Login
+    // Get Staff ID
+    var staff_id = $('#StaffID').val();
+    var staff_pass = $('#StaffPassword').val();
+
+    // Check if staff_id is valid
+    console.log(`Staff ID: ${staff_id}`)
+    console.log(`Staff Pin: ${staff_pass}`)
+
+    const payload = {
+        "staff_id": staff_id,
+        "staff_pass": parseInt(staff_pass)
+    }
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify(payload)
+    };
+
+    fetch(`http://localhost:3000/auth/staff/`, options)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if (data["valid"]){
+                // Valid
+                ShowToast('Staff Authentication Successful!', 'green', '✅', 0)
+                SendHook("[🔓] Staff Authenticated", `Staff ID: ${staff_id} \nStaff Name: ${data["name"]}`)
+                // [DELAY : 1 Seconds] :: Wait for webhook to send before redirect.
+                window.setTimeout(function(){
+                    window.location.href = "dashboard.html";
+                }, 1000);
+            }
+            else{
+                // Invalid
+                ShowToast('Staff Authentication Failed!', 'red', '❌', 0)
+                SendHook("[❌] Staff Authentication Failed", `Staff ID: ${staff_id}`)
+            }
+        })
+        .catch(error => {
+            console.error(error)
+        });
 }

@@ -59,6 +59,10 @@ var dBiometric = {
     "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" : dPins[123456]
 }
 
+var dStaff = {
+    'Addison' : '123456'
+}
+
 var aBlacklist = [501171904212];
 var gUser = "";
 var gPin = "";
@@ -71,7 +75,7 @@ var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 var hasWeapon = false;
 var hasNegativeEmotion = false;
 
-var ATMs = []
+var ATMs = [];
 
 // Middleware
 app.use(express.json());
@@ -190,6 +194,11 @@ app.get('/auth/1/',(req, res) => {
     
 });
 
+
+
+
+
+
 // -------- [ Biometric Authentication API (2) ] --------
 app.post('/auth/2/:hash',(req, res) => {
     console.log(">> Biometric Authentication");
@@ -263,7 +272,28 @@ app.post('/auth/2/request/:bool',(req, res) => {
     });
 });
 
-// -------- [ CV (Object) Authentication API (2) ] --------
+
+// -------- [ Staff Authentication API (2) ] --------
+app.post('/auth/staff/', (req, res) => {
+    response = req.body;
+    staff_id = response["staff_id"];
+    staff_pass = response["staff_pass"];
+
+    if (staff_id in dStaff){
+        if (dStaff[staff_id] == staff_pass) res.status(200).send({ valid : true });
+        else res.status(200).send({ valid : false, message: "Incorrect Password" });
+    }
+    else {
+        res.status(200).send({ valid : false, message: "Staff ID not found" });
+    }
+});
+
+
+
+
+
+
+// -------- [ CV (Object) Detection (2) ] --------
 app.post('/auth/3/:hostage',(req, res) => {
     var { hostage } = req.params;
     isHostage = hostage.toLocaleLowerCase() === 'true'
@@ -314,6 +344,11 @@ app.get('/auth/emotion/',(req, res) => {
         hasNegativeEmotion: hasNegativeEmotion
     });
 });
+
+
+
+
+
 
 // -------- [ Outlier Analysis ] --------
 app.post('/outlier/:bool', (req, res) => {
@@ -383,6 +418,11 @@ app.post('/blacklist/modify/:item',(req, res) => {
     }
 });
 
+
+
+
+
+
 // -------- [ Covered Camera ] --------
 app.post('/covered/:bool', (req, res) => {
     var { bool } = req.params;
@@ -398,6 +438,11 @@ app.get('/covered/',(req, res) => {
         valid : isCovered
     });
 });
+
+
+
+
+
 
 // -------- [ HaveIBeenPwned API Request ] --------
 app.get('/pwned/check/:email', (req, res) => {
@@ -441,6 +486,11 @@ app.post('/pwned/dismiss/:bool',(req, res) => {
         dismiss : dPins[gPin]["isPwnedDismissed"]
     });
 });
+
+
+
+
+
 
 
 // -------- [ ATM Status ] --------
