@@ -70,15 +70,37 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
   - Matplotlib & Pandas
   - Requests
   - Tensorflow-GPU (https://www.tensorflow.org/install/source#gpu)
+
 - **Flutter**
   - Android Studio SDK (Virtual Device)
+
 - **NodeJS** (NPM)
   - Express
   - Requests
   - Python-Shell
+  
 - **CUDA Toolkit**
   - CUDA (Version 11.2)
   - cuDNN (Version 8.1.0)
+
+<br>
+<details>
+<summary><b>OpenCV CUDA Build Properties</b></summary>
+- CMAKE Options: <br>
+- (optional) PYTHON3_PACKAGE_PATH <br>
+- WITH_CUDA <br>
+- BUILD_opencv_dnn <br>
+- OPENCV_DNN_CUDA <br>
+- ENABLE_FAST_MATH <br>
+- BUILD_opencv_world <br>
+- OPENCV_EXTRA_MODULES_PATH (set path to opencv contrib folder "contrib/modules") <br>
+- (AFTER CONGIRUATION) <br>
+- CUDA_FAST_MATH <br>
+- CUDA_ARCH_BIN (set gpu architechture: https://en.wikipedia.org/wiki/CUDA)
+- config (set to Release)
+<br><br>
+</details>
+<br>
 
 
 ## Misc
