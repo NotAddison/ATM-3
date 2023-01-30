@@ -65,7 +65,7 @@ function AtmButtonPressed(id){
 $(document).ready(function(){
     pageName = window.location.pathname.split("/").pop();
 
-    if(pageName == "main.html"){
+    if(pageName == "dashboard.html"){
         GetLogs();
         GetATMStatus();
         setInterval(GetATMStatus, 5000);
