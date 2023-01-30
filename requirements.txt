@@ -3,4 +3,4 @@ requests
 geocoder
 discord_webhook
 tensorflow-gpu==2.10.1
-deepface
+deepface==0.0.75
