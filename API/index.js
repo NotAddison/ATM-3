@@ -76,6 +76,7 @@ var hasWeapon = false;
 var hasNegativeEmotion = false;
 
 var ATMs = [];
+var isCVOnline = false;
 
 // Middleware
 app.use(express.json());
@@ -111,6 +112,8 @@ app.get("/variables", (req, res, next)=>{
         'isRequestingBio': isRequestingBio,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'ATMs': ATMs,
+        'isCVOnline': isCVOnline
     });
 });
 
@@ -126,6 +129,9 @@ app.get("/reset", (req, res, next)=>{
     isRequestingBio = false;
     hasNegativeEmotion = false;
     hasWeapon = false;
+    ATMs = [];
+    isCVOnline = false;
+
 
     // Reset dPins
     ResetDPins();
@@ -141,6 +147,8 @@ app.get("/reset", (req, res, next)=>{
         'isRequestingBio': isRequestingBio,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'ATMs': ATMs,
+        'isCVOnline': isCVOnline,
     });
     console.log(">> Reset variables");
 });
@@ -342,6 +350,21 @@ app.post('/auth/emotion/:bool',(req, res) => {
 app.get('/auth/emotion/',(req, res) => {
     res.status(200).send({
         hasNegativeEmotion: hasNegativeEmotion
+    });
+});
+
+
+// Check if openCV is online
+app.post('/cv/',(req, res) => {
+    isCVOnline = !isCVOnline;
+    res.status(200).send({
+        "CVOnline": isCVOnline
+    });
+});
+
+app.get('/cv/',(req, res) => {
+    res.status(200).send({
+        "CVOnline": isCVOnline
     });
 });
 
