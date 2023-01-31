@@ -65,7 +65,7 @@ model.setInputParams(size=(512, 512), scale=1/255)
 
 # > Emotion Recognition <
 print(">> Loading Emotion Recognition Models...")
-cascadeDir = "C:\Python310\Lib\site-packages\cv2\data\haarcascade_frontalface_default.xml"
+cascadeDir = r"c:\users\addison\appdata\local\packages\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\localcache\local-packages\python310\site-packages\cv2\data\haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadeDir)
 
 # --- ⚙ Load Classes ⚙ ---
@@ -87,7 +87,7 @@ def ObjectDetection(frame):
             return classes[classid] in danger_item
 
 def EmotionRecognition(frame):
-    result = DeepFace.analyze(frame, actions = ['emotion'], enforce_detection=False, prog_bar=False)
+    result = DeepFace.analyze(frame, actions = ['emotion'], enforce_detection=False)
     # print(result['dominant_emotion'])
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -150,9 +150,9 @@ while True:
     cv2.putText(frame, f"HasWeapon: {hasWeapon}", (20, 50), font, font_scale, text_colour, thickness)
     cv2.putText(frame, f"isHostage: {(hasWeapon and hasNegativeEmotion) == True}", (20, 70), font, font_scale, text_colour, thickness)
     cv2.putText(frame, f"isCovered: {isCovered}", (20, 90), font, font_scale, text_colour, thickness)
-    # cv2.putText(frame, f"API (covered) Request Sent: {isSentCovered}", (20, height-60), font, font_scale, text_colour, thickness)
+    cv2.putText(frame, f"API (covered) Request Sent: {isSentCovered}", (20, height-60), font, font_scale, text_colour, thickness)
     cv2.putText(frame, f"API (hostage) Request Sent: {isSentHostage}", (20, height-40), font, font_scale, text_colour, thickness)
-    print(f"[Vision.py] >> HasWeapon: {hasWeapon} | NegativeEmotions: {hasNegativeEmotion} | isSentHostage: {isSentHostage} | isSentCovered: {isSentCovered}")
+    # print(f"[Vision.py] >> HasWeapon: {hasWeapon} | NegativeEmotions: {hasNegativeEmotion} | isSentHostage: {isSentHostage} | isSentCovered: {isSentCovered}")
 
     # Display Output
     cv2.imshow("Object & Emotion Detection", frame)
