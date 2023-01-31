@@ -212,6 +212,9 @@ while True:
         break 
 
 UpdateStatus()
+# Delete Feed
+os.remove("feed.jpg")
+
 video.release()
 cv2.destroyAllWindows()
         
