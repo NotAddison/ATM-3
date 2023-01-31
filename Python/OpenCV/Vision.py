@@ -142,6 +142,9 @@ loop_time = time() # Time Bookmark (FOR FPS)
 # Update API, change to online
 UpdateStatus()
 
+hasWeapon = False
+hasNegativeEmotion = False
+
 # > Main Loop
 while True:
     # > Read Video Frame
