@@ -58,66 +58,89 @@
 </head>
 
 <body>
-  <div class="flex flex-wrap min-h-screen w-full content-center justify-center">
-    <video autoplay loop muted class="absolute w-auto min-w-full min-h-full max-w-none" id="bg-video" style="width:100%; height:100%; object-fit: cover; z-index: -1;">
-      <source src="C:\Poly Sem 4\PFD\Clone\PFD-2022\Assets\Videos\background.mp4" type="video/mp4" />Your browser does not support the video tag.
-    </video>
-      <!-- Container -->
-      <div>
-        <!-- Left Column -->
-        <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md bg-white/30" style="border-radius: 50px; position:relative; right:600px; top:-25px; width: 60rem; height: 45rem;">
-          <div class="w-72">
-            <p class="text-black text-white font-bold text-3xl" style="position:absolute; right:138px; top:10px; font-size: 40px;"><br> OCBC - ATM 2821</p>
-            <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-xl bg-black/30" style="border-radius: 50px; position:absolute; left:750px; top:70px; width: 45rem; height: 30rem;">
-              <!-- Header Text -->
-              <img src="C:\Poly Sem 4\PFD\Clone\PFD-2022\Assets\Images\Dashboard\Status.svg" alt="Status" width="50" height="33" style="position:absolute; left:50px; top:20px;"> 
-              <p class="text-black text-white font-bold text-3xl font-size: 25px;" style="position:absolute; left:110px; top:32px;"> Status </p>
-              <p class="text-black text-white font-bold font-size: 15px;" style="position:absolute; left:55px; top:82px;"> IP: XXXXXXXXXX</p>
-              <p class="text-black text-white font-bold font-size: 15px;" style="position:absolute; left:55px; top:112px;"> Lat,Lon: XXXXXXXXXX</p>
-              <p class="text-black text-white font-bold font-size: 15px;" style="position:absolute; left:55px; top:142px;"> Location: XXXXXX</p>
-              <p class="text-black text-white font-bold font-size: 15px;" style="position:absolute; left:55px; top:172px;"> Status: XXXXXX</p>
+  <video autoplay loop muted class="absolute w-auto min-w-full min-h-full max-w-none" id="bg-video" style="width:100%; height:100%; object-fit: cover; z-index: -1;">
+    <source src="../../../Assets/Videos/background.mp4" type="video/mp4" />Your browser does not support the video tag.
+  </video>
+
+    <div class="flex flex-wrap flex-row h-screen py-5">
+        <!-- Left Bar -->
+        <div class="flex basis-4/12 pr-5">
+            <div class="flex flex-wrap flex-col backdrop-blur-3xl w-full p-5 rounded-r-xl justify-between" style="border-radius: 50px;">
+                <h1 class="text-3xl text-white text-center font-bold" style="font-size: 40px;">OCBC - Dashboard</h1>
+
+                <!-- Add Stuff Here -->
+                <div class="backdrop-blur-3xl bg-black/20 rounded-lg shadow-lg p-5 h-[400px]" style="border-radius: 50px;">
+                    <div class="flex flex-row content-center mb-5">
+                        <img src="../../../Assets/Images/Dashboard/Terminal.svg" class="icon icon-white">
+                        <h1 class="text-xl text-white font-bold">Hello - {NAME} </h1>
+                    </div>
+                    <div class="flex flex-col text-gray-300 h-3/4 scroll console">
+                        > WebCam Stuff
+                    </div>
+                </div>
+                
+                <!-- Console Card -->
+                <div class="backdrop-blur-3xl bg-black/40 rounded-lg shadow-lg p-5 h-[350px]" style="border-radius: 50px;">
+                    <div class="flex flex-row content-center mb-5">
+                        <img src="../../../Assets/Images/Dashboard/Terminal.svg" class="icon icon-white">
+                        <h1 class="text-xl text-white font-bold">ATM Logs</h1>
+                    </div>
+                    <div class="flex flex-col text-gray-300 h-3/4 scroll console">
+                        <p>[>] This is a console message</p>
+                        <p>[>] This is a console message</p>
+                        <p>[>] This is a console message</p>
+                        <p>[>] This is a console message</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right content -->
+        <div class="flex flex-wrap py-5 h-full basis-8/12 scroll p-2 justify-space-evenly" style="justify-content:space-evenly;">
+          <div class="backdrop-blur-3xl bg-black/40 rounded-lg shadow-lg p-5 h-[30rem] w-[45rem] gap-x-12" style="border-radius: 50px; margin-top: 100px;">
+            <div class="flex flex-row content-center mb-5">
+                <img src="../../../Assets/Images/Dashboard/Status.svg" class="icon icon-white">
+                <h1 class="text-xl text-white font-bold"> Status </h1>
+            </div>
+            <div class="flex flex-col text-gray-300 h-3/4 scroll console">
+                <p> IP: XXXXXXXXXX</p>
+                <p> Lat,Lon: XXXXXXXXXX</p>
+                <p> Location: XXXXXX</p>
+                <p> Status: XXXXXX</p>
             </div>
           </div>
-          <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-xl bg-black/30" style="border-radius: 50px; position:absolute; left:100px; top:70px; width: 40rem; height: 30rem;">
-            <!-- Header Text -->
-            <p class="text-black text-white font-bold text-3xl font-size: 5px;"> - Webcam Feed -</p>
+          <div class="backdrop-blur-3xl bg-black/40 rounded-lg shadow-lg p-5 h-[30rem] w-[45rem]" style="border-radius: 50px;  margin-top: 100px;">
+            <div class="flex flex-row content-center mb-5">
+                <img src="../../../Assets/Images/Dashboard/User.svg" class="icon icon-white">
+                <h1 class="text-xl text-white font-bold"> User </h1>
+            </div>
+            <div class="flex flex-col text-gray-300 h-3/4 scroll console">
+                <p> Name: XXXXXXXXXX</p>
+                <p> ID: XXXXXXXXXX</p>
+                <p> Acc Status: XXXXXX</p>
+                <p> Breached: XXXXXX</p>
+                <p> Held Hostage: XXXXXX</p>
+            </div>
           </div>
-          <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-xl bg-black/30" style="border-radius: 50px; position:absolute; left:1300px; top:70px; width: 45rem; height: 30rem;">
-            <!-- Header Text -->
-            <img src="C:\Poly Sem 4\PFD\Clone\PFD-2022\Assets\Images\Dashboard\User.svg" alt="Status" width="50" height="33" style="position:absolute; left:50px; top:20px;">
-            <p class="text-black text-white font-bold text-3xl font-size: 25px;" style="position:absolute; left:110px; top:32px;"> User </p>
-              <p class="text-black text-white font-bold font-size: 15px;" style="position:absolute; left:55px; top:82px;"> Name: XXXXXXXXXX</p>
-              <p class="text-black text-white font-bold font-size: 15px;" style="position:absolute; left:55px; top:112px;"> ID: XXXXXXXXXX</p>
-              <p class="text-black text-white font-bold font-size: 15px;" style="position:absolute; left:55px; top:142px;"> Acc Status: XXXXXX</p>
-              <p class="text-black text-white font-bold font-size: 15px;" style="position:absolute; left:55px; top:172px;"> Breached: XXXXXX</p>
-              <p class="text-black text-white font-bold font-size: 15px;" style="position:absolute; left:55px; top:232px;"> Held Hostage: XXXXXX</p>
+          <!-- HTML Card -->
+          <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-xl bg-black/30 gap-x-12" style="border-radius: 50px; width: 100rem; height: 30rem;  margin-top: 120px;">
+            <button class="hover:scale-105" onsclick="">  
+              <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30" style="border-radius: 50px; width: 22rem; height: 22rem;">
+                  <span class="text-white">-- Logout User --</span>
+              </div>
+            </button>
+            <button class="hover:scale-105" onclick="a">
+              <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30" style="border-radius: 50px; width: 22rem; height: 22rem;">
+                  <span class="text-white">-- SOS Mode --</span>
+              </div>
+            </button>
+            <button class="hover:scale-105" onclick="C">
+              <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30" style="border-radius: 50px; width: 22rem; height: 22rem;">
+                  <span class="text-white">-- Change User Stats --</span>
+              </div>
+            </button>
           </div>
         </div>
-        <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-xl bg-black/30" style="border-radius: 50px; position:relative; right:600px; top:-10px; width: 60rem; height: 45rem;">
-            <img src="C:\Poly Sem 4\PFD\Clone\PFD-2022\Assets\Images\Dashboard\Terminal.svg" alt="Status" width="50" height="33" style="position:absolute; left:30px; top:20px;">
-            <p class="text-black text-white font-bold text-3xl font-size: 25px;" style="position:absolute; left:95px; top:35px;"> ATM Logs </p>
-            <p class="text-black text-white font-bold font-size: 25px;" style="position:absolute; left:35px; top:75px;"> [>] 2821 - User Login </p>
-            <p class="text-black text-white font-bold font-size: 25px;" style="position:absolute; left:35px; top:105px;"> [>] 2821 - User Login </p>
-            <p class="text-red text-red font-bold font-size: 25px;" style="color:red; position:absolute; left:35px; top:135px;"> [>] 2821 - Hostage Situation Detected </p>
-        </div>
-        <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-xl bg-black/30" style="border-radius: 50px; position:absolute; left:800px; top:622px; width: 100rem; height: 30rem;">
-          <button class="" onsubmit="">  
-            <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30" style="border-radius: 50px; position:absolute; left:50px; top:43px; width: 22rem; height: 22rem;">
-                <span class="text-white">-- Logout User --</span>
-            </div>
-          </button>
-          <button class="" onsubmit="a">
-            <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30" style="border-radius: 50px; position:absolute; left:385px; top:43px; width: 22rem; height: 22rem;">
-                <span class="text-white">-- SOS Mode --</span>
-            </div>
-          </button>
-          <button class="" onsubmit="C">
-            <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30" style="border-radius: 50px; position:absolute; left:725px; top:43px; width: 22rem; height: 22rem;">
-                <span class="text-white">-- Change User Stats --</span>
-            </div>
-          </button>
-        </div>
-      </div>
-  </div>
-  </div>
+    </div>
+    <script src="" async defer></script>
 </body>
