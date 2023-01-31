@@ -4,57 +4,9 @@
   <title>Dashboard - ATM View</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="output.css">
+  <link rel="stylesheet" href="../../CSS/dashboard.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            clifford: '#da373d',
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 550px}
-    
-    /* Set gray background color and 100% height */
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-    }
-        
-    /* On small screens, set height to 'auto' for the grid */
-    @media screen and (max-width: 767px) {
-      .row.content {height: auto;} 
-    }
-
-    /* Style the video: 100% width and height to cover the entire window */
-    #myVideo {
-      right: 0;
-      bottom: 0;
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-    }
-
-    /* Add some content at the bottom of the video/page */
-    .content {
-      position: fixed;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      color: #f1f1f1;
-      width: 100%;
-      padding: 20px;
-    }
-
-  </style>
 </head>
 
 <body>
@@ -86,6 +38,7 @@
                       <h1 class="text-xl font-bold">ATM Logs</h1>
                   </div>
                   <div class="flex flex-col text-gray-300 h-3/4 scroll console">
+                      <p>[>] This is a console message</p>  
                       <p>[>] This is a console message</p>
                       <p>[>] This is a console message</p>
                       <p>[>] This is a console message</p>
@@ -97,6 +50,13 @@
                       <p>[>] This is a console message</p>
                       <p>[>] This is a console message</p>
                       <p>[>] This is a console message</p>
+                      <p>[>] This is a console message</p>
+                      <p>[>] This is a console message</p>
+                      <p>[>] This is a console message</p>
+                      <p>[>] This is a console message</p>
+                      <p>[>] This is a console message</p>
+                      <p>[>] This is a console message</p>
+
                   </div>
               </div>
 
@@ -104,9 +64,10 @@
       </div>
 
         <!-- Right content -->
+        <!-- NOTE: Rewrite cause using  -->
         <div class="flex flex-wrap py-5 h-full basis-8/12 scroll p-2 justify-space-evenly" style="justify-content:space-evenly;">
           <div class="backdrop-blur-3xl bg-black/40 rounded-3xl shadow-lg p-10 h-[30rem] w-[45rem] gap-x-12" style="margin-top: 100px;">
-            <div class="flex flex-row content-center mb-5">
+            <div class="flex flex-row content-center mb-5 test">
                 <img src="../../../Assets/Images/Dashboard/Status.svg" class="icon icon-white">
                 <h1 class="text-xl text-white font-bold"> Status </h1>
             </div>
@@ -149,6 +110,7 @@
             </button>
           </div>
         </div>
+       
     </div>
     <script src="" async defer></script>
 </body>
