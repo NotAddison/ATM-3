@@ -119,6 +119,13 @@ def CoverCheck(img):
     if stddev[0,0] + 5 < default_sharpness: return True
     else: return False
 
+
+def SendFeed(frame):
+    print(">> Sending Feed...")
+    cv2.imwrite("feed.jpg", frame)
+
+
+    
 # --- ⚙ Main ⚙ ---
 # > Camera Setup [0 = Default Camera | 1 = External Camera | addr = Path to Video File]
 video = cv2.VideoCapture(cam)
@@ -137,6 +144,7 @@ while True:
 
     # Check if camera is covered
     isCovered = CoverCheck(frame)
+    SendFeed(frame)
 
     # Detections
     hasWeapon = ObjectDetection(frame)
