@@ -60,12 +60,6 @@ async function GetATMStatus(){
         else{ DisplayATMStatus(id, 1); }
     });
 
-
-    // for (var i = 0; i < response["ATMs"].length; i++){
-    //     atm = response["ATMs"][i];
-    //     DisplayATMStatus(atm, "atm-offline");
-    // }
-
     return response["ATMs"];
 }
 
@@ -129,6 +123,36 @@ async function GetATMFeed(){
 
 }
 
+function GetATMInfo(){
+    url = "http://localhost:3000/dashboard/atm"
+    options = { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+
+    fetch(url, options)
+    .then(response => response.json())
+    .then(response => {
+        $('#IPAddress').text(response["IP"]);
+        $('#Lat').text(response["Lat"]);
+        $('#Long').text(response["Long"]);
+        $('#ATMStatus').text(response["HeldHostage"]);
+
+        $('#UserName').text(response["Name"]);
+        $('#UserEmail').text(response["Email"]);
+        $('#UserAge').text(response["Age"]);
+
+        $('#UserBreached').text(response["Pwned"]);
+        $('#AccStatus').text(response["Blacklisted"]);
+        $('#AccScore').text(response["score"]);
+
+        // Add class
+        if (response["HeldHostage"] == true){ $('#ATMStatus').addClass("text-red-500"); }
+        if (response["Blacklisted"] == true){ $('#AccStatus').addClass("text-red-500"); }
+        if (response["HeldHostage"] == false){ $('#ATMStatus').addClass("text-green-500"); }
+        if (response["Pwned"] == true){ $('#UserBreached').addClass("text-red-500"); }
+        if (response["score"] < 50){ $('#AccScore').addClass("text-red-500"); }
+        else ($('#AccScore').addClass("text-green-400"))
+    });
+}
+
 function AtmButtonPressed(id){
     online_atms = GetATMStatus();
     online_atms.then(function(result){
@@ -163,12 +187,42 @@ $(document).ready(function(){
     if (pageName == "atm.html"){
         GetLogs();
         GetATMFeed();
+        GetATMInfo();
 
         setInterval(GetLogs, 2000);
         setInterval(GetATMFeed, 500);
+        setInterval(GetATMInfo, 2000);
     }
 });
 
+function SendSOS(){
+    $("body").prepend(`
+                    <div class="min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="SOSPopup">
+                        <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-gray-200">
+                            <div class="p-5">
+                            <!-- Header Text -->
+                            <div class="flex flex-col">
+                                <p class="text-black text-2xl text-center">Send SOS Message</p> 
+                            </div>
+                            <hr class="border-t-4 grey mt-2">
+                            <br>
+                            <div class="h-32 mb-5 flex flex-col border-black">
+                                <textarea type="text" class="w-120 h-40 border-black" autofocus id=SOSMessage></textarea>
+                            </div>
+                            <button class="rounded-md bg-gray-600 w-full py-4 text-center text-white cursor-pointer hover:bg-gray-700 transition ease-in-out delay-10 hover:scale-105 duration-150 " onclick="DismissSOS()">
+                                <div class="flex row justify-center">
+                                    <span>Send</span>
+                                </div> 
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                `);
+}
+
+function DismissSOS(){
+    $("#SOSPopup").remove();
+}
 function ATMStatus() {
     online_atms = GetATMStatus();
     online_atms.then(function(result){

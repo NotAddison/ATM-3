@@ -21,6 +21,16 @@ def GetName():
 webhook = DiscordWebhook(url= GetWebhookURL())
 
 
+def BindIP():
+    url = 'http://localhost:3000/ip/'
+    data = {
+        'IP': g.ip,
+        'Lat': g.lat,
+        'Long': g.lng
+    }
+    requests.post(url, json=data)
+    
+
 # Send GENERIC Discord Webhook
 def SendHostageHook(test = True):
     embed = DiscordEmbed(title='⚠ HOSTAGE Situation Detected ⚠', description='Potential hostage situation!', color=242424)

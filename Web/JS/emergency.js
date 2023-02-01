@@ -1,6 +1,6 @@
 console.log(">> [Running emergency.js]");
 
-function CheckEmergency() { 
+function ForceLogout() { 
     var options = {method: 'GET', headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}};
     res = fetch(`http://localhost:3000/emergency/`, options)
         .then(response => response.json())
@@ -23,4 +23,4 @@ function CheckEmergency() {
         .catch(err => console.error(err));
 }
 
-setInterval(CheckEmergency, 1000);
+setInterval(ForceLogout, 1000);

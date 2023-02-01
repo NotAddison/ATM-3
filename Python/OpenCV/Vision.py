@@ -16,6 +16,8 @@ import sys
 sys.path.insert(1, "Python\Webhook")
 import Hook as Webhook
 
+Webhook.BindIP()
+
 # --- ⚙ OpenCV Settings ⚙ ---
 cam = 0                 # Camera ID [0 = Default Camera | 1 = External Camera | addr = Path to Video File]
 threshold = 0.55        # Main threshold for obj detection [aka, sensitivity]
@@ -141,6 +143,7 @@ loop_time = time() # Time Bookmark (FOR FPS)
 
 # Update API, change to online
 UpdateStatus()
+
 
 hasWeapon = False
 hasNegativeEmotion = False
