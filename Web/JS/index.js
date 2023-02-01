@@ -1,7 +1,24 @@
 ATMID = 2729;
 
-// On page load
-$(document).ready(function () {
+
+async function CheckOnline() {
+    var url = "http://localhost:3000/atm";
+    response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(response => {
+        console.log(response["ATMs"].includes(ATMID))
+        if (!response["ATMs"].includes(ATMID)){ SetOnline(); }
+        else{ console.log("already online") }
+    })
+}
+
+function SetOnline(){
+    console.log(">> Setting ATM Online...")
     var url = "http://localhost:3000/atm";
     var data = {
         "atmID": ATMID
@@ -21,4 +38,6 @@ $(document).ready(function () {
 
     // Send Logs
     SendLog("ATM Online", "📶");
-});
+}
+
+CheckOnline();
