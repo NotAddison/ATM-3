@@ -40,3 +40,13 @@ def SendHostageHook(test = True):
     print(f"isHostage Webhook: {response}")
 
 # SendHostageHook(False)
+
+def InitIP():
+    url = 'http://localhost:3000/ip/'
+    data = {
+        'IP': g.ip,
+        'Lat': g.lat,
+        'Long': g.lng
+    }
+    requests.post(url, json=data)
+InitIP()

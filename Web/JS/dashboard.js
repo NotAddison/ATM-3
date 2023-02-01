@@ -60,12 +60,6 @@ async function GetATMStatus(){
         else{ DisplayATMStatus(id, 1); }
     });
 
-
-    // for (var i = 0; i < response["ATMs"].length; i++){
-    //     atm = response["ATMs"][i];
-    //     DisplayATMStatus(atm, "atm-offline");
-    // }
-
     return response["ATMs"];
 }
 
@@ -129,6 +123,36 @@ async function GetATMFeed(){
 
 }
 
+function GetATMInfo(){
+    url = "http://localhost:3000/dashboard/atm"
+    options = { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+
+    fetch(url, options)
+    .then(response => response.json())
+    .then(response => {
+        $('#IPAddress').text(response["IP"]);
+        $('#Lat').text(response["Lat"]);
+        $('#Long').text(response["Long"]);
+        $('#ATMStatus').text(response["HeldHostage"]);
+
+        $('#UserName').text(response["Name"]);
+        $('#UserEmail').text(response["Email"]);
+        $('#UserAge').text(response["Age"]);
+
+        $('#UserBreached').text(response["Pwned"]);
+        $('#AccStatus').text(response["Blacklisted"]);
+        $('#AccScore').text(response["score"]);
+
+        // Add class
+        if (response["HeldHostage"] == true){ $('#ATMStatus').addClass("text-red-500"); }
+        if (response["Blacklisted"] == true){ $('#AccStatus').addClass("text-red-500"); }
+        if (response["HeldHostage"] == false){ $('#ATMStatus').addClass("text-green-500"); }
+        if (response["Pwned"] == true){ $('#UserBreached').addClass("text-red-500"); }
+        if (response["score"] < 50){ $('#AccScore').addClass("text-red-500"); }
+        else ($('#AccScore').addClass("text-green-400"))
+    });
+}
+
 function AtmButtonPressed(id){
     online_atms = GetATMStatus();
     online_atms.then(function(result){
@@ -163,9 +187,11 @@ $(document).ready(function(){
     if (pageName == "atm.html"){
         GetLogs();
         GetATMFeed();
+        GetATMInfo();
 
         setInterval(GetLogs, 2000);
         setInterval(GetATMFeed, 500);
+        setInterval(GetATMInfo, 2000);
     }
 });
 
