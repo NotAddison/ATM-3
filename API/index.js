@@ -76,14 +76,21 @@ var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
 var isRequestingBio = false;
-var isEmergency = false;
+var isForceLogout = false;
 var isCovered = false; // Camera Covered Boolean
 var hasWeapon = false;
 var hasNegativeEmotion = false;
 var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 
 
-var ATMs = [];
+var ATMs = [
+    {
+        "ATMID": 2729,
+        'isHostage': isHostage,
+        'isCovered': isCovered,
+        'isOnline': false,
+    }
+];
 var isCVOnline = false;
 var logs = [];
 
@@ -122,7 +129,7 @@ app.get("/variables", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
-        'isEmergency': isEmergency,
+        'isForceLogout': isForceLogout,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
         'staff_id': staff_id,
@@ -142,11 +149,10 @@ app.get("/reset", (req, res, next)=>{
     isHostage = false;
     isCovered = false;
     isRequestingBio = false;
-    isEmergency = false;
+    isForceLogout = false;
     hasNegativeEmotion = false;
     hasWeapon = false;
     staff_id = "";
-    ATMs = [];
     isCVOnline = false;
     logs = [];
 
@@ -163,7 +169,7 @@ app.get("/reset", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
-        'isEmergency': isEmergency,
+        'isForceLogout': isForceLogout,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
         'staff_id': staff_id,
@@ -543,19 +549,34 @@ app.post('/pwned/dismiss/:bool',(req, res) => {
 // -------- [ ATM Status ] --------
 app.post('/atm', (req, res) => {
     response = req.body;
-    atmID = response["atmID"];
-
-    if ((atmID != "" || atmID != undefined) && !(ATMs.includes(atmID))){
-        ATMs.push(response["atmID"]);
-        console.log(`>> ATM - ${atmID} is online`);
-        res.status(200).send({ "ATMs" : ATMs });
-    }
-    else{ res.status(400).send({ "ATMs" : ATMs });}
+    ATMs = response["ATMs"];
+    res.status(200).send({ "ATMs" : ATMs });
 });
 
 app.get('/atm', (req, res) => {
     res.status(200).send({ "ATMs" : ATMs });
 });
+
+app.post('/atm/add', (req, res) => {
+    response = req.body;
+    console.log(response)
+    ATMs.push(response);
+    res.status(200).send({ "ATMs" : ATMs });
+});
+
+
+app.post('/atm/online/:id', (req, res) => {
+    var { id } = req.params;
+    for (item in ATMs){
+        if (ATMs[item]["ATMID"] == id){
+            ATMs[item]["isOnline"] = true;
+            res.status(200).send({ "ATMs" : ATMs });
+            console.log(`>> ATM ${id} is online`);
+            return;
+        }
+    }
+});
+
 
 app.get('/dashboard/staff/', (req, res) => {
     res.status(200).send({ "staff_id" : staff_id });
@@ -639,17 +660,17 @@ app.post('/ip/', (req, res) => {
 
 
 
-// -------[ Emergency Mode ]-------
+// -------[ Force Logout Mode ]-------
 app.get('/emergency/', (req, res) => {
     res.status(200).json({
-        valid : isEmergency
+        valid : isForceLogout
     });
 });
 
 app.post('/emergency/', (req, res) => {
-    isEmergency = !isEmergency; // Change after activation
+    isForceLogout = !isForceLogout; // Change after activation
     res.status(200).json({
-        valid : isEmergency
+        valid : isForceLogout
     });
 });
 

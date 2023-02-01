@@ -41,39 +41,8 @@ async function GetLogs(){
     // HTML Inject into Log area
 }
 
-async function GetATMStatus(){
-    console.log(">> Retrieving ATM Status...")
-    var url = "http://localhost:3000/atm";
-    response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    response = await response.json();
 
-    $('button[id^="atm"]').each(function () {
-        var id = $(this).children().first().attr("id");
-        id = parseInt(id.split("-")[1]);
-
-        if (response["ATMs"].includes(id)){ DisplayATMStatus(id, 0); }
-        else{ DisplayATMStatus(id, 1); }
-    });
-
-    return response["ATMs"];
-}
-
-function DisplayATMStatus(id, status){
-    css = ''
-    if (status == 0){ css = 'icon-white'; }
-    else if (status == 1){ css = 'atm-offline'; }
-    else if (status == 2){ css = 'atm-danger'; }
-
-    // Reset all classes
-    $(`#atm-${id}`).removeClass("atm-online atm-offline atm-danger");
-    $(`#atm-${id}`).addClass(css);
-}
-
+// ---- [ Dashboard ] ----
 function GetStaffName(){
     url = "http://localhost:3000/dashboard/staff/"
     options = { method: 'GET', headers: { 'Content-Type': 'application/json' } }
@@ -86,6 +55,146 @@ function GetStaffName(){
     });
 }
 
+async function GetATMStatus(){
+    console.log(">> Retrieving ATM Status...")
+    var url = "http://localhost:3000/atm";
+    response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    response = await response.json();
+    if (response["ATMs"].length == 0) return;
+
+    // Append ATM to Dashboard
+    $('#AtmList').empty();
+    for (var i = 0; i < response["ATMs"].length; i++){
+        atm = response["ATMs"][i];
+        AddATM(atm["ATMID"]);
+    }
+
+    $('button[id^="atm"]').each(function () {
+        var id = $(this).children().first().attr("id");
+        id = parseInt(id.split("-")[1]);
+
+        for (var i = 0; i < response["ATMs"].length; i++){
+            if (response["ATMs"][i]["ATMID"] == id){
+                DisplayATMStatus(id, response["ATMs"][i]);
+            }
+        }
+    });
+
+    return response["ATMs"];
+}
+
+function DisplayATMStatus(id, ATMObj){
+    isHostage = ATMObj["isHostage"];
+    isCovered = ATMObj["isCovered"];
+    isOnline = ATMObj["isOnline"];
+
+    css = ''
+    if (isOnline){ css = 'icon-white'; }
+    else if (isCovered){ css = 'atm-warn'; }
+    else if (isHostage){ css = 'atm-danger'; }
+    else { css = 'atm-offline'; }
+
+    // Reset all classes
+    $(`#atm-${id}`).removeClass("atm-online atm-offline atm-danger atm-warn");
+    $(`#atm-${id}`).addClass(css);
+}
+
+async function GetGraphData() {
+    // Get Online and Offline ATMs
+    let online_atms = []
+    let offline_atms = []
+
+    const result = await GetATMStatus();
+
+    for (let i = 0; i < result.length; i++){
+        if (result[i]["isOnline"]) {
+            online_atms.push(result[i]["ATMID"]);
+        } else {
+            offline_atms.push(result[i]["ATMID"]);
+        }
+    }
+
+    return [offline_atms.length, online_atms.length];
+}
+
+var Chart;
+async function Graph() {
+    var xValues = ["Offline", "Online"];
+    var yValues = await GetGraphData();
+    
+    console.log(yValues)
+    var barColors = ["#131313","#FFFFFF"];
+
+    Chart = new Chart("myChart", {
+    type: "pie",
+    data: {
+        labels: xValues,
+        datasets: [{
+        backgroundColor: barColors,
+        data: yValues,
+        borderWidth: 0,
+        }],
+        labels: xValues
+    },
+    options: {
+        title: {
+        display: true,
+        borderWidth: 5,
+        text: "Status"
+        }
+    },
+    plugins: [ChartDataLabels],
+    labels: {
+        fontColor: ['rgba(255, 26, 104, 0.2)',
+                    'rgba(54, 162, 235, 0.2)']
+    }
+    });
+}
+
+function ViewATM(id){
+    online_atms = []
+    GetATMStatus().then(response => {
+        for (var i = 0; i < response.length; i++){
+            if (response[i]["isOnline"]) online_atms.push(response[i]["ATMID"]);
+        }
+        if (online_atms.includes(id)) window.location.href = "atm.html";
+        else ShowToast(`ATM ${id} is currently offline...`, "red", icon="X", iconIntensity = 500, outlineIntensity = 500 ,isCashToast = false, isSuccessful = false);
+    })    
+}
+
+function AddATM(id = null){
+    // Generate a fake ATM (For Demo Purposes)
+    if (id == null){
+        id = Math.floor(Math.random() * 10000);
+        data = {
+            "ATMID": id,
+            "isOnline": false,
+            "isCovered": false,
+            "isHostage": false
+        }
+
+        url = "http://localhost:3000/atm/add"
+        options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }
+        fetch(url, options)
+    }
+
+     // Gererate Fake ATM -- For Demo purposes, to show how admin will assign ATMs to staff
+     $("#AtmList").append(`
+     <button id="atm" onclick="ViewATM(${id})" class="flex flex-wrap flex-col items-center backdrop-blur-3xl bg-black/30 rounded-lg shadow-lg p-5 h-fit w-[250px] h-[400px] transition-all duration-[250ms] hover:scale-105 hover:bg-black/40 mb-5 mr-5">
+         <img id="atm-${id}" src="../../../Assets/Images/Dashboard/POS.svg" class="h-40 w-40 icon-white atm-offline">
+         <img src="../../../Assets/Images/Dashboard/ATM.svg" class="icon-white">
+         <p class="text-white font-bold">${id}</p>
+     </button>
+ `);
+}
+
+
+// ---- [ ATM UI ] ----
 isOnline = false
 async function GetATMFeed(){
     // Attempt socket connection
@@ -153,27 +262,6 @@ function GetATMInfo(){
     });
 }
 
-function ViewATM(id){
-    online_atms = GetATMStatus();
-    online_atms.then(function(result){
-        online_atms = result;
-        if (online_atms.includes(id)) window.location.href = "atm.html";
-        else ShowToast(`ATM ${id} is currently offline...`, "red", icon="X", iconIntensity = 500, outlineIntensity = 500 ,isCashToast = false, isSuccessful = false);
-    });
-}
-
-function AddATM(){
-    // Gererate Fake ATM -- For Demo purposes, to show how admin will assign ATMs to staff
-    var randomID = Math.floor(Math.random() * 10000);
-    $("#AtmList").append(`
-        <button id="atm" onclick="ViewATM(${randomID})" class="flex flex-wrap flex-col items-center backdrop-blur-3xl bg-black/30 rounded-lg shadow-lg p-5 h-fit w-[250px] h-[400px] transition-all duration-[250ms] hover:scale-105 hover:bg-black/40 mb-5 mr-5">
-            <img id="atm-${randomID}" src="../../../Assets/Images/Dashboard/POS.svg" class="h-40 w-40 icon-white atm-offline">
-            <img src="../../../Assets/Images/Dashboard/ATM.svg" class="icon-white">
-            <p class="text-white font-bold">${randomID}</p>
-        </button>
-    `);
-}
-
 function LogoutUser(){
     url = "http://localhost:3000/emergency/"
     options = { method: 'POST', headers: { 'Content-Type': 'application/json' } }
@@ -181,35 +269,9 @@ function LogoutUser(){
     ShowToast("User has been logged out", "green", icon="🔐", isSuccessful = true);
 }
 
-// If page is on "main.html" for dashboard, call functions on load
-
-
-$(document).ready(function(){
-    pageName = window.location.pathname.split("/").pop();
-
-    if(pageName == "dashboard.html"){
-        GetStaffName();
-        GetLogs();
-        GetATMStatus();
-
-        setInterval(GetLogs, 2000);
-        setInterval(GetATMStatus, 5000);
-    }
-
-    if (pageName == "atm.html"){
-        GetLogs();
-        GetATMFeed();
-        GetATMInfo();
-
-        setInterval(GetLogs, 2000);
-        setInterval(GetATMFeed, 500);
-        setInterval(GetATMInfo, 2000);
-    }
-});
-
-function SendSOS(){
+function SendBroadcast(){
     $("body").prepend(`
-                    <div class="min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="SOSPopup">
+                    <div class="min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BroadcastMessage">
                         <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-gray-200">
                             <div class="p-5">
                             <!-- Header Text -->
@@ -232,59 +294,35 @@ function SendSOS(){
                 `);
 }
 
-function DismissSOS(){
-    $("#SOSPopup").remove();
-}
-function ATMStatus() {
-    online_atms = GetATMStatus();
-    online_atms.then(function(result){
-        online_atms = result;
-    });
-
-    console.log(online_atms)
-
-    if (online_atms.length = 1) {
-        yValues = [2, 1];
-        return yValues
-    }
-    else {
-        return [3, 0]
-    }
+function DismissBroadcast(){
+    $("#BroadcastMessage").remove();
 }
 
-function Graph() {
-    var xValues = ["Offline", "Online"];
-    var yValues = ATMStatus()
-    console.log(yValues)
-    var barColors = [
-    "#131313",
-    "#FFFFFF",
-    ];
 
-    new Chart("myChart", {
-    type: "pie",
-    data: {
-        labels: xValues,
-        datasets: [{
-        backgroundColor: barColors,
-        data: yValues,
-        borderWidth: 0,
-        }],
-        labels: xValues
-    },
-    options: {
-        title: {
-        display: true,
-        borderWidth: 5,
-        text: "Status"
-        }
-    },
-    plugins: [ChartDataLabels],
-    labels: {
-        fontColor: ['rgba(255, 26, 104, 0.2)',
-                    'rgba(54, 162, 235, 0.2)']
+
+
+
+// If page is on "main.html" for dashboard, call functions on load
+$(document).ready(function(){
+    pageName = window.location.pathname.split("/").pop();
+
+    if(pageName == "dashboard.html"){
+        GetStaffName();
+        GetLogs();
+        GetATMStatus();
+        Graph()
+
+        setInterval(GetLogs, 2000);
+        setInterval(GetATMStatus, 2000);
     }
-    });
-}
 
-Graph()
+    if (pageName == "atm.html"){
+        GetLogs();
+        GetATMFeed();
+        GetATMInfo();
+
+        setInterval(GetLogs, 2000);
+        setInterval(GetATMFeed, 500);
+        setInterval(GetATMInfo, 2000);
+    }
+});

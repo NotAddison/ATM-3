@@ -1,41 +1,24 @@
 ATMID = 2729;
 
-
-async function CheckOnline() {
-    var url = "http://localhost:3000/atm";
-    response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+function CheckOnline(){
+    console.log(">> Checking ATM Online Status...")
+    var url = `http://localhost:3000/atm`;
+    options = { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+    fetch(url, options)
     .then(response => response.json())
     .then(response => {
-        console.log(response["ATMs"].includes(ATMID))
-        if (!response["ATMs"].includes(ATMID)){ SetOnline(); }
-    })
+        for (var i = 0; i < response["ATMs"].length; i++){
+            if (response["ATMs"][i]["ATMID"] == ATMID) if (!response["ATMs"][i]["isOnline"]) SetOnline();
+            else console.log(">> ATM is already online.")
+        }
+    });
 }
+
 
 function SetOnline(){
     console.log(">> Setting ATM Online...")
-    var url = "http://localhost:3000/atm";
-    var data = {
-        "atmID": ATMID
-    };
-    
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(response => {
-        console.log(response);
-    })
-
-    // Send Logs
+    var url = `http://localhost:3000/atm/online/${ATMID}`;
+    fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}})
     SendLog("ATM Online", "📶");
 }
 
