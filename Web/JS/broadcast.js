@@ -4,9 +4,7 @@ function GetBroadcast(){
     fetch(url, options)
     .then(response => response.json())
     .then(data => {
-        console.log(data);
         if (!data["broadcast-switch"]) return;
-
         $("body").prepend(`
             <div class="announcement">
                 <div class="banner__content">
