@@ -95,11 +95,10 @@ function DisplayATMStatus(id, ATMObj){
 
     css = ''
     if (isOnline){ css = 'icon-white'; }
-    else if (isCovered){ css = 'atm-warn'; }
-    else if (isHostage){ css = 'atm-danger'; }
     else { css = 'atm-offline'; }
+    if (isCovered){ css = 'atm-warn'; }
+    if (isHostage){ css = 'atm-danger'; }
 
-    // Reset all classes
     $(`#atm-${id}`).removeClass("atm-online atm-offline atm-danger atm-warn");
     $(`#atm-${id}`).addClass(css);
 }

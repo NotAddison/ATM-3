@@ -50,3 +50,13 @@ def SendHostageHook(test = True):
     print(f"isHostage Webhook: {response}")
 
 # SendHostageHook(False)
+ATMID = 2729
+def UpdateATMValue(item, boolean):
+    url = 'http://localhost:3000/atm'
+    res = requests.get(url)
+    data = res.json()
+    for atm in data["ATMs"]:
+        if atm["ATMID"] == ATMID:
+            atm[item] = boolean
+            break
+    requests.post(url, json=data)

@@ -190,11 +190,13 @@ while True:
             isSentHostage = True
             try:
                 r = requests.post(f'http://localhost:3000/auth/3/{True}')   # Send Status to API
-                print(f"Object.py: {r.status_code}")
+                print(f"Vision.py (Hostage): {r.status_code}")
                 Webhook.SendHostageHook()   # Send Status to Webhook
+                Webhook.UpdateATMValue("isHostage", True)
             except:
                 print("Object.py: Failed to send request.")
                 pass
+    else: Webhook.UpdateATMValue("isHostage", False)
 
     # Check if user is covered
     if isCovered:
@@ -205,10 +207,12 @@ while True:
             # isSentCovered = True [NOTE: Constantly updates server with covered status]
             try:
                 r = requests.post(f'http://localhost:3000/covered/{True}')
-                print(f"Vision.py: {r.status_code}")
+                print(f"Vision.py (Covered): {r.status_code}")
+                Webhook.UpdateATMValue("isCovered", True)
             except:
                 print("Vision.py: Failed to send request.")
                 pass
+    else: Webhook.UpdateATMValue("isCovered", False)
 
     # Exit on 'ESC' Key
     if cv2.waitKey(1) == 27: 
