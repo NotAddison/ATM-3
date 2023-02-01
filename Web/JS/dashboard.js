@@ -162,23 +162,30 @@ $(document).ready(function(){
     }
 });
 
-async function ATMStatus(id) {
+function ATMStatus() {
     online_atms = GetATMStatus();
     online_atms.then(function(result){
         online_atms = result;
     });
 
-    await online_atms
     console.log(online_atms)
-    return await online_atms;
+
+    if (online_atms.length = 1) {
+        yValues = [2, 1];
+        return yValues
+    }
+    else {
+        return [3, 0]
+    }
 }
 
 function Graph() {
     var xValues = ["Offline", "Online"];
-    var yValues = ATMStatus(2729)
+    var yValues = ATMStatus()
+    console.log(yValues)
     var barColors = [
-    "#b91d47",
-    "#00aba9",
+    "dark gray",
+    "#00FF00",
     ];
 
     new Chart("myChart", {
@@ -193,7 +200,9 @@ function Graph() {
     options: {
         title: {
         display: true,
+        borderWidth: 5,
         text: "ATM Status",
+        borderColor: '#000000',
         }
     }
     });
