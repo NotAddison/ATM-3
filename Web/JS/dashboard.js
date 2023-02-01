@@ -77,3 +77,42 @@ $(document).ready(function(){
     }
     
 });
+
+async function ATMStatus(id) {
+    online_atms = GetATMStatus();
+    online_atms.then(function(result){
+        online_atms = result;
+    });
+
+    await online_atms
+    console.log(online_atms)
+    return await online_atms;
+}
+
+function Graph() {
+    var xValues = ["Offline", "Online"];
+    var yValues = ATMStatus(2729)
+    var barColors = [
+    "#b91d47",
+    "#00aba9",
+    ];
+
+    new Chart("myChart", {
+    type: "pie",
+    data: {
+        labels: xValues,
+        datasets: [{
+        backgroundColor: barColors,
+        data: yValues,
+        }]
+    },
+    options: {
+        title: {
+        display: true,
+        text: "ATM Status",
+        }
+    }
+    });
+}
+
+Graph()

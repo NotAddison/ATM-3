@@ -7,6 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../../CSS/dashboard.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
 
@@ -32,7 +33,7 @@
                             <h1 class="text-xl font-bold">Hello - {NAME} </h1>
                         </div>
                         <div class="flex flex-col text-gray-300 h-3/4 scroll console">
-                            > Idk add some stuff here
+                            <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
                         </div>
                     </div>
                     
