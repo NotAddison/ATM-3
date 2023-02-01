@@ -75,11 +75,12 @@ var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
 var isRequestingBio = false;
-
+var isEmergency = false;
 var isCovered = false; // Camera Covered Boolean
 var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 var hasWeapon = false;
 var hasNegativeEmotion = false;
+
 
 var ATMs = [];
 var isCVOnline = false;
@@ -117,6 +118,7 @@ app.get("/variables", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isEmergency': isEmergency,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
         'staff_id': staff_id,
@@ -136,6 +138,7 @@ app.get("/reset", (req, res, next)=>{
     isHostage = false;
     isCovered = false;
     isRequestingBio = false;
+    isEmergency = false;
     hasNegativeEmotion = false;
     hasWeapon = false;
     staff_id = "";
@@ -156,6 +159,7 @@ app.get("/reset", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isEmergency': isEmergency,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
         'staff_id': staff_id,
@@ -212,6 +216,7 @@ app.get('/auth/1/',(req, res) => {
             valid : (gPin in dPins)
         });
     }
+    
 });
 
 
@@ -530,12 +535,6 @@ app.post('/pwned/dismiss/:bool',(req, res) => {
     });
 });
 
-
-
-
-
-
-
 // -------- [ ATM Status ] --------
 app.post('/atm', (req, res) => {
     response = req.body;
@@ -578,4 +577,18 @@ app.post('/logs/', (req, res) => {
 
     logs.push(response);
     res.status(200).send({ "logs" : logs });
+});
+
+// -------[ Emergency Mode ]-------
+app.get('/emergency/', (req, res) => {
+    res.status(200).json({
+        valid : isEmergency
+    });
+});
+
+app.post('/emergency/', (req, res) => {
+    isEmergency = !isEmergency; // Change after activation
+    res.status(200).json({
+        valid : isEmergency
+    });
 });
