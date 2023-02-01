@@ -15,8 +15,21 @@ async function GetLogs(){
     // Add Logs
     for (var i = 0; i < response["logs"].length; i++){
         log = response["logs"][i];
+
+        // Format Log colors
+        text_col = "text-white";
+        green = ["[✔️]", "[✅]", "[✓]"];
+        red = ["[❌]", "[⛔]", "[✖]"];
+        yellow = ["[⚠️]", "[⚠]", "[!]", "[⚠]"];
+        blue = ["[i]", "[📶]"];
+
+        if (green.includes(log["type"])){ text_col = "text-green-400"; }
+        if (red.includes(log["type"])){ text_col = "text-red-400"; }
+        if (yellow.includes(log["type"])){ text_col = "text-yellow-400"; }
+        if (blue.includes(log["type"])){ text_col = "text-blue-400"; }
+
         $("#log-area").append(`
-        <div class="flex flex-row flex-wrap">
+        <div class="flex flex-row flex-wrap ${text_col}">
             <p class="mr-2">${log["type"]} - ${log["atmID"]} </p>
             <p>${log["message"]} </p>
         </div>
