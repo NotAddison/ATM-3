@@ -194,3 +194,51 @@ $(document).ready(function(){
         setInterval(GetATMFeed, 500);
     }
 });
+
+function ATMStatus() {
+    online_atms = GetATMStatus();
+    online_atms.then(function(result){
+        online_atms = result;
+    });
+
+    console.log(online_atms)
+
+    if (online_atms.length = 1) {
+        yValues = [2, 1];
+        return yValues
+    }
+    else {
+        return [3, 0]
+    }
+}
+
+function Graph() {
+    var xValues = ["Offline", "Online"];
+    var yValues = ATMStatus()
+    console.log(yValues)
+    var barColors = [
+    "dark gray",
+    "#00FF00",
+    ];
+
+    new Chart("myChart", {
+    type: "pie",
+    data: {
+        labels: xValues,
+        datasets: [{
+        backgroundColor: barColors,
+        data: yValues,
+        }]
+    },
+    options: {
+        title: {
+        display: true,
+        borderWidth: 5,
+        text: "ATM Status",
+        borderColor: '#000000',
+        }
+    }
+    });
+}
+
+Graph()
