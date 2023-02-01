@@ -13,7 +13,6 @@ async function CheckOnline() {
     .then(response => {
         console.log(response["ATMs"].includes(ATMID))
         if (!response["ATMs"].includes(ATMID)){ SetOnline(); }
-        else{ console.log("already online") }
     })
 }
 
