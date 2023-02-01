@@ -138,6 +138,13 @@ function AtmButtonPressed(id){
     });
 }
 
+function LogoutUser(){
+    url = "http://localhost:3000/emergency/"
+    options = { method: 'POST', headers: { 'Content-Type': 'application/json' } }
+    fetch(url, options)
+    ShowToast("User has been logged out", "green", icon="🔐", isSuccessful = true);
+}
+
 // If page is on "main.html" for dashboard, call functions on load
 
 
