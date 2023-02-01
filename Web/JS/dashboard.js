@@ -195,7 +195,6 @@ $(document).ready(function(){
     }
 });
 
-<<<<<<< HEAD
 function SendSOS(){
     $("body").prepend(`
                     <div class="min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="SOSPopup">
@@ -224,7 +223,6 @@ function SendSOS(){
 function DismissSOS(){
     $("#SOSPopup").remove();
 }
-=======
 function ATMStatus() {
     online_atms = GetATMStatus();
     online_atms.then(function(result){
@@ -272,4 +270,3 @@ function Graph() {
 }
 
 Graph()
->>>>>>> 3fe2130b298f0d959aa7a577410b4a0a7aecec62
