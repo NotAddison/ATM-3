@@ -2,7 +2,7 @@ console.log(">> [Running emergency.js]");
 
 function ForceLogout() { 
     var options = {method: 'GET', headers: {'Accept': 'application/json', 'Access-Control-Allow-Origin': '*'}};
-    res = fetch(`http://localhost:3000/emergency/`, options)
+    res = fetch(`http://localhost:3000/force-logout/`, options)
         .then(response => response.json())
         .then(response => {     
             isEmergency = response["valid"]
@@ -12,7 +12,7 @@ function ForceLogout() {
                     setTimeout(function(){}, 1000);
 
                     // Switch back to false
-                    url = "http://localhost:3000/emergency/"
+                    url = "http://localhost:3000/force-logout/"
                     options = { method: 'POST', headers: { 'Content-Type': 'application/json' } }
                     fetch(url, options)
                     window.location.href = 'auth.html'

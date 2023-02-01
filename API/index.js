@@ -661,13 +661,13 @@ app.post('/ip/', (req, res) => {
 
 
 // -------[ Force Logout Mode ]-------
-app.get('/emergency/', (req, res) => {
+app.get('/force-logout/', (req, res) => {
     res.status(200).json({
         valid : isForceLogout
     });
 });
 
-app.post('/emergency/', (req, res) => {
+app.post('/force-logout/', (req, res) => {
     isForceLogout = !isForceLogout; // Change after activation
     res.status(200).json({
         valid : isForceLogout

@@ -263,7 +263,7 @@ function GetATMInfo(){
 }
 
 function LogoutUser(){
-    url = "http://localhost:3000/emergency/"
+    url = "http://localhost:3000/force-logout/"
     options = { method: 'POST', headers: { 'Content-Type': 'application/json' } }
     fetch(url, options)
     ShowToast("User has been logged out", "green", icon="🔐", isSuccessful = true);
