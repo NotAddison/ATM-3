@@ -270,31 +270,46 @@ function LogoutUser(){
 
 function SendBroadcast(){
     $("body").prepend(`
-                    <div class="min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BroadcastMessage">
-                        <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md w-[28rem] border border-gray-200">
+                    <div class="min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="BroadcastModal">
+                        <div class="backdrop-blur-3xl bg-black/50 flex flex-wrap content-center justify-center rounded-lg shadow-md w-[30rem] h-[20rem] p-5 border outline border-gray-900">
                             <div class="p-5">
-                            <!-- Header Text -->
-                            <div class="flex flex-col">
-                                <p class="text-black text-2xl text-center">Send SOS Message</p> 
+                                <!-- Header Text -->
+                                <div class="flex flex-col">
+                                    <p class="text-white text-2xl text-center">Send A Broadcast Message</p> 
+                                </div>
+                                <hr class="border-t-4 grey mt-2">
+                                <br>
+                                <div class="w-96 mb-5">
+                                <div class="relative w-full min-w-[200px]">
+                                    <textarea id="BroadcastMessage"
+                                    class="text-white peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-blue-500 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+                                    placeholder=" "
+                                    ></textarea>
+                                    <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-blue-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-blue-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-blue-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                                    Message
+                                    </label>
+                                </div>
+                                </div>
+                                <button class="rounded-md bg-gray-700 w-full py-4 text-center text-white cursor-pointer hover:bg-gray-800 transition ease-in-out delay-10 hover:scale-105 duration-150 " onclick="DismissBroadcast()">
+                                    <div class="flex row justify-center">
+                                        <span>Send</span>
+                                    </div> 
+                                </button>
                             </div>
-                            <hr class="border-t-4 grey mt-2">
-                            <br>
-                            <div class="h-32 mb-5 flex flex-col border-black">
-                                <textarea type="text" class="w-120 h-40 border-black" autofocus id=SOSMessage></textarea>
-                            </div>
-                            <button class="rounded-md bg-gray-600 w-full py-4 text-center text-white cursor-pointer hover:bg-gray-700 transition ease-in-out delay-10 hover:scale-105 duration-150 " onclick="DismissSOS()">
-                                <div class="flex row justify-center">
-                                    <span>Send</span>
-                                </div> 
-                            </button>
-                            </div>
-                        </div>
                     </div>
                 `);
 }
 
 function DismissBroadcast(){
-    $("#BroadcastMessage").remove();
+    // Send Broadcast
+    url = "http://localhost:3000/broadcast/"
+    data = { "message": $("#BroadcastMessage").val() }
+    options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }
+    fetch(url, options)
+    ShowToast("Broadcast Sent", "green", icon="📢", isSuccessful = true);
+    SendLog("Broadcast Message Send")
+
+    $("#BroadcastModal").remove();
 }
 
 
