@@ -83,10 +83,12 @@ var hasNegativeEmotion = false;
 var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 
 
-
 var ATMs = [];
 var isCVOnline = false;
 var logs = [];
+
+var BroadcastSwitch = false;
+var BroadcastMessage = false;
 
 // Middleware
 app.use(express.json());
@@ -649,4 +651,22 @@ app.post('/emergency/', (req, res) => {
     res.status(200).json({
         valid : isEmergency
     });
+});
+
+// -------[ Broadcast Message ]-------
+app.post('/broadcast/', (req, res) => {
+    BroadcastSwitch = true;
+    response = req.body;
+    BroadcastMessage = response["message"];
+    res.status(200).json({
+        "message" : BroadcastMessage
+    });
+});
+
+app.get('/broadcast/', (req, res) => {
+    res.status(200).json({
+        "broadcast-switch": BroadcastSwitch,
+        "message" : BroadcastMessage
+    });
+    BroadcastSwitch = false;
 });
