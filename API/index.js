@@ -1,5 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const env = require('dotenv').config()
+
+WEBHOOK_URL = (process.env.WEBHOOK_URL)
+HIBP_API_KEY = (process.env.HIBP_API_KEY)
 
 const {PythonShell} = require('python-shell');  // Python Shell
 const request = require('request'); // HTTPS Requests
@@ -464,6 +468,14 @@ app.get('/covered/',(req, res) => {
 
 
 
+// -------- [ Webhook URL Request ] --------
+app.get('/webhook/',(req, res) => {
+    // Returns webhook url (cause I am lazy to do env for python lol)
+    res.status(200).send({
+        "url": WEBHOOK_URL
+    });
+});
+
 
 
 
@@ -474,7 +486,7 @@ app.get('/pwned/check/:email', (req, res) => {
     if (gPin in dPins && email == ""){ email = dPins[gPin][1]; }
 
     var url = `https://haveibeenpwned.com/api/v3/breachedaccount/${email}`;
-    var headers = { "hibp-api-key":"cc9cbc26678d4e959e80f4ab36bc7dff", "user-agent":"nodejs" };
+    var headers = { "hibp-api-key": HIBP_API_KEY , "user-agent":"nodejs" };
     // Send API get with api key
     request.get(url, {headers: headers}, (error, response, body) => {
         if (error) { return console.dir(error);}
