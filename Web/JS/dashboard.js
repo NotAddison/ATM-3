@@ -124,7 +124,6 @@ async function GetATMFeed(){
 }
 
 function GetATMInfo(){
-    console.log(">> Retrieving ATM Info...")
     url = "http://localhost:3000/dashboard/atm"
     options = { method: 'GET', headers: { 'Content-Type': 'application/json' } }
 
@@ -192,6 +191,7 @@ $(document).ready(function(){
 
         setInterval(GetLogs, 2000);
         setInterval(GetATMFeed, 500);
+        setInterval(GetATMInfo, 2000);
     }
 });
 
