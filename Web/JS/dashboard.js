@@ -191,8 +191,8 @@ function Graph() {
     var yValues = ATMStatus()
     console.log(yValues)
     var barColors = [
-    "dark gray",
-    "#00FF00",
+    "#585352",
+    "#131313",
     ];
 
     new Chart("myChart", {
@@ -202,15 +202,21 @@ function Graph() {
         datasets: [{
         backgroundColor: barColors,
         data: yValues,
-        }]
+        borderWidth: 0,
+        }],
+        labels: xValues
     },
     options: {
         title: {
         display: true,
         borderWidth: 5,
-        text: "ATM Status",
-        borderColor: '#000000',
+        text: "Status"
         }
+    },
+    plugins: [ChartDataLabels],
+    labels: {
+        fontColor: ['rgba(255, 26, 104, 0.2)',
+                    'rgba(54, 162, 235, 0.2)']
     }
     });
 }
