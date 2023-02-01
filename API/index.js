@@ -71,15 +71,17 @@ var staff_id = "";
 
 var aBlacklist = [501171904212];
 var gUser = "";
+var gUserBreached = false;
 var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
 var isRequestingBio = false;
 var isEmergency = false;
 var isCovered = false; // Camera Covered Boolean
-var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 var hasWeapon = false;
 var hasNegativeEmotion = false;
+var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
+
 
 
 var ATMs = [];
@@ -509,6 +511,7 @@ app.get('/pwned/check/:email', (req, res) => {
                 isBreached : JSON.parse(body).length > 0,
                 breaches : JSON.parse(body)
             });
+            gUserBreached = true;
         }
         else{
             res.status(400).send({
@@ -578,6 +581,61 @@ app.post('/logs/', (req, res) => {
     logs.push(response);
     res.status(200).send({ "logs" : logs });
 });
+
+// Status
+app.get('/dashboard/atm', (req, res) => {
+    if (gPin != ""){
+        res.status(200).send({
+            'IP' : IP,
+            'Lat': Lat,
+            'Long': Long,
+            'HeldHostage': isHostage,
+
+            'Name': dPins[gPin]["name"],
+            'Email': dPins[gPin]["email"],
+            'Age': dPins[gPin]["age"],
+            'AccountNo': dPins[gPin]["accountNo"],
+            'Blacklisted': aBlacklist.includes(dPins[gPin]["accountNo"]),
+            'Pwned': gUserBreached,
+            'score': dPins[gPin]["score"],
+        });
+    }
+    else{
+        res.status(200).send({
+            'IP' : IP,
+            'Lat': Lat,
+            'Long': Long,
+            'HeldHostage': '',
+
+            'Name': "",
+            'Email': "",
+            'Age': "",
+            'AccountNo': "",
+            'Blacklisted': "",
+            'Pwned': "",
+            'score': ""
+        });
+    }       
+});
+
+// Bind IP
+var IP = ""
+var Lat = ""
+var Long = ""
+
+app.post('/ip/', (req, res) => {
+    response = req.body;
+    IP = response["IP"];
+    Lat = response["Lat"];
+    Long = response["Long"];
+    res.status(200).send({ 
+        'IP' : IP,
+        'Lat': Lat,
+        'Long': Long,
+     });
+});
+
+
 
 // -------[ Emergency Mode ]-------
 app.get('/emergency/', (req, res) => {
