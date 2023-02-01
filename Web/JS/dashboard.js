@@ -67,6 +67,18 @@ function DisplayATMStatus(id, status){
     $(`#atm-${id}`).addClass(css);
 }
 
+function GetStaffName(){
+    url = "http://localhost:3000/dashboard/staff/"
+    options = { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+
+    fetch(url, options)
+    .then(response => response.json())
+    .then(response => {
+        staff_name = response["staff_id"]
+        $("#staff-name").text(`${staff_name} !`);
+    });
+}
+
 isOnline = false
 async function GetATMFeed(){
     // Attempt socket connection
@@ -120,11 +132,18 @@ $(document).ready(function(){
     pageName = window.location.pathname.split("/").pop();
 
     if(pageName == "dashboard.html"){
+        GetStaffName();
+        GetLogs();
+        GetATMStatus();
+
         setInterval(GetLogs, 2000);
         setInterval(GetATMStatus, 5000);
     }
 
     if (pageName == "atm.html"){
+        GetLogs();
+        GetATMFeed();
+
         setInterval(GetLogs, 2000);
         setInterval(GetATMFeed, 500);
     }

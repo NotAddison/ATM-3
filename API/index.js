@@ -67,6 +67,8 @@ var dStaff = {
     'Addison' : '123456'
 }
 
+var staff_id = "";
+
 var aBlacklist = [501171904212];
 var gUser = "";
 var gPin = "";
@@ -117,6 +119,7 @@ app.get("/variables", (req, res, next)=>{
         'isRequestingBio': isRequestingBio,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'staff_id': staff_id,
         'ATMs': ATMs,
         'isCVOnline': isCVOnline,
         'logs': logs
@@ -135,6 +138,7 @@ app.get("/reset", (req, res, next)=>{
     isRequestingBio = false;
     hasNegativeEmotion = false;
     hasWeapon = false;
+    staff_id = "";
     ATMs = [];
     isCVOnline = false;
     logs = [];
@@ -154,6 +158,7 @@ app.get("/reset", (req, res, next)=>{
         'isRequestingBio': isRequestingBio,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'staff_id': staff_id,
         'ATMs': ATMs,
         'isCVOnline': isCVOnline,
         'logs': logs
@@ -207,7 +212,6 @@ app.get('/auth/1/',(req, res) => {
             valid : (gPin in dPins)
         });
     }
-    
 });
 
 
@@ -547,6 +551,10 @@ app.post('/atm', (req, res) => {
 
 app.get('/atm', (req, res) => {
     res.status(200).send({ "ATMs" : ATMs });
+});
+
+app.get('/dashboard/staff/', (req, res) => {
+    res.status(200).send({ "staff_id" : staff_id });
 });
 
 
