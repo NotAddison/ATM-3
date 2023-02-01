@@ -81,6 +81,7 @@ var hasNegativeEmotion = false;
 
 var ATMs = [];
 var isCVOnline = false;
+var logs = [];
 
 // Middleware
 app.use(express.json());
@@ -117,7 +118,8 @@ app.get("/variables", (req, res, next)=>{
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
         'ATMs': ATMs,
-        'isCVOnline': isCVOnline
+        'isCVOnline': isCVOnline,
+        'logs': logs
     });
 });
 
@@ -135,6 +137,7 @@ app.get("/reset", (req, res, next)=>{
     hasWeapon = false;
     ATMs = [];
     isCVOnline = false;
+    logs = [];
 
 
     // Reset dPins
@@ -153,6 +156,7 @@ app.get("/reset", (req, res, next)=>{
         'hasWeapon': hasWeapon,
         'ATMs': ATMs,
         'isCVOnline': isCVOnline,
+        'logs': logs
     });
     console.log(">> Reset variables");
 });
@@ -543,4 +547,27 @@ app.post('/atm', (req, res) => {
 
 app.get('/atm', (req, res) => {
     res.status(200).send({ "ATMs" : ATMs });
+});
+
+
+// Logs
+app.get('/logs/', (req, res) => {
+    res.status(200).send({ "logs" : logs });
+});
+
+app.post('/logs/', (req, res) => {
+    response = req.body;
+
+    // Check if response is in valid format
+    if (response["atmID"] == undefined || response["message"] == undefined){
+        res.status(400).send({ "logs" : "ERROR: Invalid Foramt" });
+        return;
+    }
+
+    if (response["type"] == undefined){
+        response["type"] = "[>]";
+    }
+
+    logs.push(response);
+    res.status(200).send({ "logs" : logs });
 });

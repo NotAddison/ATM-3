@@ -18,4 +18,7 @@ $(document).ready(function () {
     .then(response => {
         console.log(response);
     })
+
+    // Send Logs
+    SendLog("ATM Online", "📶");
 });

@@ -53,7 +53,7 @@ async function GetATMFeed(){
     //     document.getElementById('feed-img').src = objectURL;
     // };
 
-    // Forces browser to download image by chaning the URL
+    // Forces browser to download image by changing the URL
     url = "http://localhost:3000/cv/"
     options = { method: 'GET', headers: { 'Content-Type': 'application/json' } }
 
@@ -70,10 +70,9 @@ async function GetATMFeed(){
     }
     else {
         source = '../../../Assets/Images/Dashboard/loading2.gif'
-        currect_source_name = document.getElementById('feed-img').src.split('/').pop()
+        current_source_name = document.getElementById('feed-img').src.split('/').pop()
         
-
-        if (currect_source_name != source.split('/').pop()){
+        if (current_source_name != source.split('/').pop()){
             document.getElementById('feed-img').src = source;
         }
         console.log(">> [Live Feed]: CV is offline");
@@ -103,10 +102,7 @@ $(document).ready(function(){
     }
 
     if (pageName == "atm.html"){
-        GetLogs();
-
-        // Every 500 ms, refresh the feed
+        setInterval(GetLogs, 2000);
         setInterval(GetATMFeed, 500);
     }
-    
 });
