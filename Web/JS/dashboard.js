@@ -1,5 +1,29 @@
 async function GetLogs(){
-    console.log(">> Retrieving Logs...")
+    // console.log(">> Retrieving Logs...")
+    var url = "http://localhost:3000/logs/";
+    response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    response = await response.json();
+
+    // Clear Logs
+    $("#log-area").empty();
+
+    // Add Logs
+    for (var i = 0; i < response["logs"].length; i++){
+        log = response["logs"][i];
+        $("#log-area").append(`
+        <div class="flex flex-row flex-wrap">
+            <p class="mr-2">${log["type"]} - ${log["atmID"]} </p>
+            <p>${log["message"]} </p>
+        </div>
+        `);
+    }
+
+
     // HTTP Request to local API (Returns array)
     // HTML Inject into Log area
 }
@@ -96,8 +120,7 @@ $(document).ready(function(){
     pageName = window.location.pathname.split("/").pop();
 
     if(pageName == "dashboard.html"){
-        GetLogs();
-        GetATMStatus();
+        setInterval(GetLogs, 2000);
         setInterval(GetATMStatus, 5000);
     }
 
