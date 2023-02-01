@@ -8,6 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="../../JS/dashboard.js"></script>
+  <script src="../../JS/toast.js" defer></script>
 </head>
 
 <body>
@@ -35,32 +36,14 @@
               
               <!-- Console Card -->
               <div class="backdrop-blur-3xl bg-black/40 rounded-lg shadow-lg p-5 h-[350px]">
-                  <div class="flex flex-row content-center mb-5">
-                      <img src="../../../Assets/Images/Dashboard/Terminal.svg" class="icon icon-white">
-                      <h1 class="text-xl font-bold">ATM Logs</h1>
-                  </div>
-                  <div class="flex flex-col text-gray-300 h-3/4 scroll console">
-                      <p>[>] This is a console message</p>  
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-
-                  </div>
-              </div>
+                <div class="flex flex-row content-center mb-5">
+                    <img src="../../../Assets/Images/Dashboard/Terminal.svg" class="icon icon-white">
+                    <h1 class="text-xl font-bold">ATM Logs</h1>
+                </div>
+                <div id="log-area" class="flex flex-col text-gray-300 h-3/4 scroll console">
+                    <p>[>] I am a console message, beep boop</p>
+                </div>
+            </div>
 
           </div>
       </div>
@@ -114,7 +97,7 @@
           </div>
           <!-- HTML Card -->
           <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-xl bg-black/30 gap-x-12 h-[16rem] w-[73rem]" style="border-radius: 50px; margin-top: 120px;">
-            <button class="hover:scale-105" onsclick="">  
+            <button class="hover:scale-105" onclick="LogoutUser()">  
               <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30 h-[13rem] w-[13rem]" style="border-radius: 50px;">
                   <span class="text-white">-- Logout User --</span>
               </div>

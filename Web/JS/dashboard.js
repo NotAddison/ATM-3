@@ -1,5 +1,42 @@
 async function GetLogs(){
-    console.log(">> Retrieving Logs...")
+    // console.log(">> Retrieving Logs...")
+    var url = "http://localhost:3000/logs/";
+    response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    response = await response.json();
+
+    // Clear Logs
+    $("#log-area").empty();
+
+    // Add Logs
+    for (var i = 0; i < response["logs"].length; i++){
+        log = response["logs"][i];
+
+        // Format Log colors
+        text_col = "text-white";
+        green = ["[✔️]", "[✅]", "[✓]"];
+        red = ["[❌]", "[⛔]", "[✖]"];
+        yellow = ["[⚠️]", "[⚠]", "[!]", "[⚠]"];
+        blue = ["[i]", "[📶]"];
+
+        if (green.includes(log["type"])){ text_col = "text-green-400"; }
+        if (red.includes(log["type"])){ text_col = "text-red-400"; }
+        if (yellow.includes(log["type"])){ text_col = "text-yellow-400"; }
+        if (blue.includes(log["type"])){ text_col = "text-blue-400"; }
+
+        $("#log-area").append(`
+        <div class="flex flex-row flex-wrap ${text_col}">
+            <p class="mr-2">${log["type"]} - ${log["atmID"]} </p>
+            <p>${log["message"]} </p>
+        </div>
+        `);
+    }
+
+
     // HTTP Request to local API (Returns array)
     // HTML Inject into Log area
 }
@@ -41,6 +78,18 @@ function DisplayATMStatus(id, status){
     // Reset all classes
     $(`#atm-${id}`).removeClass("atm-online atm-offline atm-danger");
     $(`#atm-${id}`).addClass(css);
+}
+
+function GetStaffName(){
+    url = "http://localhost:3000/dashboard/staff/"
+    options = { method: 'GET', headers: { 'Content-Type': 'application/json' } }
+
+    fetch(url, options)
+    .then(response => response.json())
+    .then(response => {
+        staff_name = response["staff_id"]
+        $("#staff-name").text(`${staff_name} !`);
+    });
 }
 
 isOnline = false
@@ -89,6 +138,13 @@ function AtmButtonPressed(id){
     });
 }
 
+function LogoutUser(){
+    url = "http://localhost:3000/emergency/"
+    options = { method: 'POST', headers: { 'Content-Type': 'application/json' } }
+    fetch(url, options)
+    ShowToast("User has been logged out", "green", icon="🔐", isSuccessful = true);
+}
+
 // If page is on "main.html" for dashboard, call functions on load
 
 
@@ -96,17 +152,24 @@ $(document).ready(function(){
     pageName = window.location.pathname.split("/").pop();
 
     if(pageName == "dashboard.html"){
+        GetStaffName();
         GetLogs();
         GetATMStatus();
+
+        setInterval(GetLogs, 2000);
         setInterval(GetATMStatus, 5000);
     }
 
     if (pageName == "atm.html"){
+        GetLogs();
+        GetATMFeed();
+
         setInterval(GetLogs, 2000);
         setInterval(GetATMFeed, 500);
     }
 });
 
+<<<<<<< HEAD
 function SendSOS(){
     $("body").prepend(`
                     <div class="min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-40" id="SOSPopup">
@@ -135,3 +198,52 @@ function SendSOS(){
 function DismissSOS(){
     $("#SOSPopup").remove();
 }
+=======
+function ATMStatus() {
+    online_atms = GetATMStatus();
+    online_atms.then(function(result){
+        online_atms = result;
+    });
+
+    console.log(online_atms)
+
+    if (online_atms.length = 1) {
+        yValues = [2, 1];
+        return yValues
+    }
+    else {
+        return [3, 0]
+    }
+}
+
+function Graph() {
+    var xValues = ["Offline", "Online"];
+    var yValues = ATMStatus()
+    console.log(yValues)
+    var barColors = [
+    "dark gray",
+    "#00FF00",
+    ];
+
+    new Chart("myChart", {
+    type: "pie",
+    data: {
+        labels: xValues,
+        datasets: [{
+        backgroundColor: barColors,
+        data: yValues,
+        }]
+    },
+    options: {
+        title: {
+        display: true,
+        borderWidth: 5,
+        text: "ATM Status",
+        borderColor: '#000000',
+        }
+    }
+    });
+}
+
+Graph()
+>>>>>>> 3fe2130b298f0d959aa7a577410b4a0a7aecec62

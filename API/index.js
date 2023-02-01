@@ -67,17 +67,20 @@ var dStaff = {
     'Addison' : '123456'
 }
 
+var staff_id = "";
+
 var aBlacklist = [501171904212];
 var gUser = "";
 var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
 var isRequestingBio = false;
-
+var isEmergency = false;
 var isCovered = false; // Camera Covered Boolean
 var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 var hasWeapon = false;
 var hasNegativeEmotion = false;
+
 
 var ATMs = [];
 var isCVOnline = false;
@@ -115,8 +118,10 @@ app.get("/variables", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isEmergency': isEmergency,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'staff_id': staff_id,
         'ATMs': ATMs,
         'isCVOnline': isCVOnline,
         'logs': logs
@@ -133,8 +138,10 @@ app.get("/reset", (req, res, next)=>{
     isHostage = false;
     isCovered = false;
     isRequestingBio = false;
+    isEmergency = false;
     hasNegativeEmotion = false;
     hasWeapon = false;
+    staff_id = "";
     ATMs = [];
     isCVOnline = false;
     logs = [];
@@ -152,8 +159,10 @@ app.get("/reset", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isEmergency': isEmergency,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'staff_id': staff_id,
         'ATMs': ATMs,
         'isCVOnline': isCVOnline,
         'logs': logs
@@ -526,12 +535,6 @@ app.post('/pwned/dismiss/:bool',(req, res) => {
     });
 });
 
-
-
-
-
-
-
 // -------- [ ATM Status ] --------
 app.post('/atm', (req, res) => {
     response = req.body;
@@ -547,6 +550,10 @@ app.post('/atm', (req, res) => {
 
 app.get('/atm', (req, res) => {
     res.status(200).send({ "ATMs" : ATMs });
+});
+
+app.get('/dashboard/staff/', (req, res) => {
+    res.status(200).send({ "staff_id" : staff_id });
 });
 
 
@@ -570,4 +577,18 @@ app.post('/logs/', (req, res) => {
 
     logs.push(response);
     res.status(200).send({ "logs" : logs });
+});
+
+// -------[ Emergency Mode ]-------
+app.get('/emergency/', (req, res) => {
+    res.status(200).json({
+        valid : isEmergency
+    });
+});
+
+app.post('/emergency/', (req, res) => {
+    isEmergency = !isEmergency; // Change after activation
+    res.status(200).json({
+        valid : isEmergency
+    });
 });

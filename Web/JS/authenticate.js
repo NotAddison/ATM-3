@@ -146,7 +146,7 @@ function StaffAuth(){
             if (data["valid"]){
                 // Valid
                 ShowToast('Staff Authentication Successful!', 'green', '✅', 0)
-                SendHook("[🔓] Staff Authenticated", `Staff ID: ${staff_id} \nStaff Name: ${data["name"]}`)
+                SendHook("[🔓] Staff Authenticated", `Staff ID: ${staff_id}`)
                 // [DELAY : 1 Seconds] :: Wait for webhook to send before redirect.
                 window.setTimeout(function(){
                     window.location.href = "dashboard.html";
