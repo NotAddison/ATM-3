@@ -6,7 +6,6 @@ function CheckEmergency() {
         .then(response => response.json())
         .then(response => {     
             isEmergency = response["valid"]
-            console.log(`>> isEmergency: ${isEmergency}`);
             if (isEmergency) {
 
                     ShowToast("You have been logged out by an OCBC Staff.")
@@ -17,7 +16,6 @@ function CheckEmergency() {
                     options = { method: 'POST', headers: { 'Content-Type': 'application/json' } }
                     fetch(url, options)
                     window.location.href = 'auth.html'
-                    console.log(">> [Emergency]: User is redirected");
                 }
                 return isEmergency
             }
