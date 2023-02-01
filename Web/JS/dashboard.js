@@ -245,8 +245,8 @@ function Graph() {
     var yValues = ATMStatus()
     console.log(yValues)
     var barColors = [
-    "#585352",
     "#131313",
+    "#FFFFFF",
     ];
 
     new Chart("myChart", {
