@@ -153,13 +153,25 @@ function GetATMInfo(){
     });
 }
 
-function AtmButtonPressed(id){
+function ViewATM(id){
     online_atms = GetATMStatus();
     online_atms.then(function(result){
         online_atms = result;
         if (online_atms.includes(id)) window.location.href = "atm.html";
         else ShowToast(`ATM ${id} is currently offline...`, "red", icon="X", iconIntensity = 500, outlineIntensity = 500 ,isCashToast = false, isSuccessful = false);
     });
+}
+
+function AddATM(){
+    // Gererate Fake ATM -- For Demo purposes, to show how admin will assign ATMs to staff
+    var randomID = Math.floor(Math.random() * 10000);
+    $("#AtmList").append(`
+        <button id="atm" onclick="ViewATM(${randomID})" class="flex flex-wrap flex-col items-center backdrop-blur-3xl bg-black/30 rounded-lg shadow-lg p-5 h-fit w-[250px] h-[400px] transition-all duration-[250ms] hover:scale-105 hover:bg-black/40 mb-5 mr-5">
+            <img id="atm-${randomID}" src="../../../Assets/Images/Dashboard/POS.svg" class="h-40 w-40 icon-white atm-offline">
+            <img src="../../../Assets/Images/Dashboard/ATM.svg" class="icon-white">
+            <p class="text-white font-bold">${randomID}</p>
+        </button>
+    `);
 }
 
 function LogoutUser(){

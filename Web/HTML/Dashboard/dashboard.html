@@ -57,29 +57,30 @@
             </div>
 
             <!-- Right content -->
-            <div class="flex flex-wrap py-5 h-full basis-8/12 scroll p-2">
+            <div class="flex flex-wrap py-5 h-full basis-8/12 scroll p-2" id="AtmList">
                 
                 <!-- HTML Card -->
-                <button id="atm" onclick="AtmButtonPressed(2729)" class="flex flex-wrap flex-col items-center backdrop-blur-3xl bg-black/30 rounded-lg shadow-lg p-5 h-fit w-[250px] h-[400px] transition-all duration-[250ms] hover:scale-105 hover:bg-black/40 mb-5 mr-5">
+                <button id="atm" onclick="ViewATM(2729)" class="flex flex-wrap flex-col items-center backdrop-blur-3xl bg-black/30 rounded-lg shadow-lg p-5 h-fit w-[250px] h-[400px] transition-all duration-[250ms] hover:scale-105 hover:bg-black/40 mb-5 mr-5">
                     <img id="atm-2729" src="../../../Assets/Images/Dashboard/POS.svg" class="h-40 w-40 icon-white">
                     <img src="../../../Assets/Images/Dashboard/ATM.svg" class="icon-white">
                     <p class="text-white font-bold">2729</p>
                 </button>
 
-                <button id="atm" onclick="AtmButtonPressed(7298)" class="flex flex-wrap flex-col items-center backdrop-blur-3xl bg-black/30 rounded-lg shadow-lg p-5 h-fit w-[250px] h-[400px] transition-all duration-[250ms] hover:scale-105 hover:bg-black/40 mb-5 mr-5">
-                    <img id="atm-7298" src="../../../Assets/Images/Dashboard/POS.svg" class="atm-offline h-40 w-40 icon-white">
-                    <img src="../../../Assets/Images/Dashboard/ATM.svg" class="icon-white">
-                    <p class="text-white font-bold" id="atm-1">7298</p>
-                </button>
-
-                <button id="atm" onclick="AtmButtonPressed(8869)" class="flex flex-wrap flex-col items-center backdrop-blur-3xl bg-black/30 rounded-lg shadow-lg p-5 h-fit w-[250px] h-[400px] transition-all duration-[250ms] hover:scale-105 hover:bg-black/40 mb-5 mr-5">
-                    <img id="atm-8869" src="../../../Assets/Images/Dashboard/POS.svg" class="atm-danger h-40 w-40 icon-white">
-                    <img src="../../../Assets/Images/Dashboard/ATM.svg" class="icon-white">
-                    <p class="text-white font-bold" id="atm-1">8869</p>
-                </button>
 
             </div>
         </div>
+
+        <!-- Floating Button -->
+        <div class="fixed right-10 bottom-10 ">
+            <div>
+              <button onclick="AddATM()" type="button" class="inline-block rounded-full bg-gray-600 text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-10 h-10">
+                <span class="text-xl font-bold">+</span>
+              </button>
+            </div>
+          </div>
+
+
+
         <script src="" async defer></script>
     </body>
 </html>
