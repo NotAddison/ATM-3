@@ -1,5 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const env = require('dotenv').config()
+
+WEBHOOK_URL = (process.env.WEBHOOK_URL)
+HIBP_API_KEY = (process.env.HIBP_API_KEY)
 
 const {PythonShell} = require('python-shell');  // Python Shell
 const request = require('request'); // HTTPS Requests
@@ -63,19 +67,24 @@ var dStaff = {
     'Addison' : '123456'
 }
 
+var staff_id = "";
+
 var aBlacklist = [501171904212];
 var gUser = "";
 var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
 var isRequestingBio = false;
-
+var isEmergency = false;
 var isCovered = false; // Camera Covered Boolean
 var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 var hasWeapon = false;
 var hasNegativeEmotion = false;
 
+
 var ATMs = [];
+var isCVOnline = false;
+var logs = [];
 
 // Middleware
 app.use(express.json());
@@ -109,8 +118,13 @@ app.get("/variables", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isEmergency': isEmergency,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'staff_id': staff_id,
+        'ATMs': ATMs,
+        'isCVOnline': isCVOnline,
+        'logs': logs
     });
 });
 
@@ -124,8 +138,14 @@ app.get("/reset", (req, res, next)=>{
     isHostage = false;
     isCovered = false;
     isRequestingBio = false;
+    isEmergency = false;
     hasNegativeEmotion = false;
     hasWeapon = false;
+    staff_id = "";
+    ATMs = [];
+    isCVOnline = false;
+    logs = [];
+
 
     // Reset dPins
     ResetDPins();
@@ -139,8 +159,13 @@ app.get("/reset", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isEmergency': isEmergency,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'staff_id': staff_id,
+        'ATMs': ATMs,
+        'isCVOnline': isCVOnline,
+        'logs': logs
     });
     console.log(">> Reset variables");
 });
@@ -346,6 +371,21 @@ app.get('/auth/emotion/',(req, res) => {
 });
 
 
+// Check if openCV is online
+app.post('/cv/',(req, res) => {
+    isCVOnline = !isCVOnline;
+    res.status(200).send({
+        "CVOnline": isCVOnline
+    });
+});
+
+app.get('/cv/',(req, res) => {
+    res.status(200).send({
+        "CVOnline": isCVOnline
+    });
+});
+
+
 
 
 
@@ -441,6 +481,14 @@ app.get('/covered/',(req, res) => {
 
 
 
+// -------- [ Webhook URL Request ] --------
+app.get('/webhook/',(req, res) => {
+    // Returns webhook url (cause I am lazy to do env for python lol)
+    res.status(200).send({
+        "url": WEBHOOK_URL
+    });
+});
+
 
 
 
@@ -451,7 +499,7 @@ app.get('/pwned/check/:email', (req, res) => {
     if (gPin in dPins && email == ""){ email = dPins[gPin][1]; }
 
     var url = `https://haveibeenpwned.com/api/v3/breachedaccount/${email}`;
-    var headers = { "hibp-api-key":"cc9cbc26678d4e959e80f4ab36bc7dff", "user-agent":"nodejs" };
+    var headers = { "hibp-api-key": HIBP_API_KEY , "user-agent":"nodejs" };
     // Send API get with api key
     request.get(url, {headers: headers}, (error, response, body) => {
         if (error) { return console.dir(error);}
@@ -487,12 +535,6 @@ app.post('/pwned/dismiss/:bool',(req, res) => {
     });
 });
 
-
-
-
-
-
-
 // -------- [ ATM Status ] --------
 app.post('/atm', (req, res) => {
     response = req.body;
@@ -508,4 +550,45 @@ app.post('/atm', (req, res) => {
 
 app.get('/atm', (req, res) => {
     res.status(200).send({ "ATMs" : ATMs });
+});
+
+app.get('/dashboard/staff/', (req, res) => {
+    res.status(200).send({ "staff_id" : staff_id });
+});
+
+
+// Logs
+app.get('/logs/', (req, res) => {
+    res.status(200).send({ "logs" : logs });
+});
+
+app.post('/logs/', (req, res) => {
+    response = req.body;
+
+    // Check if response is in valid format
+    if (response["atmID"] == undefined || response["message"] == undefined){
+        res.status(400).send({ "logs" : "ERROR: Invalid Foramt" });
+        return;
+    }
+
+    if (response["type"] == undefined){
+        response["type"] = "[>]";
+    }
+
+    logs.push(response);
+    res.status(200).send({ "logs" : logs });
+});
+
+// -------[ Emergency Mode ]-------
+app.get('/emergency/', (req, res) => {
+    res.status(200).json({
+        valid : isEmergency
+    });
+});
+
+app.post('/emergency/', (req, res) => {
+    isEmergency = !isEmergency; // Change after activation
+    res.status(200).json({
+        valid : isEmergency
+    });
 });

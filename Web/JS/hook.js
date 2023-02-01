@@ -1,9 +1,10 @@
 async function SendHook(title, message){
-    var url = "https://discord.com/api/webhooks/1036102961996247150/3keTw9J2paixnUpe39wytQEzo0hKP3RnoYWu6TZbhpctne6BKHRMOIntAoEDtECSftZH";
+    let url = await fetch("http://localhost:3000/webhook/").then(response => response.json()).then(data => data.url);
+
     const request = new XMLHttpRequest();
     request.open("POST", url);
     request.setRequestHeader('Content-type', 'application/json');
-    request.setRequestHeader('Access-Control-Allow-Origin', '*');
+    // request.setRequestHeader('Access-Control-Allow-Origin', '*');
 
     var data = {
         "embeds":[{"color": 1014235,

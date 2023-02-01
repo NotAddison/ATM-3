@@ -11,6 +11,7 @@ function CheckVision () {
             if (isCovered) {
                 if (!isShown) {
                     SendHook("[⚠ 📷] Camera Blocked/Broken", "Camera is blocked by a physical object.")
+                    SendLog("Camera Blocked/Broken", "⚠️")
                     console.log(">> [Covered]: SHOWING POPUP");
                     // Show POPUP Message to user : Inform them camera is covered & to remove cover
                     $("body").prepend(`

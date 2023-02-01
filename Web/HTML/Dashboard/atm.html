@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../CSS/dashboard.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../../JS/dashboard.js"></script>
 </head>
 
 <body>
@@ -27,38 +28,21 @@
                       <h1 class="text-xl font-bold">Live ATM Feed</h1>
                   </div>
                   <div class="flex flex-col text-gray-300 h-3/4 scroll console">
-                      > TODO: Add Webcam Feed lol
+                    <!-- ATM Live Feed (Will attempt websocket if there is time.) -->
+                      <img src="../../../Assets/Images/Dashboard/loading2.gif" id="feed-img">
                   </div>
               </div>
               
               <!-- Console Card -->
               <div class="backdrop-blur-3xl bg-black/40 rounded-lg shadow-lg p-5 h-[350px]">
-                  <div class="flex flex-row content-center mb-5">
-                      <img src="../../../Assets/Images/Dashboard/Terminal.svg" class="icon icon-white">
-                      <h1 class="text-xl font-bold">ATM Logs</h1>
-                  </div>
-                  <div class="flex flex-col text-gray-300 h-3/4 scroll console">
-                      <p>[>] This is a console message</p>  
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-                      <p>[>] This is a console message</p>
-
-                  </div>
-              </div>
+                <div class="flex flex-row content-center mb-5">
+                    <img src="../../../Assets/Images/Dashboard/Terminal.svg" class="icon icon-white">
+                    <h1 class="text-xl font-bold">ATM Logs</h1>
+                </div>
+                <div id="log-area" class="flex flex-col text-gray-300 h-3/4 scroll console">
+                    <p>[>] I am a console message, beep boop</p>
+                </div>
+            </div>
 
           </div>
       </div>
@@ -71,20 +55,20 @@
                 <img src="../../../Assets/Images/Dashboard/Status.svg" class="icon icon-white">
                 <h1 class="text-xl text-white font-bold"> Status </h1>
             </div>
-            <div class="flex flex-col text-gray-300">
-                <p>IP: </p>
+            <div class="flex flex-row text-gray-300">
+                <p class="mr-2">IP: </p>
                 <p id="IPAddress">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p>Lat,Lon: </p>
+              <p class="mr-2">Lat,Lon: </p>
               <p id="LatLon">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p>Location: </p>
+              <p class="mr-2">Location: </p>
               <p id="ATMLocation">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p>Status: </p>
+              <p class="mr-2">Status: </p>
               <p id="ATMStatus">XXXXXXXXXX</p>
             </div>
           </div>
@@ -94,19 +78,19 @@
                 <h1 class="text-xl text-white font-bold"> User </h1>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p>Name: </p>
+              <p class="mr-2">Name: </p>
               <p id="UserName">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p>Acc Status: </p>
+              <p class="mr-2">Acc Status: </p>
               <p id="AccStatus">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p>Breached: </p>
+              <p class="mr-2">Breached: </p>
               <p id="UserBreached">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p>Held Hostage: </p>
+              <p class="mr-2">Held Hostage: </p>
               <p id="HeldHostage">XXXXXXXXXX</p>
             </div>
           </div>

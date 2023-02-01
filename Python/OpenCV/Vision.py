@@ -124,6 +124,11 @@ def SendFeed(frame):
     print(">> Sending Feed...")
     cv2.imwrite("feed.jpg", frame)
 
+def UpdateStatus():
+    try:
+        requests.post("http://localhost:3000/cv/")
+    except:
+        print(">> Failed to update Status...")
 
     
 # --- ⚙ Main ⚙ ---
@@ -133,6 +138,13 @@ video.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 video.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
 loop_time = time() # Time Bookmark (FOR FPS)
+
+# Update API, change to online
+UpdateStatus()
+
+hasWeapon = False
+hasNegativeEmotion = False
+
 # > Main Loop
 while True:
     # > Read Video Frame
@@ -144,11 +156,12 @@ while True:
 
     # Check if camera is covered
     isCovered = CoverCheck(frame)
-    SendFeed(frame)
 
     # Detections
     hasWeapon = ObjectDetection(frame)
     hasNegativeEmotion = EmotionRecognition(frame)
+    SendFeed(frame)
+
 
     # FPS Calculation & output
     fps = (1/(time() - loop_time))
@@ -197,6 +210,11 @@ while True:
     # Exit on 'ESC' Key
     if cv2.waitKey(1) == 27: 
         break 
+
+UpdateStatus()
+# Delete Feed
+os.remove("feed.jpg")
+
 video.release()
 cv2.destroyAllWindows()
         

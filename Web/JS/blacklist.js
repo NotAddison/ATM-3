@@ -11,12 +11,15 @@ function CheckScore() {
             if (dict[key]["accountNo"] === accountNo){
                 score = dict[key]["score"]
                 if (score <= 20){
+                    SendLog(`Blocked Blacklisted Transfer Detected.`, "⚠️")
                     return Blacklist()
                 }
                 else if (score <= 60){
+                    SendLog(`Suspicious Transfer Detected.`, "⚠️")
                     return CheckSuspicious()
                 }
                 else{
+                    SendLog(`Transfer to ${accountNo} Sucessful.`)
                     ShowToast("Transfer Successful", "green", "✔");
                 }
             }

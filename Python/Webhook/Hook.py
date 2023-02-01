@@ -4,7 +4,12 @@ import geocoder
 from discord_webhook import DiscordWebhook, DiscordEmbed
 g = geocoder.ip('me')
 
-webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1036102961996247150/3keTw9J2paixnUpe39wytQEzo0hKP3RnoYWu6TZbhpctne6BKHRMOIntAoEDtECSftZH')
+def GetWebhookURL():
+    url = "http://localhost:3000/webhook/"
+    response = requests.get(url)
+    data = response.json()
+    return data["url"]
+
 
 # API Function
 def GetName():
@@ -12,6 +17,8 @@ def GetName():
     response = requests.get(url)
     data = response.json()
     return data["name"]
+
+webhook = DiscordWebhook(url= GetWebhookURL())
 
 
 # Send GENERIC Discord Webhook

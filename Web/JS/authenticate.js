@@ -30,6 +30,7 @@ function ValidatePin(pin=""){
             console.log(data)
             if (data.valid){
                 SendHook("[🔓] Pin Authenticated", `Pin: ${pin} \nUser: ${data.user} \nEmail: ${data.email}`)
+                SendLog("Pin Authenticated")
                 
                 // [DELAY : 2 Seconds] :: Wait for webhook to send before redirect.
                 window.setTimeout(function(){
@@ -39,6 +40,7 @@ function ValidatePin(pin=""){
             }
             else{
                 SendHook("[❌] Pin Authentication Failed", `Pin: ${pin}`)
+                SendLog("Pin Authentication Failed", "❌")
                 alert("Invalid Pin!")
                 ClearPin()
             }
@@ -97,6 +99,8 @@ function VerifyValidity(){
         console.log(`Biometric Request: ${data["request"]}`)
         if (data["valid"]){
             SendHook("[🔓] Biometric Authenticated", `User: ${data.user["name"]} \nEmail: ${data.email}`)
+            SendLog("Biometric Authentication Passed", "🔓")
+
             // [DELAY : 1 Seconds] :: Wait for webhook to send before redirect.
             window.setTimeout(function(){
                 window.location.href = "landing.html";
@@ -105,6 +109,7 @@ function VerifyValidity(){
         else{
             // Invalid
             ShowToast('Biometric Authentication Failed!', 'red', '❌', 0)
+            SendLog("Biometric Authentication Failed!", "⚠️")
         }
     })
 }
@@ -141,7 +146,7 @@ function StaffAuth(){
             if (data["valid"]){
                 // Valid
                 ShowToast('Staff Authentication Successful!', 'green', '✅', 0)
-                SendHook("[🔓] Staff Authenticated", `Staff ID: ${staff_id} \nStaff Name: ${data["name"]}`)
+                SendHook("[🔓] Staff Authenticated", `Staff ID: ${staff_id}`)
                 // [DELAY : 1 Seconds] :: Wait for webhook to send before redirect.
                 window.setTimeout(function(){
                     window.location.href = "dashboard.html";
