@@ -126,7 +126,6 @@ async function Graph() {
     var xValues = ["Offline", "Online"];
     var yValues = await GetGraphData();
 
-    console.log(yValues)
     var barColors = ["#131313", "#FFFFFF"];
 
     Chart = new Chart("myChart", {
@@ -157,7 +156,7 @@ async function Graph() {
 
 async function updateData() {
     var NewYValues = await GetGraphData()
-    myChart.data.datasets[0].data.yValues = NewYValues
+    Chart.data.datasets[0].data = NewYValues;
     Chart.update()
 }
 
@@ -424,7 +423,7 @@ $(document).ready(function () {
         GetLogs();
         GetATMStatus();
         Graph()
-
+        setInterval(updateData, 2000);
         setInterval(GetLogs, 2000);
         setInterval(GetATMStatus, 2000);
     }
@@ -439,5 +438,3 @@ $(document).ready(function () {
         setInterval(GetATMInfo, 2000);
     }
 });
-
-setInterval(updateData, 100);
