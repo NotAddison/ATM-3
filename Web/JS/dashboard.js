@@ -19,8 +19,8 @@ async function GetLogs() {
         // Format Log colors
         text_col = "text-white";
         green = ["[✔️]", "[✅]", "[✓]"];
-        red = ["[❌]", "[⛔]", "[✖]"];
-        yellow = ["[⚠️]", "[⚠]", "[!]", "[⚠]"];
+        red = ["[❌]", "[⛔]", "[✖]", "[!]"];
+        yellow = ["[⚠️]", "[⚠]", "[⚠]"];
         blue = ["[i]", "[📶]"];
 
         if (green.includes(log["type"])) { text_col = "text-green-400"; }

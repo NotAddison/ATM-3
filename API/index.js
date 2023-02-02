@@ -341,7 +341,7 @@ app.post('/auth/3/:hostage',(req, res) => {
         data = {
             "atmID": 23131,
             "message": "User is possibly held hostage",
-            "type": "[⚠️]"
+            "type": "[!]"
            }
         logs.push(data)
     }
