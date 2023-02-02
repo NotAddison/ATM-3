@@ -120,10 +120,6 @@ function StaffAuth(){
     var staff_id = $('#StaffID').val();
     var staff_pass = $('#StaffPassword').val();
 
-    // Check if staff_id is valid
-    console.log(`Staff ID: ${staff_id}`)
-    console.log(`Staff Pin: ${staff_pass}`)
-
     const payload = {
         "staff_id": staff_id,
         "staff_pass": parseInt(staff_pass)
@@ -142,7 +138,6 @@ function StaffAuth(){
     fetch(`http://localhost:3000/auth/staff/`, options)
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             if (data["valid"]){
                 // Valid
                 ShowToast('Staff Authentication Successful!', 'green', '✅', 0)
