@@ -155,6 +155,13 @@ async function Graph() {
     });
 }
 
+async function updateData() {
+    var NewYValues = await GetGraphData()
+    myChart.data.datasets.yValues[0] = NewYValues[0]
+    myChart.data.datasets.yValues[1] = NewYValues[1]
+    Chart.update()
+}
+
 function ViewATM(id){
     online_atms = []
     GetATMStatus().then(response => {
@@ -340,3 +347,5 @@ $(document).ready(function(){
         setInterval(GetATMInfo, 2000);
     }
 });
+
+setInterval(updateData, 100);
