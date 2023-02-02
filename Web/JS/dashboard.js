@@ -157,8 +157,7 @@ async function Graph() {
 
 async function updateData() {
     var NewYValues = await GetGraphData()
-    myChart.data.datasets.yValues[0] = NewYValues[0]
-    myChart.data.datasets.yValues[1] = NewYValues[1]
+    myChart.data.datasets[0].data.yValues = NewYValues
     Chart.update()
 }
 
