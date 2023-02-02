@@ -336,6 +336,14 @@ app.post('/auth/3/:hostage',(req, res) => {
     if(isHostage){
         hasWeapon = true;
         hasNegativeEmotion = true;
+
+        // Add Logs
+        data = {
+            "atmID": 23131,
+            "message": "User is possibly held hostage",
+            "type": "[⚠️]"
+           }
+        logs.push(data)
     }
 
     res.status(200).send({
