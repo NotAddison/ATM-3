@@ -251,11 +251,26 @@ function GetATMInfo() {
             $('#AccStatus').text(response["Blacklisted"]);
             $('#AccScore').text(response["score"]);
 
+            // remove all classes
+            $('#ATMStatus').removeClass();
+            $('#AccStatus').removeClass();
+            $('#UserBreached').removeClass();
+            $('#AccScore').removeClass();
+
             // Add class
             if (response["HeldHostage"] == true) { $('#ATMStatus').addClass("text-red-500"); }
+            else ($('#ATMStatus').addClass("text-green-400"))
+
+
             if (response["Blacklisted"] == true) { $('#AccStatus').addClass("text-red-500"); }
+            else ($('#AccStatus').addClass("text-green-400"))
+
             if (response["HeldHostage"] == false) { $('#ATMStatus').addClass("text-green-500"); }
+            else ($('#ATMStatus').addClass("text-red-500"))
+
             if (response["Pwned"] == true) { $('#UserBreached').addClass("text-red-500"); }
+            else ($('#UserBreached').addClass("text-green-400"))
+
             if (response["score"] < 50) { $('#AccScore').addClass("text-red-500"); }
             else ($('#AccScore').addClass("text-green-400"))
         });
