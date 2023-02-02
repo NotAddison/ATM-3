@@ -58,19 +58,19 @@
                 <h1 class="text-xl text-white font-bold"> ATM Info </h1>
             </div>
             <div class="flex flex-row text-gray-300">
-                <p class="mr-2">IP: </p>
+                <p class="mr-2 font-bold">IP: </p>
                 <p id="IPAddress">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p class="mr-2">Latitude: </p>
+              <p class="mr-2 font-bold">Latitude: </p>
               <p id="Lat">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p class="mr-2">Longitude: </p>
+              <p class="mr-2 font-bold">Longitude: </p>
               <p id="Long">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p class="mr-2">Hostage Situation: </p>
+              <p class="mr-2 font-bold">Hostage Situation: </p>
               <p id="ATMStatus">XXXXXXXXXX</p>
             </div>
           </div>
@@ -80,54 +80,60 @@
                 <h1 class="text-xl text-white font-bold"> Current User </h1>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p class="mr-2">Name: </p>
+              <p class="mr-2 font-bold">Name: </p>
               <p id="UserName">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p class="mr-2">Email: </p>
+              <p class="mr-2 font-bold">Email: </p>
               <p id="UserEmail">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p class="mr-2">Age: </p>
+              <p class="mr-2 font-bold">Age: </p>
               <p id="UserAge">XXXXXXXXXX</p>
             </div>
             
             <div class="flex flex-row text-gray-300">
-              <p class="mr-2">Breached: </p>
+              <p class="mr-2 font-bold">Breached: </p>
               <p id="UserBreached">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p class="mr-2">Acc Status: </p>
+              <p class="mr-2 font-bold">Acc Status: </p>
               <p id="AccStatus">XXXXXXXXXX</p>
             </div>
             <div class="flex flex-row text-gray-300">
-              <p class="mr-2">Acc Score: </p>
+              <p class="mr-2 font-bold">Acc Score: </p>
               <p id="AccScore">XXXXXXXXXX</p>
             </div>
           </div>
           <!-- HTML Card -->
-          <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-xl bg-black/30 gap-x-12 h-[16rem] w-[73rem]" style="border-radius: 50px; margin-top: 120px;">
-            <button class="hover:scale-105" onclick="LogoutUser()">  
-              <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30 h-[13rem] w-[13rem]" style="border-radius: 50px;">
-                  <span class="text-white">Force Logout</span>
-              </div>
-            </button>
-            <button class="hover:scale-105" onclick=SendBroadcast()>
-              <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30 h-[13rem] w-[13rem]" style="border-radius: 50px;">
+          <div class="flex flex-wrap flex-col content-center p-10 rounded-lg bg-gray-50 shadow-md backdrop-blur-xl bg-black/30 gap-x-12 w-full mx-10" style="border-radius: 20px;">
+            <div class="flex flex-row content-center mb-5">
+              <img src="../../../Assets/Images/Dashboard/control.svg" class="icon icon-white">
+              <h1 class="text-xl text-white font-bold"> Control Center </h1>
+          </div>
+          <div class="flex flex-row w-full space-x-4">
+            <button class="hover:scale-105 transition-all duration-[100ms]" onclick="SendBroadcast()">  
+              <div class="flex flex-wrap flex-col content-center items-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30 h-[13rem] w-[13rem]" style="border-radius: 20px;">
+                  <img src="../../../Assets/Images/Dashboard/broadcast.svg" class="w-16 icon-white mb-2">
                   <span class="text-white">Broadcast</span>
               </div>
             </button>
-            <button class="hover:scale-105" onclick="C">
-              <div class="flex flex-wrap content-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30 h-[13rem] w-[13rem]" style="border-radius: 50px;">
-                  <span class="text-white">Change User Stats</span>
+            <button class="hover:scale-105 transition-all duration-[100ms]" onclick="LogoutUser()">  
+              <div class="flex flex-wrap flex-col content-center items-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30 h-[13rem] w-[13rem]" style="border-radius: 20px;">
+                  <img src="../../../Assets/Images/Dashboard/force-logout.svg" class="w-16 icon-white mb-2">
+                  <span class="text-white">Force Logout</span>
+              </div>
+            </button>
+            <button class="hover:scale-105 transition-all duration-[100ms]" onclick="c">  
+              <div class="flex flex-wrap flex-col content-center items-center justify-center rounded-lg bg-gray-50 shadow-md backdrop-blur-sm bg-black/30 h-[13rem] w-[13rem]" style="border-radius: 20px;">
+                  <img src="../../../Assets/Images/Dashboard/edit.svg" class="w-16 icon-white mb-2">
+                  <span class="text-white">Edit User Stats</span>
               </div>
             </button>
           </div>
+            
         </div>
-
-        
       </div>
-       
     </div>
-    <script src="" async defer></script>
+  </div>
 </body>
