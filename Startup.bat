@@ -69,8 +69,7 @@ goto exit
 :startFlutter
 Echo off
 Echo Starting Flutter . . .
-pause
-start cmd /c "cd App/pfd_ocbc && flutter run lib/main.dart"
+start cmd /c "cd App && flutter run lib/main.dart"
 goto exit
 
 

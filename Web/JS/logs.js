@@ -8,7 +8,7 @@ function SendLog(message, type = ">") {
     }
 
     url = "http://localhost:3000/logs/"
-    options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }
+    let options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }
 
     fetch(url, options)
     .then(response => response.json())
