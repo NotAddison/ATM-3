@@ -691,3 +691,27 @@ app.get('/broadcast/', (req, res) => {
     });
     BroadcastSwitch = false;
 });
+
+// -------[ Update User Info ]-------
+app.post('/dashboard/user/edit/', (req, res) => {
+    response = req.body;
+    dPins[gPin]["name"] = response["name"];
+    dPins[gPin]["email"] = response["email"];
+    dPins[gPin]["age"] = response["age"];
+    dPins[gPin]["score"] = response["score"];
+    res.status(200).json({
+        "name" : dPins[gPin]["name"],
+        "email" : dPins[gPin]["email"],
+        "age" : dPins[gPin]["age"],
+        "score" : dPins[gPin]["score"]
+    });
+});
+
+app.get('/dashboard/user/edit/', (req, res) => {
+    res.status(200).json({
+        "name" : dPins[gPin]["name"],
+        "email" : dPins[gPin]["email"],
+        "age" : dPins[gPin]["age"],
+        "score" : dPins[gPin]["score"]
+    });
+});

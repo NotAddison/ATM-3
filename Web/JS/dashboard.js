@@ -317,7 +317,81 @@ function DismissBroadcast(status = true) {
     $("#BroadcastModal").remove();
 }
 
+function EditUserInfo(){
+    console.log("hello world")
+    $("body").prepend(`
+        <div class="backdrop-blur-3xl bg-black/50 min-h-screen flex flex-wrap max-h-screen w-full content-center justify-center py-10 rounded-lg absolute z-20" id="EditInfoModal">
+            <div class="backdrop-blur-3xl bg-black/50 flex flex-wrap content-center justify-center rounded-lg shadow-md w-[30rem] h-[20rem] p-5 shadow-md z-50">
+            <div class="p-5">
+                <!-- Header Text -->
+                <div class="flex flex-col">
+                    <p class="text-white text-2xl">Edit User Info</p> 
+                </div>
+                <br>
+                <div class="w-96 mb-5">
+                <div class="flex flex-row text-gray-300">
+                    <p class="font-bold">Name: </p>
+                    <input type="text" id="EditName" placeholder="- Enter Value Here -" class="form-control px-2 text-base font-normal text-white bg-transparent bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-400 focus:bg-transparent focus:border-blue-600 focus:outline-none" />
+                </div>
+                <div class="flex flex-row text-gray-300">
+                    <p class="font-bold">Email: </p>
+                    <input type="text" id="EditEmail" placeholder="- Enter Value Here -" class="form-control px-2 text-base font-normal text-white bg-transparent bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-400 focus:bg-transparent focus:border-blue-600 focus:outline-none" />
+                </div>
+                <div class="flex flex-row text-gray-300">
+                    <p class="font-bold">Age: </p>
+                    <input type="text" id="EditAge" placeholder="- Enter Value Here -" class="form-control px-2 text-base font-normal text-white bg-transparent bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-400 focus:bg-transparent focus:border-blue-600 focus:outline-none" />
+                </div>
+                <div class="flex flex-row text-gray-300">
+                    <p class="font-bold">Acc Score: </p>
+                    <input type="text" id="EditScore" placeholder="- Enter Value Here -" class="form-control px-2 text-base font-normal text-white bg-transparent bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-400 focus:bg-transparent focus:border-blue-600 focus:outline-none" />
+                </div>
+                </div>
+                <div class="flex flex-row content-center items-center justify-center">
+                <button class="rounded-md w-1/2 py-4 text-center text-white cursor-pointer hover:bg-rose-700 transition ease-in-out delay-10 hover:scale-105 duration-150 font-bold" onclick="DismissEditUserInfo(false)">X</button>
+                <button class="rounded-md w-1/2 text-center text-white cursor-pointer hover:bg-green-700 transition ease-in-out delay-10 hover:scale-105 duration-150 py-2" onclick="DismissEditUserInfo()">
+                    <div class="flex flex-row content-center items-center justify-center space-x-3">
+                        <img src="../../../Assets/Images/Dashboard/edit.svg" class="w-8 icon-white">
+                    </div> 
+                </button>
+                </div>
+            </div>
+        </div>
+    `)
 
+    // Get User Info
+    url = "http://localhost:3000/dashboard/user/edit/"
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        $("#EditName").val(data.name)
+        $("#EditEmail").val(data.email)
+        $("#EditAge").val(data.age)
+        $("#EditScore").val(data.score)
+    });
+}
+
+function DismissEditUserInfo(status = true) {
+    // Send Broadcast
+    if (status) {
+        username = $("#EditName").val()
+        email = $("#EditEmail").val()
+        age = $("#EditAge").val()
+        score = $("#EditScore").val()
+
+        data = { "name": username, "email": email, "age": age, "score": score }
+
+        url = "http://localhost:3000/dashboard/user/edit/"
+        options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }
+        console.log(data)
+        fetch(url, options)
+
+
+        ShowToast(`Sucessfully Edited User Information`, "green", icon = "📝", isSuccessful = true);
+        SendLog("Edited User Information")
+    }
+
+    $("#EditInfoModal").remove();
+}
 
 
 
