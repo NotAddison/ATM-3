@@ -12,6 +12,7 @@ function CheckAge() {
             if (isElderly) {
                 if (age > 60) {
                     SendHook("[⚠] Elderly withdrawer detected", "Potential Scam")
+                    SendLog("Elderly withdrawer detected")
                     console.log(">> [Covered]: SHOWING POPUP");
                     // Show POPUP Message to user : Inform them that a potential scam is happening
                     $("body").prepend(`

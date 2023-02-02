@@ -69,8 +69,7 @@ goto exit
 :startFlutter
 Echo off
 Echo Starting Flutter . . .
-pause
-start cmd /c "cd App/pfd_ocbc && flutter run lib/main.dart"
+start cmd /c "cd App && flutter run lib/main.dart"
 goto exit
 
 
@@ -79,10 +78,9 @@ goto exit
 Echo off
 Echo Starting Web Server . . .
 Echo Need to manually run live server
-cd Web/HTML/Index
-start "" "index.html"
-cd Web/HTML/Dashboard
-start "" "index.html"
+@REM cd Web/HTML/Index
+start cmd /c  "cd Web/HTML/Index && index.html"
+start cmd /c  "cd Web/HTML/Dashboard && index.html"
 goto exit
 
 
@@ -112,4 +110,3 @@ goto menu
 
 
 :exit
-PAUSE

@@ -14,7 +14,7 @@ input:focus{
     outline: none;
 }
 
-.banner {
+.banner, .announcement {
     background: #009579;
     position: absolute;
     width: 100vw;

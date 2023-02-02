@@ -1,0 +1,69 @@
+.body{
+    background-color: white;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    margin: 0;
+}
+
+.test{
+    outline: 2px solid red;
+}
+
+h1, h2{
+    font-family: 'Inter', sans-serif;
+    color: white;
+}
+
+.icon{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+div.scroll {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* transparent scrollbar */
+div.scroll::-webkit-scrollbar {
+    background: transparent;
+}
+
+.console{
+    /* consolas font */
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.icon-white{
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(143deg) brightness(103%) contrast(101%);
+    /* https://codepen.io/sosuke/pen/Pjoqqp */
+}
+
+.atm-danger{
+    /* filter red */
+    filter: invert(61%) sepia(55%) saturate(1139%) hue-rotate(312deg) brightness(78%) contrast(136%) !important;
+}
+
+.atm-warn{
+    /* filter yellow */
+    filter: invert(66%) sepia(67%) saturate(5784%) hue-rotate(7deg) brightness(101%) contrast(106%) !important;
+}
+
+.atm-offline{
+    /* filter light gray */
+    filter: invert(14%) sepia(11%) saturate(0%) hue-rotate(209deg) brightness(98%) contrast(93%) !important;
+}
+
+
+
+
+
+#bg-video{
+    /* Darken video */
+    filter: brightness(85%);
+}

@@ -2,17 +2,44 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Dashboard</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Dashboard - Main</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="../../CSS/dashboard.css">
         <script src="https://cdn.tailwindcss.com"></script>
-        <script src="../../JS/authenticate.js" async defer></script> 
-        <!-- TODO: Modify AuthenticateJS for Staff Authentication -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+
+        <!-- Dashboard Scripts -->
+        <script src="../../JS/toast.js" defer></script>
+        <script src="../../JS/hook.js" async defer></script>
+        <script src="../../JS/authenticate.js" defer></script>
+        
     </head>
     <body>
-        
-        
+        <video autoplay loop muted class="absolute w-auto min-w-full min-h-full max-w-none" id="bg-video" style="width:100%; height:100%; object-fit: cover; z-index: -1;">
+            <source src="../../../Assets/Videos/background.mp4" type="video/mp4" />Your browser does not support the video tag.
+        </video>
 
+        <div class="flex flex-wrap flex-row h-screen py-5">
+            <!-- Left Bar -->
+            <div class="flex basis-4/12 pr-5">
+                <div class="flex flex-wrap flex-col backdrop-blur-3xl bg-black/20 w-full p-5 rounded-r-xl justify-center">
+                    <h1 class="text-3xl text-center font-bold mb-5">OCBC - Staff Login</h1>
+
+                  <!-- User Input(s) -->
+                  <div class="flex justify-center justify-items-center space-x-3.5">
+                    <div class="xl:w-96">
+                      <input id="StaffID" type="staffid" placeholder="Staff ID" class="mb-5 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-400 rounded transition ease-in-out m-0 focus:text-gray-200 focus:bg-black/50 focus:border border-solid border-gray/10 border-blue-600 focus:outline-none backdrop-blur-3xl bg-black/20"/>
+                      <input id="StaffPassword" type="password" placeholder="Password" class="mb-5 form-control block w-full px-3 py-1.5 text-base font-normal text-gray-400 rounded transition ease-in-out m-0 focus:text-gray-200 focus:bg-black/50 focus:border border-solid border-gray/10 border-blue-600 focus:outline-none backdrop-blur-3xl bg-black/20"/>
+                      <div class="flex flex-grow place-content-end">
+                        <button onclick="StaffAuth()">
+                          <img src="../../../Assets/Images/Dashboard/LoginIcon.svg" class="icon icon-white">
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
     </body>
 </html>

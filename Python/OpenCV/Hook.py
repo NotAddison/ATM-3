@@ -4,7 +4,12 @@ import geocoder
 from discord_webhook import DiscordWebhook, DiscordEmbed
 g = geocoder.ip('me')
 
-webhook = DiscordWebhook(url='https://discord.com/api/webhooks/1036102961996247150/3keTw9J2paixnUpe39wytQEzo0hKP3RnoYWu6TZbhpctne6BKHRMOIntAoEDtECSftZH')
+def GetWebhookURL():
+    url = "http://localhost:3000/webhook/"
+    response = requests.get(url)
+    data = response.json()
+    return data["url"]
+
 
 # API Function
 def GetName():
@@ -13,6 +18,18 @@ def GetName():
     data = response.json()
     return data["name"]
 
+webhook = DiscordWebhook(url= GetWebhookURL())
+
+
+def BindIP():
+    url = 'http://localhost:3000/ip/'
+    data = {
+        'IP': g.ip,
+        'Lat': g.lat,
+        'Long': g.lng
+    }
+    requests.post(url, json=data)
+    
 
 # Send GENERIC Discord Webhook
 def SendHostageHook(test = True):
@@ -33,3 +50,13 @@ def SendHostageHook(test = True):
     print(f"isHostage Webhook: {response}")
 
 # SendHostageHook(False)
+ATMID = 2729
+def UpdateATMValue(item, boolean):
+    url = 'http://localhost:3000/atm'
+    res = requests.get(url)
+    data = res.json()
+    for atm in data["ATMs"]:
+        if atm["ATMID"] == ATMID:
+            atm[item] = boolean
+            break
+    requests.post(url, json=data)

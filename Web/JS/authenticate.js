@@ -30,6 +30,7 @@ function ValidatePin(pin=""){
             console.log(data)
             if (data.valid){
                 SendHook("[🔓] Pin Authenticated", `Pin: ${pin} \nUser: ${data.user} \nEmail: ${data.email}`)
+                SendLog("Pin Authenticated")
                 
                 // [DELAY : 2 Seconds] :: Wait for webhook to send before redirect.
                 window.setTimeout(function(){
@@ -39,6 +40,7 @@ function ValidatePin(pin=""){
             }
             else{
                 SendHook("[❌] Pin Authentication Failed", `Pin: ${pin}`)
+                SendLog("Pin Authentication Failed", "❌")
                 alert("Invalid Pin!")
                 ClearPin()
             }
@@ -97,6 +99,8 @@ function VerifyValidity(){
         console.log(`Biometric Request: ${data["request"]}`)
         if (data["valid"]){
             SendHook("[🔓] Biometric Authenticated", `User: ${data.user["name"]} \nEmail: ${data.email}`)
+            SendLog("Biometric Authentication Passed", "🔓")
+
             // [DELAY : 1 Seconds] :: Wait for webhook to send before redirect.
             window.setTimeout(function(){
                 window.location.href = "landing.html";
@@ -105,11 +109,51 @@ function VerifyValidity(){
         else{
             // Invalid
             ShowToast('Biometric Authentication Failed!', 'red', '❌', 0)
+            SendLog("Biometric Authentication Failed!", "⚠️")
         }
     })
 }
 
 // Dashboard Login
 function StaffAuth(){
-    // TODO : Staff Login
+    // Get Staff ID
+    var staff_id = $('#StaffID').val();
+    var staff_pass = $('#StaffPassword').val();
+
+    const payload = {
+        "staff_id": staff_id,
+        "staff_pass": parseInt(staff_pass)
+    }
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify(payload)
+    };
+
+    fetch(`http://localhost:3000/auth/staff/`, options)
+        .then(response => response.json())
+        .then(data => {
+            if (data["valid"]){
+                // Valid
+                ShowToast('Staff Authentication Successful!', 'green', '✅', 0)
+                SendHook("[🔓] Staff Authenticated", `Staff ID: ${staff_id}`)
+                // [DELAY : 1 Seconds] :: Wait for webhook to send before redirect.
+                window.setTimeout(function(){
+                    window.location.href = "dashboard.html";
+                }, 1000);
+            }
+            else{
+                // Invalid
+                ShowToast('Staff Authentication Failed!', 'red', '❌', 0)
+                SendHook("[❌] Staff Authentication Failed", `Staff ID: ${staff_id}`)
+            }
+        })
+        .catch(error => {
+            console.error(error)
+        });
 }

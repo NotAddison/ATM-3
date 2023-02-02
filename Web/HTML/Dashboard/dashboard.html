@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Dashboard - Main</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../../CSS/dashboard.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- Dashboard Scripts -->
+        <script src="../../JS/toast.js" defer></script>
+        <script src="../../JS/dashboard.js" defer></script>
+    </head>
+    <body>
+        <video autoplay loop muted class="absolute w-auto min-w-full min-h-full max-w-none" id="bg-video" style="width:100%; height:100%; object-fit: cover; z-index: -1;">
+            <source src="../../../Assets/Videos/background.mp4" type="video/mp4" />Your browser does not support the video tag.
+        </video>
+
+        <div class="flex flex-wrap flex-row h-screen py-5">
+            <!-- Left Bar -->
+            <div class="flex basis-4/12 pr-5">
+                <div class="flex flex-wrap flex-col backdrop-blur-3xl w-full p-5 rounded-r-xl justify-between">
+                    <h1 class="text-3xl text-center font-bold">OCBC - Dashboard</h1>
+
+                    <!-- Add Stuff Here -->
+                    <div class="backdrop-blur-3xl bg-black/20 rounded-lg shadow-lg p-5 h-[400px]">
+                        <div class="flex flex-row content-center mb-5">
+                            <img src="../../../Assets/Images/Dashboard/Terminal.svg" class="icon icon-white">
+                            <div class="flex flex-row flex-wrap">
+                                <h1 class="text-xl font-bold mr-2">Hello</h1>
+                                <h1 class="text-xl font-bold" id="staff-name">Status</h1>
+                            </div>
+                        </div>
+                        <div class="flex flex-col text-white-300 h-3/4 scroll console">
+                            <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Console Card -->
+                    <div class="backdrop-blur-3xl bg-black/40 rounded-lg shadow-lg p-5 h-[350px]">
+                        <div class="flex flex-row content-center mb-5">
+                            <img src="../../../Assets/Images/Dashboard/Terminal.svg" class="icon icon-white">
+                            <h1 class="text-xl font-bold">ATM Logs</h1>
+                        </div>
+                        <div id="log-area" class="flex flex-col text-gray-300 h-3/4 scroll console">
+                            <p>[>] I am a console message, beep boop</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right content -->
+            <div class="flex flex-wrap py-5 h-full basis-8/12 scroll p-2" id="AtmList">
+                
+                <!-- HTML Card -->
+                <button id="atm" onclick="ViewATM(2729)" class="flex flex-wrap flex-col items-center backdrop-blur-3xl bg-black/30 rounded-lg shadow-lg p-5 h-fit w-[250px] h-[400px] transition-all duration-[250ms] hover:scale-105 hover:bg-black/40 mb-5 mr-5">
+                    <img id="atm-2729" src="../../../Assets/Images/Dashboard/POS.svg" class="h-40 w-40 atm-offline">
+                    <img src="../../../Assets/Images/Dashboard/ATM.svg" class="icon-white">
+                    <p class="text-white font-bold">2729</p>
+                </button>
+
+
+            </div>
+        </div>
+
+        <!-- Floating Button -->
+        <div class="fixed right-10 bottom-10 ">
+            <div>
+              <button onclick="AddATM()" type="button" class="inline-block rounded-full bg-gray-600 text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-10 h-10">
+                <span class="text-xl font-bold">+</span>
+              </button>
+            </div>
+          </div>
+
+
+
+        <script src="" async defer></script>
+    </body>
+</html>

@@ -16,6 +16,8 @@ import sys
 sys.path.insert(1, "Python\Webhook")
 import Hook as Webhook
 
+Webhook.BindIP()
+
 # --- ⚙ OpenCV Settings ⚙ ---
 cam = 0                 # Camera ID [0 = Default Camera | 1 = External Camera | addr = Path to Video File]
 threshold = 0.55        # Main threshold for obj detection [aka, sensitivity]
@@ -119,6 +121,18 @@ def CoverCheck(img):
     if stddev[0,0] + 5 < default_sharpness: return True
     else: return False
 
+
+def SendFeed(frame):
+    print(">> Sending Feed...")
+    cv2.imwrite("feed.jpg", frame)
+
+def UpdateStatus():
+    try:
+        requests.post("http://localhost:3000/cv/")
+    except:
+        print(">> Failed to update Status...")
+
+    
 # --- ⚙ Main ⚙ ---
 # > Camera Setup [0 = Default Camera | 1 = External Camera | addr = Path to Video File]
 video = cv2.VideoCapture(cam)
@@ -126,6 +140,14 @@ video.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 video.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
 loop_time = time() # Time Bookmark (FOR FPS)
+
+# Update API, change to online
+UpdateStatus()
+
+
+hasWeapon = False
+hasNegativeEmotion = False
+
 # > Main Loop
 while True:
     # > Read Video Frame
@@ -141,6 +163,8 @@ while True:
     # Detections
     hasWeapon = ObjectDetection(frame)
     hasNegativeEmotion = EmotionRecognition(frame)
+    SendFeed(frame)
+
 
     # FPS Calculation & output
     fps = (1/(time() - loop_time))
@@ -166,11 +190,13 @@ while True:
             isSentHostage = True
             try:
                 r = requests.post(f'http://localhost:3000/auth/3/{True}')   # Send Status to API
-                print(f"Object.py: {r.status_code}")
+                print(f"Vision.py (Hostage): {r.status_code}")
                 Webhook.SendHostageHook()   # Send Status to Webhook
+                Webhook.UpdateATMValue("isHostage", True)
             except:
                 print("Object.py: Failed to send request.")
                 pass
+    else: Webhook.UpdateATMValue("isHostage", False)
 
     # Check if user is covered
     if isCovered:
@@ -181,14 +207,21 @@ while True:
             # isSentCovered = True [NOTE: Constantly updates server with covered status]
             try:
                 r = requests.post(f'http://localhost:3000/covered/{True}')
-                print(f"Vision.py: {r.status_code}")
+                print(f"Vision.py (Covered): {r.status_code}")
+                Webhook.UpdateATMValue("isCovered", True)
             except:
                 print("Vision.py: Failed to send request.")
                 pass
+    else: Webhook.UpdateATMValue("isCovered", False)
 
     # Exit on 'ESC' Key
     if cv2.waitKey(1) == 27: 
         break 
+
+UpdateStatus()
+# Delete Feed
+os.remove("feed.jpg")
+
 video.release()
 cv2.destroyAllWindows()
         

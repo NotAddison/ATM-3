@@ -1,5 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const env = require('dotenv').config()
+
+WEBHOOK_URL = (process.env.WEBHOOK_URL)
+HIBP_API_KEY = (process.env.HIBP_API_KEY)
 
 const {PythonShell} = require('python-shell');  // Python Shell
 const request = require('request'); // HTTPS Requests
@@ -59,18 +63,39 @@ var dBiometric = {
     "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" : dPins[123456]
 }
 
+var dStaff = {
+    'Addison' : '123456'
+}
+
+var staff_id = "";
+
 var aBlacklist = [501171904212];
 var gUser = "";
+var gUserBreached = false;
 var gPin = "";
 var gHash = "";
 var gIsOutlier = false;
 var isRequestingBio = false;
-
+var isForceLogout = false;
 var isCovered = false; // Camera Covered Boolean
-var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 var hasWeapon = false;
 var hasNegativeEmotion = false;
+var isHostage = hasNegativeEmotion && hasWeapon; // If hostage situation
 
+
+var ATMs = [
+    {
+        "ATMID": 2729,
+        'isHostage': isHostage,
+        'isCovered': isCovered,
+        'isOnline': false,
+    }
+];
+var isCVOnline = false;
+var logs = [];
+
+var BroadcastSwitch = false;
+var BroadcastMessage = false;
 
 // Middleware
 app.use(express.json());
@@ -104,8 +129,13 @@ app.get("/variables", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isForceLogout': isForceLogout,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'staff_id': staff_id,
+        'ATMs': ATMs,
+        'isCVOnline': isCVOnline,
+        'logs': logs
     });
 });
 
@@ -119,8 +149,13 @@ app.get("/reset", (req, res, next)=>{
     isHostage = false;
     isCovered = false;
     isRequestingBio = false;
+    isForceLogout = false;
     hasNegativeEmotion = false;
     hasWeapon = false;
+    staff_id = "";
+    isCVOnline = false;
+    logs = [];
+
 
     // Reset dPins
     ResetDPins();
@@ -134,8 +169,13 @@ app.get("/reset", (req, res, next)=>{
         'isHostage': isHostage,
         'isCovered': isCovered,
         'isRequestingBio': isRequestingBio,
+        'isForceLogout': isForceLogout,
         'hasNegativeEmotion': hasNegativeEmotion,
         'hasWeapon': hasWeapon,
+        'staff_id': staff_id,
+        'ATMs': ATMs,
+        'isCVOnline': isCVOnline,
+        'logs': logs
     });
     console.log(">> Reset variables");
 });
@@ -188,6 +228,11 @@ app.get('/auth/1/',(req, res) => {
     }
     
 });
+
+
+
+
+
 
 // -------- [ Biometric Authentication API (2) ] --------
 app.post('/auth/2/:hash',(req, res) => {
@@ -262,7 +307,28 @@ app.post('/auth/2/request/:bool',(req, res) => {
     });
 });
 
-// -------- [ CV (Object) Authentication API (2) ] --------
+
+// -------- [ Staff Authentication API (2) ] --------
+app.post('/auth/staff/', (req, res) => {
+    response = req.body;
+    staff_id = response["staff_id"];
+    staff_pass = response["staff_pass"];
+
+    if (staff_id in dStaff){
+        if (dStaff[staff_id] == staff_pass) res.status(200).send({ valid : true });
+        else res.status(200).send({ valid : false, message: "Incorrect Password" });
+    }
+    else {
+        res.status(200).send({ valid : false, message: "Staff ID not found" });
+    }
+});
+
+
+
+
+
+
+// -------- [ CV (Object) Detection (2) ] --------
 app.post('/auth/3/:hostage',(req, res) => {
     var { hostage } = req.params;
     isHostage = hostage.toLocaleLowerCase() === 'true'
@@ -313,6 +379,26 @@ app.get('/auth/emotion/',(req, res) => {
         hasNegativeEmotion: hasNegativeEmotion
     });
 });
+
+
+// Check if openCV is online
+app.post('/cv/',(req, res) => {
+    isCVOnline = !isCVOnline;
+    res.status(200).send({
+        "CVOnline": isCVOnline
+    });
+});
+
+app.get('/cv/',(req, res) => {
+    res.status(200).send({
+        "CVOnline": isCVOnline
+    });
+});
+
+
+
+
+
 
 // -------- [ Outlier Analysis ] --------
 app.post('/outlier/:bool', (req, res) => {
@@ -382,6 +468,11 @@ app.post('/blacklist/modify/:item',(req, res) => {
     }
 });
 
+
+
+
+
+
 // -------- [ Covered Camera ] --------
 app.post('/covered/:bool', (req, res) => {
     var { bool } = req.params;
@@ -398,6 +489,19 @@ app.get('/covered/',(req, res) => {
     });
 });
 
+
+
+// -------- [ Webhook URL Request ] --------
+app.get('/webhook/',(req, res) => {
+    // Returns webhook url (cause I am lazy to do env for python lol)
+    res.status(200).send({
+        "url": WEBHOOK_URL
+    });
+});
+
+
+
+
 // -------- [ HaveIBeenPwned API Request ] --------
 app.get('/pwned/check/:email', (req, res) => {
     var { email } = req.params;
@@ -405,7 +509,7 @@ app.get('/pwned/check/:email', (req, res) => {
     if (gPin in dPins && email == ""){ email = dPins[gPin][1]; }
 
     var url = `https://haveibeenpwned.com/api/v3/breachedaccount/${email}`;
-    var headers = { "hibp-api-key":"cc9cbc26678d4e959e80f4ab36bc7dff", "user-agent":"nodejs" };
+    var headers = { "hibp-api-key": HIBP_API_KEY , "user-agent":"nodejs" };
     // Send API get with api key
     request.get(url, {headers: headers}, (error, response, body) => {
         if (error) { return console.dir(error);}
@@ -415,6 +519,7 @@ app.get('/pwned/check/:email', (req, res) => {
                 isBreached : JSON.parse(body).length > 0,
                 breaches : JSON.parse(body)
             });
+            gUserBreached = true;
         }
         else{
             res.status(400).send({
@@ -438,5 +543,175 @@ app.post('/pwned/dismiss/:bool',(req, res) => {
     dPins[gPin]["isPwnedDismissed"] = bool;
     res.status(200).send({
         dismiss : dPins[gPin]["isPwnedDismissed"]
+    });
+});
+
+// -------- [ ATM Status ] --------
+app.post('/atm', (req, res) => {
+    response = req.body;
+    ATMs = response["ATMs"];
+    res.status(200).send({ "ATMs" : ATMs });
+});
+
+app.get('/atm', (req, res) => {
+    res.status(200).send({ "ATMs" : ATMs });
+});
+
+app.post('/atm/add', (req, res) => {
+    response = req.body;
+    console.log(response)
+    ATMs.push(response);
+    res.status(200).send({ "ATMs" : ATMs });
+});
+
+
+app.post('/atm/online/:id', (req, res) => {
+    var { id } = req.params;
+    for (item in ATMs){
+        if (ATMs[item]["ATMID"] == id){
+            ATMs[item]["isOnline"] = true;
+            res.status(200).send({ "ATMs" : ATMs });
+            console.log(`>> ATM ${id} is online`);
+            return;
+        }
+    }
+});
+
+
+app.get('/dashboard/staff/', (req, res) => {
+    res.status(200).send({ "staff_id" : staff_id });
+});
+
+
+// Logs
+app.get('/logs/', (req, res) => {
+    res.status(200).send({ "logs" : logs });
+});
+
+app.post('/logs/', (req, res) => {
+    response = req.body;
+
+    // Check if response is in valid format
+    if (response["atmID"] == undefined || response["message"] == undefined){
+        res.status(400).send({ "logs" : "ERROR: Invalid Foramt" });
+        return;
+    }
+
+    if (response["type"] == undefined){
+        response["type"] = "[>]";
+    }
+
+    logs.push(response);
+    res.status(200).send({ "logs" : logs });
+});
+
+// Status
+app.get('/dashboard/atm', (req, res) => {
+    if (gPin != ""){
+        res.status(200).send({
+            'IP' : IP,
+            'Lat': Lat,
+            'Long': Long,
+            'HeldHostage': isHostage,
+
+            'Name': dPins[gPin]["name"],
+            'Email': dPins[gPin]["email"],
+            'Age': dPins[gPin]["age"],
+            'AccountNo': dPins[gPin]["accountNo"],
+            'Blacklisted': aBlacklist.includes(dPins[gPin]["accountNo"]),
+            'Pwned': gUserBreached,
+            'score': dPins[gPin]["score"],
+        });
+    }
+    else{
+        res.status(200).send({
+            'IP' : IP,
+            'Lat': Lat,
+            'Long': Long,
+            'HeldHostage': '',
+
+            'Name': "",
+            'Email': "",
+            'Age': "",
+            'AccountNo': "",
+            'Blacklisted': "",
+            'Pwned': "",
+            'score': ""
+        });
+    }       
+});
+
+// Bind IP
+var IP = ""
+var Lat = ""
+var Long = ""
+
+app.post('/ip/', (req, res) => {
+    response = req.body;
+    IP = response["IP"];
+    Lat = response["Lat"];
+    Long = response["Long"];
+    res.status(200).send({ 
+        'IP' : IP,
+        'Lat': Lat,
+        'Long': Long,
+     });
+});
+
+
+
+// -------[ Force Logout Mode ]-------
+app.get('/force-logout/', (req, res) => {
+    res.status(200).json({
+        valid : isForceLogout
+    });
+});
+
+app.post('/force-logout/', (req, res) => {
+    isForceLogout = !isForceLogout; // Change after activation
+    res.status(200).json({
+        valid : isForceLogout
+    });
+});
+
+// -------[ Broadcast Message ]-------
+app.post('/broadcast/', (req, res) => {
+    BroadcastSwitch = true;
+    response = req.body;
+    BroadcastMessage = response["message"];
+    res.status(200).json({
+        "message" : BroadcastMessage
+    });
+});
+
+app.get('/broadcast/', (req, res) => {
+    res.status(200).json({
+        "broadcast-switch": BroadcastSwitch,
+        "message" : BroadcastMessage
+    });
+    BroadcastSwitch = false;
+});
+
+// -------[ Update User Info ]-------
+app.post('/dashboard/user/edit/', (req, res) => {
+    response = req.body;
+    dPins[gPin]["name"] = response["name"];
+    dPins[gPin]["email"] = response["email"];
+    dPins[gPin]["age"] = response["age"];
+    dPins[gPin]["score"] = response["score"];
+    res.status(200).json({
+        "name" : dPins[gPin]["name"],
+        "email" : dPins[gPin]["email"],
+        "age" : dPins[gPin]["age"],
+        "score" : dPins[gPin]["score"]
+    });
+});
+
+app.get('/dashboard/user/edit/', (req, res) => {
+    res.status(200).json({
+        "name" : dPins[gPin]["name"],
+        "email" : dPins[gPin]["email"],
+        "age" : dPins[gPin]["age"],
+        "score" : dPins[gPin]["score"]
     });
 });
