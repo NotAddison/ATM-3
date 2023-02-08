@@ -81,6 +81,9 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 <br>
 <details>
 <summary><b>--- Contributions 👤 ---</b></summary>
+<img src="Assets/README/Contributions.png">
+<br><br>
+
 <b>Addison (@NotAddison)</b><br>
 <li>Brainstorm & Ideation </li>
 <li>API (NodeJS) </li>
