@@ -8,7 +8,11 @@
 
 > Index Deployment: https://notaddison.github.io/ATM-3/Web/HTML/Index/ <br>
 > Dashboard Deployment: https://notaddison.github.io/ATM-3/Web/HTML/Dashboard/ <br>
-> Ideation Notion Link: https://not-addison.notion.site/PFD-Plan-b576caeb2021486b8e30266434d8c97d <br>
+
+**Problem Statement:**
+> What if we could build an intelligent electronic detection system which does not disrupt the customer experience at out automated teller machines to detect such scam activities? 
+
+<br>
 
 <details>
 <summary><b>API Flow</b></summary>
