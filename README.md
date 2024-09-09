@@ -21,6 +21,16 @@ API Documentation: https://github.com/NotAddison/PFD-2022/blob/main/API/README.m
 <br><br>
 </details>
 
+<details>
+<summary><b>Demo Video</b></summary>
+
+
+https://github.com/user-attachments/assets/002dac89-aeea-42ff-aea9-e915848f4317
+
+
+<br><br>
+</details>
+
 ## Security Risks
 > Possible security risks that ATMs faces
 1. PIN Thermal Imaging
@@ -171,7 +181,7 @@ HIBP_API_KEY = "YOUR_KEY_HERE"
   - Requests
   - Tensorflow-GPU (https://www.tensorflow.org/install/source#gpu)
 
-- **Flutter**\
+- **Flutter**
   - Flutter SDK 3.3.10
   - Android Studio SDK (Virtual Device)
 
